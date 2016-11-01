@@ -9,7 +9,7 @@ server '45.55.41.7',
       password: 'TTT@123'
   }
 
-set :deploy_to,       "/home/#{fetch(:user)}/codpaying_production/#{fetch(:application)}"
+set :deploy_to,       "/home/#{fetch(:user)}/codepaying_production/#{fetch(:application)}"
 set :puma_bind,       "unix://#{shared_path}/tmp/sockets/#{fetch(:application)}_production-puma.sock"
 set :puma_state,      "#{shared_path}/tmp/pids/puma.state"
 set :puma_pid,        "#{shared_path}/tmp/pids/puma.pid"
