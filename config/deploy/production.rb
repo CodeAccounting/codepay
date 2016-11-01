@@ -6,7 +6,7 @@ server '45.55.41.7',
   ssh_options: {
       user: 'deploy',
       auth_methods: %w(password),
-      password: 'TTT@123'
+      password: 'paras@sharma44'
   }
 
 set :deploy_to,       "/home/#{fetch(:user)}/codepaying_production/#{fetch(:application)}"
