@@ -1,0 +1,37 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Organization User
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      User Detail
+      <%= link_to 'Edit', edit_organization_user_path(@user), class: 'btn btn-success btn-xs' %>
+      <%= link_to 'Back', organization_users_path, class: 'btn btn-success btn-xs' %>
+    </header>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="customer_name">Name:</label> <b><%= @user.full_name %></b>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="customer_account_number">Email:</label> <b><%= @user.email %></b>
+          </div>
+          <div class="form-group">
+            <label for="customer_contact">Assigned Role:</label> <b><%= @user.which_role?(current_organization.id).capitalize %></b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- page end-->
+
+</div>

@@ -1,0 +1,54 @@
+<section>
+  <%= render "layouts/sidebar" %>
+  <!-- body content start-->
+  <div class="body-content" >
+    <%= render "layouts/header" %>
+    <%#= render "dashboard_head" %>
+      <!--body wrapper start-->
+      <div class="wrapper">
+        <%= render "overview" %>
+        <div class="row">
+          <div class="col-md-6">
+            <%= render "notifications" %>
+          </div>
+          <div class="col-md-4">
+            <%= render "news" %>
+            <%= render "payments_processed" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <%= render "visitors" %>
+          </div>
+          <div class="col-md-4">
+            <%= render "weather" %>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+              <%= render "earnings" %>
+            </div>
+            <div class="col-md-6">
+              <%= render "team_view" %>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <%= render "payment_monitor" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <%= render "volume_discounts" %>
+          </div>
+          <div class="col-md-6">
+            <%= render "todo_list" %>
+          </div>
+        </div>
+      </div>
+      <!--body wrapper end-->
+      <%= render "layouts/footer" %>
+      <%= render "layouts/chat_sidebar" %>
+  </div>
+  <!-- body content end-->
+</section>

@@ -1,0 +1,202 @@
+<div class="page-head">
+  <h3 class="m-b-less">
+  Payer Information (Anyone that pays you)
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li><a href="#">Money In</a></li>
+      <li><%= link_to "Customers", customers_path %></li>
+      <li class="active">Create Customer</li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      Edit Customer
+    </header>
+    <% if flash[:errors] %>
+    <div class="alert alert-danger">
+      <ul>
+        <% flash[:errors].each do |er| %>
+        <li><%= er %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <form action="<%= customer_path %>" method="post" >
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input name="_method" type="hidden" value="patch" />
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="customer_name">Name</label>
+              <input id="customer_name" name="customer[name]" type="text" class="form-control" placeholder="Name" value="<%= @customer.name %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_account_number">Account Number</label>
+              <input id="customer_account_number" name="customer[account_number]" type="text" class="form-control"  placeholder="0001" value="<%= @customer.account_number %>">
+            </div>
+            <div class="form-group">
+              <label for="customer_contact">Contact</label>
+              <select id="customer_contact" name="customer[contact_id]" class="form-control">
+                <option value=""></option>
+                <option value="NEW">Create New...</option>
+                <% current_organization.contacts.all.each do |contact| %>
+                <option value="<%= contact.id %>"
+                  <%= @customer.primary_contact == contact ? "selected": "" %>
+                ><%= contact.try(:full_name) %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_parent_customer_id">Sub Customer of</label>
+              <select id="customer_parent_customer_id" name="customer[parent_customer_id]" class="form-control">
+                <option value=""></option>
+                <% current_organization.customers.all.each do |customer| %>
+                <option value="<%= customer.id %>"
+                  <%= @customer.parent_customer_id == customer.id ? "selected": "" %>
+                ><%= customer.name %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_description">Description</label>
+              <textarea id="customer_description" name="customer[description]" type="text" class="form-control" rows="3" placeholder="Enter a description..."><%= @customer.description %></textarea>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="customer_billing_address1">Billing Address</label>
+              <input id="customer_billing_address1" name="customer[billing_address_attributes][address1]" class="form-control" placeholder="Street 1" value="<%= @customer.billing_address.try(:address1) %>">
+            </div>
+            <div class="form-group">
+              <input id="customer_billing_address2" name="customer[billing_address_attributes][address2]" class="form-control" placeholder="Street 2" value="<%= @customer.billing_address.try(:address2) %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_billing_city">City</label>
+              <input id="customer_billing_city" name="customer[billing_address_attributes][city]" class="form-control" value="<%= @customer.billing_address.try(:city) %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_billing_state">State</label>
+              <input id="customer_billing_state" name="customer[billing_address_attributes][state]" class="form-control" value="<%= @customer.billing_address.try(:state) %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_billing_zip">Zip</label>
+              <input id="customer_billing_zip" name="customer[billing_address_attributes][zip]" class="form-control" value="<%= @customer.billing_address.try(:zip) %>">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="customer_shipping_address1">Shipping Address</label>
+              <input id="customer_shipping_address1" name="customer[shipping_address_attributes][address1]" class="form-control" placeholder="Street 1" value="<%= @customer.shipping_address.try(:address1) %>"  ></input>
+            </div>
+            <div class="form-group">
+              <input id="customer_shipping_address2" name="customer[shipping_address_attributes][address2]" class="form-control" placeholder="Street 2" value="<%= @customer.shipping_address.try(:address2) %>"  ></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_shipping_city">City</label>
+              <input id="customer_shipping_city" name="customer[shipping_address_attributes][city]" class="form-control" value="<%= @customer.shipping_address.try(:city)%>"  ></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_shipping_state">State</label>
+              <input id="customer_shipping_state" name="customer[shipping_address_attributes][state]" class="form-control" value="<%= @customer.shipping_address.try(:state) %>"  ></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_shipping_zip">Zip</label>
+              <input id="customer_shipping_zip" name="customer[shipping_address_attributes][zip]" class="form-control" value="<%= @customer.shipping_address.try(:zip) %>"  ></input>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-success">Save and Close</button>
+            <button type="submit" class="btn btn-success">Save and New</button>
+            <button type="button" class="btn btn-danger">Clear Entries</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- page end-->
+</div>
+<!--body wrapper end-->
+<!-- Modal -->
+<div class="modal fade" id="new-contact-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create Contact</h4>
+      </div>
+      <form id="contact-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="contact_first_name">First Name</label>
+            <input type="text" name="contact[first_name]" id="contact_first_name" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="contact_last_name">Last Name</label>
+            <input type="text" name="contact[last_name]" id="contact_last_name" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="contact_email">Email</label>
+            <input type="email" name="contact[email]" id="contact_email" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="contact_phone">Phone</label>
+            <input type="phone" name="contact[phone]" id="contact_phone" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="contact_fax">Fax</label>
+            <input type="phone" name="contact[fax]" id="contact_fax" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="save-contact">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<% content_for :scripts do %>
+  <script>
+    function addContactToList(contact) {
+      var contactOption = $('<option value="' + contact.id + '" selected>');
+      contactOption.text(contact.first_name + " " + contact.last_name);
+      $('#customer_contact').prepend(contactOption);
+    }
+
+    $(function () {
+      $('#contact-form').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+          url: "/contacts",
+          type: "POST",
+          data: $(e.currentTarget).serialize(),
+          success: function (contact) {
+            addContactToList(contact);
+            $('#new-contact-modal').modal('hide');
+          },
+          error: function (resp) {
+            var errorDiv = $('<div class="alert alert-danger">');
+            errorDiv.text(resp.responseJSON[0]);
+            $('#contact-form').prepend(errorDiv);
+          },
+        });
+      });
+      $('#customer_contact').on('change', function (event) {
+        if(event.currentTarget.value === "NEW") {
+          $('#new-contact-modal').modal('show');
+          event.currentTarget.value = "";
+        }
+      });
+    });
+  </script>
+<% end %>

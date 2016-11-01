@@ -1,0 +1,44 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+   Item Detail
+  </h3>
+</div>
+<!-- page head end-->
+
+
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel">
+        <header class="panel-heading head-border">
+          Showing Item detail 
+        </header>
+        <% if flash[:errors] %>
+        <div class="alert alert-danger">
+          <ul>
+            <% flash[:errors].each do |er| %>
+            <li><%= er %></li>
+            <% end %>
+          </ul>
+        </div>
+        <% end %>
+
+        <form id="chart-of-accounts-form" action="<%= items_path%>" method="post">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <div class="panel-body">
+            <div class="row toastr-row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label" for="COA_name">Name</label>
+                  <input id="coa_name" name="chart_of_accounts[name]" type="text" class="form-control" value="<%=@item.name%>" readonly>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <a href="<%= items_path%>" class="btn btn-success">Back</a>
+              </div>
+            </div>    
+          </div>
+        </form>
+      </div>
+    </div> 

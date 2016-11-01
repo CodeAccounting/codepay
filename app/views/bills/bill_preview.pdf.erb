@@ -1,0 +1,48 @@
+<% content_for :header_title do %>
+  <b>Bill Information Preview</b>
+<% end %>
+<br/>
+<div class="col-md-4">
+  <div class="form-group">
+    <label class="control-label" for="vendor_name">Vendor Name:</label> <b><%= @vendor_name %></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="bill_number">Bill #:</label> <b><%= @values[:bill_number] %></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="bill_date">Bill Date:</label> <b><%= @values[:bill_date].present? ? @values[:bill_date].to_date.strftime("%d-%B-%Y") : "" %></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="bill_due_date">Due Date:</label> <b><%= @values[:due_date].present? ? @values[:due_date].to_date.strftime("%d-%B-%Y") : ""%></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="bill_amount">Amount:</label> <b><%= @values[:due_amount] %></b>
+  </div>
+
+  <div class="form-group">
+    <label for="bill_contact">Location:</label> <b><%= @location%></b>
+  </div>
+
+  <div class="form-group">
+    <label for="bill_contact">Terms:</label> <b><%= @payment_term%></b>
+  </div>
+
+  <div class="form-group">
+    <label for="bill_contact">Department:</label> <b><%= @department%></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="bill_message">Message:</label> <b><%= @values[:message] %></b>
+  </div>
+
+</div>
+
+<div class="col-md-4">
+
+</div>
+
+<br/>

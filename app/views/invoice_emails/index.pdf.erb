@@ -1,0 +1,24 @@
+<% content_for :header_title do %>
+  <b>Invoice Emails Information</b>
+<% end %>
+
+<table class="table colvis-data-table data-table">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Sent To</th>
+      <th>Sent At</th>
+      <th>Invoice Id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @emails.each do |email| %>
+      <tr>
+        <td><%= email.id %></td>
+        <td><%= email.to_email %></td>
+        <td><%= email.created_at.strftime("%l:%M%p [ %d %B %Y ]") %></td>
+        <td><%= email.invoice_id %> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

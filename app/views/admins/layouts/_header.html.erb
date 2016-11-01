@@ -1,0 +1,134 @@
+<!-- header section start-->
+<div class="header-section">
+  <!--logo and logo icon start-->
+  <div class="logo dark-logo-bg hidden-xs hidden-sm">
+    <%= image_tag("landing/logo.png") %>
+  </div>
+  <div class="icon-logo dark-logo-bg hidden-xs hidden-sm">
+    <a href="index.html">
+      <%= image_tag("logo-icon.png") %>
+      <!--<i class="fa fa-maxcdn"></i>-->
+    </a>
+  </div>
+  <!--logo and logo icon end-->
+  <!--toggle button start-->
+  <a class="toggle-btn"><i class="fa fa-outdent"></i></a>
+  <!--toggle button end-->
+  <div class="notification-wrap">
+    <!--left notification start-->
+    <div class="left-notification">
+      <ul class="notification-menu">
+        <li>
+          <form class="search-content" action="<%= search_path %>" method="get">
+            <input type="text" class="form-control" name="keywords" placeholder="Search..." value="<%= params[:keywords] %>">
+          </form>
+        </li>
+      </ul>
+    </div>
+    <!--left notification end-->
+    <!--right notification start-->
+    <div class="right-notification">
+      <ul class="notification-menu">
+        <li>
+          <!-- <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Dropdown <b class="caret"></b></a>
+            <ul class="dropdown-menu" id="menu1">
+              <li>
+                  <a href="#">2-level Menu <i class="icon-arrow-right"></i></a>
+                  <ul class="dropdown-menu sub-menu">
+                      <li><a href="#">Action</a></li>
+                      <li><a href="#">Another action</a></li>
+                      <li><a href="#">Something else here</a></li>
+                      <li class="divider"></li>
+                      <li class="nav-header">Nav header</li>
+                      <li><a href="#">Separated link</a></li>
+                      <li><a href="#">One more separated link</a></li>
+                  </ul>
+              </li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </li> -->
+          <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <img src="<%= current_user.avatar %>"><%= current_user.full_name %>
+            <span class=" fa fa-angle-down"></span>
+          </a>
+          <ul class="dropdown-menu dropdown-usermenu purple pull-right">
+         
+              <li class="dropdown dropdown-submenu">
+                <a href="javascript:;">
+                  <i class="fa fa-certificate pull-right"></i>
+                  <%= current_organization.name %>
+                </a>
+
+                <ul class="dropdown-menu sub-menu pull-left">
+
+                  <% current_user.all_organizations.where("organizations.id is not ?",nil).uniq.each do |org| %>
+                    <li>
+                      <a href="<%= change_organization_path(org) %>" >
+                        <% if current_user.current_organization_id == org.id %>
+                          <i class="fa fa-check pull-right"></i>
+                        <% end %>
+                        <%= org.name %>
+                      </a>
+                      </li>
+                  <% end %>
+                </ul>
+              </li>
+          
+            <li>
+              <%= link_to user_path(current_user) do %>
+                <i class="fa fa-user pull-right"></i> Profile
+              <% end %>
+            <li>
+              <a href="<%= edit_profile_path(current_user) %>">
+                <i class="fa fa-wrench pull-right"></i>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li>
+              <a href="javascript:;">
+                <span class="fa fa-life-ring pull-right"></span>
+                Help
+              </a>
+            </li>
+            <li >
+              <a data-logout href="#">
+                <i class="fa fa-sign-out pull-right"></i> Log Out
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <div class="sb-toggle-right">
+            <i class="fa fa-comments"></i>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!--right notification end-->
+  </div>
+</div>
+<!-- header section end-->
+<style type="text/css">
+
+.dropdown-menu .sub-menu {
+    left: auto;
+    right: 100%;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    margin-top: -1px;
+}
+
+.dropdown-menu li:hover .sub-menu {
+    visibility: visible;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+</style>

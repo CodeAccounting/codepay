@@ -1,0 +1,43 @@
+<div class="modal fade" id="new-contact-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create Contact</h4>
+      </div>
+      <form id="contact-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="contact_first_name">First Name</label>
+            <input type="text" name="contact[first_name]" id="contact_first_name" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_last_name">Last Name</label>
+            <input type="text" name="contact[last_name]" id="contact_last_name" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_email">Email</label>
+            <input type="email" name="contact[email]" id="contact_email" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_phone">Phone</label>
+            <input type="phone" name="contact[phone]" id="contact_phone" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_fax">Fax</label>
+            <input type="phone" name="contact[fax]" id="contact_fax" class="form-control">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="save-contact">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

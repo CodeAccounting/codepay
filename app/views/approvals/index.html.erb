@@ -1,0 +1,43 @@
+  <!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+       Approve Bill/Invoice Request
+  </h3>
+</div>
+ <!-- page head end-->
+
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <table class="table colvis-data-table data-table">
+          <thead>
+            <tr>
+              <th>Show Details</th>
+              <th>Approval Of</th>
+              <th>Id</th>
+              <th>Assigned By</th>
+              <th>status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @approvals.present? %>
+              <% @approvals.each do |approval|%>
+                <tr>
+                  <td><%= link_to 'show', approval_path(approval.approvable_id, approval.approvable_type)%></td>
+                  <td><%= approval.approvable_type %></td>
+                  <td><%= approval.approvable_id %></td>
+                  <td><%= approval.assigner.full_name %></td>
+                  <td><%= approval.status %></td>
+                </tr>
+              <%end%>    
+            <%end%>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>
+
+ <!--body wrapper end-->
+

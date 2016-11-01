@@ -1,0 +1,17 @@
+<div class="wrapper">
+	<div class="row"> 
+	  <div class="col-sm-12">
+	  	<label>Subscribe to Pro plan at $<%= @plans[2].amount/100.to_f%></label>
+		  <%= form_tag subscriptions_path do %>
+			<input type="hidden" name="plan_id", value = "<%= @plans[2].id %>" >
+			<script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+			  data-key="<%= Rails.application.secrets.stripe_publishable_key %>"
+			  data-description="one month subscription"
+			  data-amount="<%= @plans[2].amount%>"
+			  data-email = "<%= current_user.email%>"
+			  >
+			</script>
+		  <% end %>
+	  </div>
+	</div>
+</div>

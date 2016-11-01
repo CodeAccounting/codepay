@@ -1,0 +1,655 @@
+<!-- page head start-->
+
+<style type="text/css">
+  .drop-box {
+    background: #F8F8F8;
+    border: 1px dashed #a3d0ef;
+    text-align: center;
+    padding-top: 25px;
+    margin: 10px;
+    margin-top: -5px;
+}
+.dragover {
+    border: 1px dashed #337ab7;
+}
+.file-selector{
+  margin-bottom: 30px;
+  color: #ada9a9; 
+}
+</style>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<div class="page-head">
+  <h3 class="m-b-less">
+  Create Bills
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li><a href="#">Money out</a></li>
+      <li><%= link_to "Bills", bills_path %></li>
+      <li class="active">Create Bill</li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      Create A vendor Bill
+    </header>
+    <% if flash[:errors] %>
+    <div class="alert alert-danger">
+      <ul>
+        <% flash[:errors].each do |er| %>
+        <li><%= er %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <form id="bill-form"  method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="bill_vendor_name">Vendor Name </label>
+              <select class="form-control input-small" name="bill[vendor_id]" id="bill_vendor">
+                <option value='-1' disabled selected>Select a vendor</option>
+                <option value="new">Create New vendor...</option>
+                <% current_organization.vendors.each do |vendor| %>
+                <option value="<%= vendor.id %>"><%= vendor.name %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="bill_number">Bill #</label>
+              <input id="bill_number" name="bill[bill_number]" type="text" class="form-control"  placeholder="0001">
+            </div>
+            <div class="form-group">
+              <% r_date = @bill.bill_date ? @bill.bill_date.strftime("%Y-%m-%d") : "" %>
+              <label class="control-label" for="bill_record_date">bill Date</label>
+              <input id="bill_record_date" name="bill[bill_date]" value="<%= r_date %>" type="date" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="bill_due_date">Due Date</label>
+              <% d_date = @bill.due_date ? @bill.due_date.strftime("%Y-%m-%d") : "" %>
+              <input id="bill_due_date" name="bill[due_date]" value="<%= d_date %>" type="date" class="form-control">
+            </div>
+            <input id="bill_amount_due" name="bill[due_amount]" type="hidden" />
+          </div>
+          <div class="col-md-2">
+            <div class="form-group" id="toastTypeGroup">
+              <div class="form-group">
+                <label class="control-label" for="hideEasing">Payment Terms</label>
+                <select name="bill[payment_term_id]" class="form-control input-small addressRef" id="term">
+                  <option value=""></option>
+                  <% @terms.each do |term| %>
+                  <option value="<%= term.id %>"
+                    <%= term.name == @bill.try(:payment_term).try(:name) ? "selected": "" %>
+                  ><%= term.name %></option>
+                  <% end %>
+                  <option value="NEW">Create New...</option>
+                </select>
+              </div>
+              <label>Location</label>
+              <select name="bill[location_id]" class="form-control input-small addressRef" id="location">
+                <option value=""></option>
+                <% @locations.each do |location| %>
+                <option value="<%= location.id %>"
+                  <%= location.name == @bill.try(:location).try(:name) ? "selected": "" %>
+                ><%= location.name %></option>>
+              <%= location.name %></option>
+              <% end %>
+              <option value="NEW">Create New...</option>
+              </select>
+            </div>
+            <div class="form-group" id="positionGroup">
+              <label>Department</label>
+              <select name="bill[department_id]" class="form-control input-small addressRef" id="department">
+                <option value=""></option>
+                <% @departments.each do |department| %>
+                <option value="<%= department.id %>"
+                  <%= department.name == @bill.try(:department).try(:name) ? "selected": "" %>
+                ><%= department.name %></option>
+                <% end %>
+                <option value="NEW">Create New...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-custom check-success">
+                <input type="checkbox" value="checked" id="closeButton"> <label for="closeButton">Make Recurring</label>
+              </input></label>
+            </div>
+          </div>
+          <div ng-app="billApp" >
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="control-label" for="bill_message">Message</label>
+                <textarea id="bill_message" name="bill[message]" rows="3" class="form-control" placeholder="Enter a message ..." ></textarea>
+              </div>
+              <div class="form-group" >
+                <label>Approvars</label>
+                <select name="bill[assigned_to_ids][]" class="form-control input-small" id="approvars" multiple="multiple" data-placeholder="Select approvers...">
+                    <% current_organization.all_organization_users.where.not(invitation_accepted_at: nil).each do |user| %>
+                      <% if user != current_user%> 
+                        <option value="<%= user.id %>"><%= user.full_name %></option>
+                      <% end %>    
+                    <% end %>
+                </select>
+              </div>
+              <div ng-controller="attachmntCtrl">
+                <label>Attachment:</label>
+                <div class="drop-box" ng-class="{dragover: hover}" ng-mouseenter="hover = true" ng-mouseleave="hover = false">
+                  <div>
+                    <label ng-show="f.pprogress>0">{{f.pprogress}}%</label>
+                    <a ng-show="f.full" ng-href="{{f.result.url}}" target="_blank">{{f.result.attachment.attachment_file_name}}</a>
+                    <input type="hidden" name="attachment_id" value="{{f.id}}" >
+                    <span ng-show="f.full" class="t-close fa fa-times" ng-click="attachment_hide()"></span>
+                  </div>
+
+                  <div class="file-selector" type="file" ngf-drop="uploadFiles($file, $invalidFiles)" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*,application/pdf" ngf-max-size="6MB" >
+                  Select/Drop File Here (Max Size 6 MB)         
+                  </div>
+                  <%= render "layouts/attachment_sidebar"%>
+                </div>
+                <div class="sb-toggle-right" ng-click="add_attachments_to_sidebar()" style="width:100%; padding:0; height:0; line-height:0;" >
+                    <!-- <button type="button" ng-click="add_image()">click me</button> -->
+                    <span ng-style="textcolor" ng-mouseenter="changeColor(true)" ng-mouseleave="changeColor(false)">View existing</span>
+              </div>
+              </div>
+            </div>  
+          <div class="col-md-3" ng-controller="notesCtrl" >
+            <div class="form-group">
+              <label class="control-label" for="bill_note" >Note(Optional:)</label>
+              <textarea id="bill_note" name="bill[bill_note]" rows="3" class="form-control" placeholder="add a note ..." ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>  
+      <div class="row toastr-row">
+        <%= render "bill_items" %>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-success create_bill" id="save_bill">Save bill</button>
+          <button type="submit" class="btn btn-success create_bill" id="preview-bill">Preview Bill</button>
+          <button type="button" class="btn btn-danger" onclick="clearEnteries('bill-form')" >Clear Entries</button>
+          <% if @attachment.present?%>
+            <%= link_to 'Back', attachments_path, class: "btn btn-danger" %>
+          <%end%>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- page end-->
+</div>
+<!--body wrapper end-->
+<!-- vendor Modal Start-->
+<%= render "vendor_model" %>
+<!-- vendor Modal End -->
+<!-- Contact Modal Start -->
+<%= render "contact_model" %>
+<!-- Contact Model End -->
+<!-- Address Ref -->
+<%= render "address_ref_model" %>
+<!-- Address Ref -->
+<!-- Item Model Start -->
+<%= render "item_model" %>
+<!-- Item Model End -->
+<!-- Tax Model Start -->
+<%= render "tax_model" %>
+<!-- Tax Model End -->
+<% content_for :scripts do %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<!-- <script src="ng-file-upload-shim.min.js"></script>
+<script src="ng-file-upload.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.11/ng-file-upload.min.js"></script>
+  <script>
+
+
+    $("#bill_vendor").select2();
+
+    $('#bill_vendor').on('change', function (event) {
+      if(event.currentTarget.value === "new") {
+        $('#new-vendor-modal').modal('show');
+        $(this).children('option[value="-1"]').attr('selected','selected').change();
+      }
+    });
+
+    $('#vendor-form').on('submit', function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: "/vendors",
+        type: "POST",
+        dataType: "json",
+        data: $(e.currentTarget).serialize(),
+        success: function (vendor) {
+          addVendorToList(vendor);
+          $('#new-vendor-modal').modal('hide');
+        },
+        error: function (resp) {
+          $.each(resp.responseJSON, function(index, item) {
+              $('#vendor-error').append("<li>"+item+"</li>");
+          });
+        },
+      });
+    });
+
+    function addVendorToList(vendor) {
+      vendorOption = "<option value='" + vendor.id + "' selected>" + vendor.name + "</option>";
+      $('#bill_vendor').append(vendorOption);
+    }
+
+    function addContactToList(contact) {
+      var contactOption = $('<option value="' + contact.id + '" selected>');
+      contactOption.text(contact.first_name + " " + contact.last_name);
+      $('#vendor_contact').prepend(contactOption);
+    }
+
+    $('#contact-form').on('submit', function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: "/contacts",
+        type: "POST",
+        data: $(e.currentTarget).serialize(),
+        success: function (contact) {
+          addContactToList(contact);
+          $('#new-contact-modal').modal('hide');
+        },
+        error: function (resp) {
+          var errorDiv = $('<div class="alert alert-danger">');
+          errorDiv.text(resp.responseJSON[0]);
+          $('#contact-form').prepend(errorDiv);
+        },
+      });
+    });
+
+    $('#vendor_contact').on('change', function (event) {
+      if(event.currentTarget.value === "NEW") {
+        $('#new-contact-modal').modal('show');
+        event.currentTarget.value = "";
+      }
+    });
+
+
+    $('#addressref-form').on('submit', function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: "/classifications",
+        type: "POST",
+        data: $(e.currentTarget).serialize(),
+        success: function (object) {
+          addValueToRefList(object);
+          $('#new-addressref-modal').modal('hide');
+        },
+        error: function (resp) {
+          var errorDiv = $('<div class="alert alert-danger">');
+          errorDiv.text(resp.responseJSON[0]);
+          $('#addressref-form').prepend(errorDiv);
+        },
+      });
+    });
+
+    function addValueToRefList(object) {
+      var Option = $('<option value="' + object.id + '" selected>');
+      Option.text(object.name);
+      switch (object.for) {
+        case 'term':
+          $('#term').prepend(Option);
+          break;
+        case 'location':
+          $('#location').prepend(Option);
+          break;
+        case 'department':
+          $('#department').prepend(Option);
+          break;
+        default:
+          alert('ERROR');
+      }
+    }
+
+    function readyModel(lable, params) {
+      $('#AddressRefModelLable').html('Add New '+lable);
+      $('#AddressRefLable').html(lable);
+      $('#AddressRefParam').attr('name', params);
+    }
+
+    $('.addressRef').on('change', function (event) {
+      if(event.currentTarget.value === "NEW") {
+        event.currentTarget.value = "";
+        switch (event.currentTarget.id) {
+          case 'term':
+            readyModel('Term', 'term[name]');
+            $('#new-addressref-modal').modal('show');
+            break;
+          case 'location':
+            readyModel('Location', 'location[name]');
+            $('#new-addressref-modal').modal('show');
+            break;
+          case 'department':
+            readyModel('Department', 'department[name]');
+            $('#new-addressref-modal').modal('show');
+            break;
+          default:
+            alert('ERROR');
+        }
+      }
+    });
+
+    var regex = /^(.+?)(\d+)$/i;
+    $("#tr_clone_add").click(function(){
+      var timestamp = $.now();
+      $(".table tr").eq(1)
+      .clone()
+        .append("<td><button type='button' class='btn btn-primary tr_clone_remove'><span class='glyphicon glyphicon-trash'></span></button></td>")
+        .find("input, select").each(function() {
+          $(this).attr({
+            'value': '',
+            'name' : changeName($(this), timestamp),
+            'id'   : changeId($(this), timestamp)
+          });
+        }).end()
+      .insertBefore("#insertRowBefore")
+      .find(".bill-item-amount").html('$0.0');
+    });
+
+    $(document).on('click', '.tr_clone_remove', function(){
+      $(this).parent().parent().remove();
+      changeSubtotal();
+    });
+
+    $(document).on('keyup change', '.bill-item-qp', function(){
+      tr = $(this).parent().parent().parent();
+      qnty = tr.find('td.bill-item-quantity').children().children();
+      prc = tr.find('td.bill-item-price').children().children();
+      quantity = 0 + parseInt(qnty.val());
+      price = prc.val();
+      if (isNaN(quantity)){
+        quantity = 0;
+      }
+      if (price == ""){
+        price = 0;
+      }
+      amount = quantity * parseFloat(price);
+      amt = tr.find('td.bill-item-amount');
+      if (!(isNaN(amount))){
+        amt.html('$'+amount);
+        amt.parent().find('.hidden-amount').val(amount);
+        changeSubtotal();
+      }
+      return true
+    });
+
+    function changeName(object, timestamp){
+      orignal_name = object.attr('name') || "";
+      return orignal_name.replace(/[0-9]/g, timestamp);
+    };
+
+    function changeId(object, timestamp){
+      orignal_id = object.attr('id') || "";
+      return orignal_id.replace(/[0-9]/g, timestamp);
+    };
+
+    function changeSubtotal(){
+      var subtotal = 0.0;
+      $('input.hidden-amount').each(function(object){
+        amount = parseFloat(this.value) || 0;
+        subtotal = subtotal + amount;
+      });
+      $('#subtotal').html('$'+subtotal);
+      $('#bill_amount_due').val(subtotal);
+    };
+
+    $("#approvars").select2();
+
+    $('#item-form').on('submit', function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: "/items",
+        type: "POST",
+        data: $(e.currentTarget).serialize(),
+        success: function (item) {
+          var itemOption = $('<option value="' + item.id + '" >');
+          itemOption.text(item.name);
+          $('.item_selection').append(itemOption);
+          $('#new-item-modal').modal('hide');
+        },
+        error: function (resp) {
+          var errorDiv = $('<div class="alert alert-danger">');
+          errorDiv.text(resp.responseJSON[0]);
+          $('#item-form').prepend(errorDiv);
+        },
+      });
+    });
+
+    $('.item_selection').live('change', function (event) {
+      if(event.currentTarget.value === "NEW") {
+        $('#new-item-modal').modal('show');
+        event.currentTarget.value = "";
+      }
+    });
+
+    $('#tax-form').on('submit', function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: "/taxs",
+        type: "POST",
+        data: $(e.currentTarget).serialize(),
+        success: function (tax) {
+          var taxOption = $('<option value="' + tax.id + '" >');
+          taxOption.text(tax.tax);
+          $('.item-tax').append(taxOption);
+          $('#new-tax-modal').modal('hide');
+        },
+        error: function (resp) {
+          var errorDiv = $('<div class="alert alert-danger">');
+          errorDiv.text(resp.responseJSON[0]);
+          $('#item-form').prepend(errorDiv);
+        },
+      });
+    });
+
+    $('.item-tax').live('change', function (event) {
+      if(event.currentTarget.value === "NEW") {
+        $('#new-tax-modal').modal('show');
+        event.currentTarget.value = "";
+      }
+      else{
+        tr = $(this).parent().parent().parent();
+        tax = $(this).children('option:selected').text();
+        amnt = tr.find('td.bill-item-amount');
+        qnty = tr.find('td.bill-item-quantity').children().children();
+        prc = tr.find('td.bill-item-price').children().children();
+        if ( tax == "" ){
+          quantity = 0 + parseInt(qnty.val());
+          price = prc.val();
+          if (isNaN(quantity)){
+            quantity = 0;
+          }
+          if (price == ""){
+            price = 0;
+          }
+          amount = quantity * parseFloat(price);
+          if (!(isNaN(amount))){
+          amnt.html('$'+amount);
+          amnt.parent().find('.hidden-amount').val(amount);
+          changeSubtotal(); 
+          }
+        }   
+        else
+        { 
+          quantity = 0 + parseInt(qnty.val());
+          price = prc.val();
+          if (isNaN(quantity)){
+            quantity = 0;
+          }
+          if (price == ""){
+            price = 0;
+          }
+          amount = quantity * parseFloat(price);
+          amount = (tax/100)*amount + amount;
+          if (!(isNaN(amount))){
+          amnt.html('$'+amount);
+          amnt.parent().find('.hidden-amount').val(amount);
+          changeSubtotal(); 
+          }
+        }  
+      }
+    });
+
+     $('.create_bill').click( function(event) {
+        event.preventDefault();
+        id = $(this).attr('id')
+        if(id=="save_bill") {
+          $('#bill-form').attr('action', '/bills')
+        } else if(id=="preview-bill") {
+          $('#bill-form').attr('action', '/bills/bill_preview.pdf')
+          $('#bill-form').attr('target', "-blank")
+        }
+        $('#bill-form').submit();
+      });
+      
+  </script>
+<% end %>
+
+<%content_for :angular_scripts do %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.11/ng-file-upload.min.js"></script>
+ <script type="text/javascript">
+
+    var app = angular.module('billApp', ['ngFileUpload']);
+
+    // app.factory('Attachments', function($http){
+
+    //     var attachments_rs = $http({
+    //         method: 'GET',
+    //         url: '/attachments.json'
+    //       }).then(function(response) {
+    //       return response.data;
+    //   });
+
+    //     return{
+    //       all: function(){
+    //         return attachments_rs.$$state.value;
+    //       }
+    //     }
+    // });
+
+    app.controller('attachmntCtrl', ['$scope', 'Upload', '$timeout','$http', function ($scope, Upload, $timeout,$http) {
+
+      $scope.loading = false;
+
+      <% if @attachment.present? %>
+          // console.log("<%= @attachment.attachment.url%>");
+          $scope.f = {
+              result: {
+                id: '<%= @attachment.id%>',
+                attachment :{
+                      attachment_file_name: '<%= @attachment.attachment_file_name%>'
+                      },
+                url: '<%= @attachment.attachment.url%>' 
+              }
+          };
+          $scope.f.id = $scope.f.result.id;
+          $scope.f.pprogress = 100;
+          $scope.f.full = true;
+      <%end%>
+
+        $scope.uploadFiles = function(file, errFiles) {
+          console.log($scope);
+
+            $scope.errFile = errFiles && errFiles[0];
+            if (file) {
+                file.upload = Upload.upload({
+                    url: '/attachments/attachment_via_ajax',
+                    data: {attachment: file}
+                });
+
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                        file.id = response.data.attachment.id; 
+                        // console.log(response.data)
+                        // console.log($scope.f.result)
+                    });
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                }, function (evt) {
+                    file.pprogress = Math.min(100, parseInt(100.0 * 
+                                             evt.loaded / evt.total));
+                    if (file.pprogress==100)
+                    {
+                      file.full = true;
+                    }
+                    console.log($scope.f.pprogress);
+                });
+            }   
+        }
+
+        $scope.attachment_hide = function(){
+            $scope.f.id = "";
+            $scope.f.pprogress = 0;
+            $scope.f.full = false;
+        }
+
+        $scope.add_attachments_to_sidebar = function(){
+          
+          // if ($scope.all_attachments == undefined){ 
+          //   $scope.all_attachments = Attachments.all();
+          // }
+          // else{
+            $scope.loading = false;
+            $http({
+              method: 'GET',
+              url: '/attachments.json'
+            }).then(function(response) {
+              $scope.all_attachments = response.data;
+              $scope.loading = true;
+              // return response.data;
+            });
+          // } 
+        }
+
+        $scope.add_image = function(index){
+          // console.log($scope.all_attachments[index])
+            $scope.attchmnt = $scope.all_attachments[index];
+            $scope.f = {
+              result: {
+                id: $scope.attchmnt.id,
+                attachment :{
+                      attachment_file_name: $scope.attchmnt.attachment_file_name
+                      },
+                url: $scope.attchmnt.url 
+              }
+          };
+          $scope.all_attachments.splice(index,1); 
+           
+          $scope.f.id = $scope.f.result.id;
+          $scope.f.pprogress = 100;
+          $scope.f.full = true;
+        }
+
+        $scope.changeColor = function(bool) {
+        if(bool === true) {
+        $scope.textcolor = {color: '#15c924'};
+        } else if (bool === false) {
+        $scope.textcolor = {color: 'black'}; //or, whatever the original color is
+        }
+      }
+
+    }]);
+
+app.controller('notesCtrl', function($scope) {
+    // $scope.firstName = "John";
+    // $scope.lastName = "Doe";
+
+});
+
+ </script> 
+
+<%end%>

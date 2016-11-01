@@ -1,0 +1,30 @@
+<p>
+  Hi <%= @customer.full_name %>,
+</p>
+
+<p>
+  The attached invoice is now past due. Please provide us with an update on your payment's timeline at your earliest convenience.
+</p>
+
+<p>
+<hr>
+
+<h3>Invoice Summary:</h3>
+
+  Invoice #: <%= @invoice.invoice_number %><br>
+  Amount Due: <%= @invoice.due_amount %><br>
+  Due Date: <%= @invoice.due_date.strftime("%d %B %Y") %><br>
+</p>
+
+<p>
+  A PDF version of this invoice is also attached for your records.
+</p>
+
+<p>
+  Thank you for your business<br>
+  <%#= @company.name %>
+</p>
+
+<!-- <p>
+  Please do not respond to this email. This e-mail was sent from a notification-only e-mail address.
+</p> -->

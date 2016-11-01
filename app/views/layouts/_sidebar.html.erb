@@ -1,0 +1,425 @@
+
+<style type="text/css">
+.calculator
+{
+        width:150px;
+        height:170px;
+        background-color:#eeeeee;
+        border:2px solid #CCCCCC;
+        margin:auto;
+        padding-left:5px;
+        padding-bottom:5px;
+}
+.calculator td
+{
+        height:16.66%;
+}
+.calc_td_result
+{
+        text-align:center;
+}
+.calc_result
+{
+        width:97%;
+        text-align:right;
+        margin-left:2px;
+        color: black;
+        font-size: 15px;
+}
+.calc_td_calculs
+{
+        text-align:center;
+}
+.calc_calculs
+{
+        width:90%;
+        text-align:left;
+}
+.calc_td_btn
+{
+        width:24%;
+        height:100%;
+}
+.calc_btn
+{
+        width:85%;
+        /*height:80%;*/
+        font-size:10px;
+        margin-left:3px;
+        color: black;
+        font-size: 15px;
+}
+.calc_div{
+  margin-top: 20px;
+}
+
+.calculator span.glyphicon-remove:hover{
+    cursor: pointer;
+}
+
+.calculator span {
+    float: right;
+    margin-bottom: 5px;
+    padding:1px;
+}
+</style>
+<div class="sidebar-left sticky-sidebar">
+  <!--responsive view logo start-->
+  <!--responsive view logo end-->
+  <div class="sidebar-left-info">
+    <!-- visible small devices start-->
+    <div class=" search-field">  </div>
+    <!-- visible small devices end-->
+    <!--sidebar nav start-->
+    <ul class="nav nav-pills nav-stacked side-navigation">
+      <li class=""><a href="<%= new_dashboard_path %>"><i class="fa fa-home"></i>Dashboard</a></li>
+      
+      <li class="menu-list"> <a href="#"><i class="fa fa-money"></i>Money In</a>
+        <ul class="child-list">
+          <% if can? :index, Invoice %>
+            <li><%= link_to "Invoice Information", invoices_path %></li>
+          <% end %>
+
+            <li><%= link_to "Payment Information", invoice_payments_path %></li>
+
+            <li><%= link_to "Customers", customers_path %></li>
+        </ul>
+      </li>
+
+      <li class="menu-list">
+        <a href="#">
+          <i class="fa fa-shopping-cart"></i>
+          Money Out
+        </a>
+        <ul class="child-list">
+          <% if can? :create, Payment %>
+            <li><%= link_to "Bill Information", bills_path %></li>
+          <% end %>
+
+          <% if can? :index, Vendor %>
+            <li><%= link_to "Payment Information", new_payment_path %></li>
+          <% end %>
+            <!-- <li><%= link_to "Inbox", attachments_path %></li> -->
+            <li><%= link_to "Vendors", vendors_path %></li>
+        </ul>
+      </li>
+
+      <li class="">
+        <% if can? :create, Report %>
+          <a href="/reports/new">
+            <i class="fa fa-bar-chart-o"></i>
+            Reports
+          </a>
+        <% end %>
+      </li>
+
+      <!-- <li class="">
+        <a href="<%= edit_profile_path(current_user) %>">
+          <i class="fa fa-cogs"></i>
+          Settings
+        </a>
+      </li> -->
+      <% if current_user.has_current_role? :admin %>
+        <!-- <li> <a href="<%= audits_path%>">
+             <i class="fa fa-eye"></i>
+             Audit Log
+             </a>
+        </li> -->     
+        <!-- <li class="menu-list"> <a href="#"><i class="fa fa-cogs"></i>Settings</a> -->
+          <!-- <ul class="child-list"> -->
+
+            <!-- <li><%= link_to "User Profile", edit_profile_path(current_user) %></li>      -->
+            <!-- <li><%= link_to "Create New Organization", new_organization_path %></li>
+            <li><%= link_to "Manage Organization Users", organization_users_path %></li>
+            <li><%= link_to "Manage Organization", organizations_path %></li> -->
+            <!-- <li><%= link_to "Billing and Subscription", new_subscription_path %></li> -->
+            <!-- <li><%= link_to "Invoice & Bill Items", items_path %></li> -->
+            <!-- <li><%= link_to "COA", chart_of_accounts_path %></li> -->
+          <!-- </ul> -->
+        <!-- </li> -->
+      <%end%> 
+
+        <div class="calc_div" id="cal_id" style="display:none;">
+          <table class="calculator" id="calc">
+            <tr>
+                <th colspan="4">
+                    <span class="glyphicon glyphicon-remove" onclick="f_calc_close(this);"></span>
+                </th>
+            </tr>
+            <tr>
+                <td colspan="4" class="calc_td_result">
+                    <input type="text" readonly="readonly" name="calc_result" id="calc_result" class="calc_result" onkeydown="javascript:key_detect_calc('calc',event);" />
+                </td>
+            </tr>
+            <tr class="buttn_tr">
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="CE" onclick="javascript:f_calc('calc','ce');" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="&larr;" onclick="javascript:f_calc('calc','nbs');" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="%" onclick="javascript:f_calc('calc','%');" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="+" onclick="javascript:f_calc('calc','+');" />
+                </td>
+            </tr>
+            <tr class="buttn_tr">
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="7" onclick="javascript:add_calc('calc',7);" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="8" onclick="javascript:add_calc('calc',8);" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="9" onclick="javascript:add_calc('calc',9);" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" style="font-size:20px;" value="-" onclick="javascript:f_calc('calc','-');" />
+                </td>
+            </tr>
+            <tr class="buttn_tr">
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="4" onclick="javascript:add_calc('calc',4);" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="5" onclick="javascript:add_calc('calc',5);" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="6" onclick="javascript:add_calc('calc',6);" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="x" onclick="javascript:f_calc('calc','*');" />
+                </td>
+            </tr>
+            <tr class="buttn_tr">
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="1" onclick="javascript:add_calc('calc',1);" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="2" onclick="javascript:add_calc('calc',2);" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="3" onclick="javascript:add_calc('calc',3);" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" style="font-size:20px;" value="&divide;" onclick=" javascript:f_calc('calc','/');" />
+                </td>
+            </tr>
+            <tr class="buttn_tr">
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="0" onclick="javascript:add_calc('calc',0);" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="&plusmn;" onclick="javascript:f_calc('calc','+-');" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="," onclick="javascript:add_calc('calc','.');" />
+                </td>
+                <td class="calc_td_btn">
+                        <input type="button" class="calc_btn" value="=" onclick="javascript:f_calc('calc','=');" />
+                </td>
+            </tr>
+        </table>
+        </div>
+      </ul>
+  <!--sidebar widget end-->
+  </div>
+</div>
+<script type="text/javascript">
+
+  calc_array = new Array();
+var calcul=0;
+var pas_ch=0;
+function $id(id)
+{
+        return document.getElementById(id);
+}
+function f_calc(id,n)
+{
+    debugger;
+    
+        if(n=='ce')
+        {
+                init_calc(id);
+        }
+        else if(n=='=')
+        {
+                if(calc_array[id][0]!='=' && calc_array[id][1]!=1)
+                {
+                        eval('calcul='+calc_array[id][2]+calc_array[id][0]+calc_array[id][3]+';');
+                        calc_array[id][0] = '=';
+                        $id(id+'_result').value=calcul;
+                        calc_array[id][2]=calcul;
+                        calc_array[id][3]=0;
+                }
+        }
+        else if(n=='+-')
+        {
+                $id(id+'_result').value=$id(id+'_result').value*(-1);
+                if(calc_array[id][0]=='=')
+                {
+                        calc_array[id][2] = $id(id+'_result').value;
+                        calc_array[id][3] = 0;
+                }
+                else
+                {
+                        calc_array[id][3] = $id(id+'_result').value;
+                }
+                pas_ch = 1;
+        }
+        else if(n=='nbs')
+        {
+                if($id(id+'_result').value<10 && $id(id+'_result').value>-10)
+                {
+                        $id(id+'_result').value=0;
+                }
+                else
+                {
+                        $id(id+'_result').value=$id(id+'_result').value.slice(0,$id(id+'_result').value.length-1);
+                }
+                if(calc_array[id][0]=='=')
+                {
+                        calc_array[id][2] = $id(id+'_result').value;
+                        calc_array[id][3] = 0;
+                }
+                else
+                {
+                        calc_array[id][3] = $id(id+'_result').value;
+                }
+        }
+        else
+        {
+            if(calc_array[id][0]!='=' && calc_array[id][1]!=1)
+            {
+                    eval('calcul='+calc_array[id][2]+calc_array[id][0]+calc_array[id][3]+';');
+                    $id(id+'_result').value=calcul;
+                    calc_array[id][2]=calcul;
+                    calc_array[id][3]=0;
+            }
+            calc_array[id][0] = n;
+        }
+        if(pas_ch==0)
+        {
+                calc_array[id][1] = 1;
+        }
+        else
+        {
+                pas_ch=0;
+        }
+        document.getElementById(id+'_result').focus();
+        return true;
+}
+function add_calc(id,n)
+{
+        if(calc_array[id][1]==1)
+        {
+                $id(id+'_result').value=n;
+        }
+        else
+        {
+                $id(id+'_result').value+=n;
+        }
+        if(calc_array[id][0]=='=')
+        {
+                calc_array[id][2] = $id(id+'_result').value;
+                calc_array[id][3] = 0;
+        }
+        else
+        {
+                calc_array[id][3] = $id(id+'_result').value;
+        }
+        calc_array[id][1] = 0;
+        document.getElementById(id+'_result').focus();
+        return true;
+}
+function init_calc(id)
+{
+        $id(id+'_result').value=0;
+        calc_array[id] = new Array('=',1,'0','0',0);
+        document.getElementById(id+'_result').focus();
+        return true;
+}
+function key_detect_calc(id,evt)
+{
+        if((evt.keyCode>95) && (evt.keyCode<106))
+        {
+                var nbr = evt.keyCode-96;
+                add_calc(id,nbr);
+        }
+        else if((evt.keyCode>47) && (evt.keyCode<58))
+        {
+                var nbr = evt.keyCode-48;
+                add_calc(id,nbr);
+        }
+        else if(evt.keyCode==107)
+        {
+                f_calc(id,'+');
+        }
+        else if(evt.keyCode==109)
+        {
+                f_calc(id,'-');
+        }
+        else if(evt.keyCode==106)
+        {
+                f_calc(id,'*');
+        }
+        else if(evt.keyCode==111)
+        {
+                f_calc(id,'/');
+        }
+        else if(evt.keyCode==110)
+        {
+                add_calc(id,'.');
+        }
+        else if(evt.keyCode==190)
+        {
+                add_calc(id,'.');
+        }
+        else if(evt.keyCode==188)
+        {
+                add_calc(id,'.');
+        }
+        else if(evt.keyCode==13)
+        {
+                f_calc(id,'=');
+        }
+        else if(evt.keyCode==46)
+        {
+                f_calc(id,'ce');
+        }
+        else if(evt.keyCode==8)
+        {
+                f_calc(id,'nbs');
+        }
+        else if(evt.keyCode==27)
+        {
+                f_calc(id,'ce');
+        }
+        return true;
+}
+
+function show_hide_calc(){
+  var cal_elemnt = document.getElementById('cal_id');
+  if (cal_elemnt.style.display=='none')
+  {
+    cal_elemnt.style.display='';
+    return false;
+  }
+  else
+  {
+   cal_elemnt.style.display='none';
+   return false; 
+  }  
+  // document.getElementById('body').style.display = "none";
+}
+
+function f_calc_close(elem){
+    var cal_elemnt = document.getElementById('cal_id');
+    cal_elemnt.style.display='none';
+}
+
+document.getElementById('calc').onload=init_calc('calc');
+</script>
+<!-- sidebar left end

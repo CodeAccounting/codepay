@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+	  <title>PDF File</title>
+    <%= stylesheet_link_tag(asset_data_base64('application.css')) %>
+    <%= csrf_meta_tags %>
+   </head>
+  <body>
+    <section>
+      <div class="body-content" style="min-height: 1000px;">
+        <div class="page-head">
+          <h3 class="m-b-less">
+           <%= yield :header_title %>
+          </h3>
+        </div>
+        <div class="wrapper">
+          <div class="row">
+            <section class="panel">
+              <%= yield %>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

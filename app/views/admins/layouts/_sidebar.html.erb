@@ -1,0 +1,79 @@
+
+<div class="sidebar-left sticky-sidebar">
+  <!--responsive view logo start-->
+  <!--responsive view logo end-->
+  <div class="sidebar-left-info">
+    <!-- visible small devices start-->
+    <div class=" search-field">  </div>
+    <!-- visible small devices end-->
+    <!--sidebar nav start-->
+    <ul class="nav nav-pills nav-stacked side-navigation">
+      <li class=""><a href=""><i class="fa fa-home"></i>Dashboard</a></li>
+
+      <li class="menu-list"> <a href="#"><i class="fa fa-money"></i>Money In</a>
+        <ul class="child-list">
+          <% if can? :index, Invoice %>
+            <li><%= link_to "Invoice Information", invoices_path %></li>
+          <% end %>
+
+            <li><%= link_to "Payment Information", invoice_payments_path %></li>
+
+        </ul>
+      </li>
+
+      <li class="menu-list">
+        <a href="#">
+          <i class="fa fa-shopping-cart"></i>
+          Money Out
+        </a>
+        <ul class="child-list">
+          <% if can? :create, Payment %>
+            <li><%= link_to "Bill Information", bills_path %></li>
+          <% end %>
+
+          <% if can? :index, Vendor %>
+            <li><%= link_to "Payment Information", new_payment_path %></li>
+          <% end %>
+            <li><%= link_to "Inbox", attachments_path %></li>
+        </ul>
+      </li>
+
+      <li class="">
+        <% if can? :create, Report %>
+          <a href="/reports/new">
+            <i class="fa fa-bar-chart-o"></i>
+            Reports
+          </a>
+        <% end %>
+      </li>
+
+      <!-- <li class="">
+        <a href="<%= edit_profile_path(current_user) %>">
+          <i class="fa fa-cogs"></i>
+          Settings
+        </a>
+      </li> -->
+
+      <% if current_user.has_current_role? :admin %>
+        <li class="menu-list"> <a href="#"><i class="fa fa-cogs"></i>Settings</a>
+          <ul class="child-list">
+
+
+            <li><%= link_to "User Profile", edit_profile_path(current_user) %></li>     
+            <li><%= link_to "Create New Organization", new_organization_path %></li>
+            <li><%= link_to "Manage Organization Users", organization_users_path %></li>
+
+            <li><%= link_to "Manage Organization", organizations_path %></li>
+            
+            <li><%= link_to "Audits", audits_path %></li>
+
+            <li><%= link_to "Billing and Subscription", new_subscription_path %></li>
+            <li><%= link_to "COA", chart_of_accounts_path %></li>
+          </ul>
+        </li>
+      <% end %>
+      </ul>
+  <!--sidebar widget end-->
+  </div>
+</div>
+<!-- sidebar left end

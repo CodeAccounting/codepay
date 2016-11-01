@@ -1,0 +1,23 @@
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      Settings
+    </header>
+    <section class="panel">
+      <div class="panel-body">
+        <div class="btn-group btn-group-justified">
+           <a class="btn btn-warning" href="<%= edit_profile_path(current_user) %>">Profile and Identity</a>
+          <a class="btn btn-info" href="<%= bank_accounts_path(current_user) %>">Payment Accounts</a>
+          <a class="btn btn-primary" href="<%= edit_software_integration_path(current_user) %>">Software Integrations</a>
+        </div>
+      </div>
+    </section>
+    <!-- QUICKBOOKS BUTTON -->
+    <ipp:connectToIntuit></ipp:connectToIntuit>
+    <!-- QUICKBOOKS BUTTON -->
+  </div>
+  <!-- page end-->
+</div>
+<!--body wrapper end-->

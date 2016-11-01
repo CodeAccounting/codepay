@@ -1,0 +1,322 @@
+<style type="text/css">
+ 
+  .drop-box 
+  {
+    background: #F8F8F8;
+    background-color: #eeeeee;
+    border: 1px solid #dfdfdf;
+    padding-top: 5px;
+    margin-top: -5px;
+    /*height: 250px;*/
+    overflow-y: scroll;
+    min-height: 100px;
+    max-height: 250px;
+    max-width: 275px;  
+  }
+
+  #style-2::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #c3bebe;
+} 
+  .stbody
+  {
+  border: 1px dashed #a3d0ef;
+  min-height:70px;
+  margin-bottom:10px;
+  }
+
+  .post_area
+  {
+    float: left;
+    width: 95%;
+    margin-left: 7px;
+    margin-bottom: 10px;
+  }
+
+  .post_area > button 
+  {
+    float: right;
+    margin-top: 2px;
+  }
+  .sttext
+  {
+    border: 1px solid #beb9b9;
+    width: 100%;
+    max-height:50px;
+    max-width: 250px;
+    word-wrap:break-word; // Text justification
+    overflow:hidden;
+    padding:5px;
+    display:block;
+    font-family:'Georgia', Times New Roman, Times, serif
+  }
+
+.notes
+  {
+    float: left;
+    border: 1px solid #beb9b9;
+    width: 95%;
+    margin-left: 7px;
+    background-color: #eeeeee;
+    /*margin-left:70px;*/
+    margin-bottom: 3px;
+    height:auto; 
+    word-wrap:break-word; // Text justification
+    overflow:hidden;
+    padding:5px;
+    display:block;
+    font-family:'Georgia', Times New Roman, Times, serif
+  }
+
+  .note_text
+  {
+    padding: 5px;
+    background-color: white;
+  }
+  .note_info
+  {
+    height: 15px;
+  }
+  .note_name
+  {
+   float: left;
+   font-size: 12px;
+   padding:2px;
+  }
+  .note_date
+  {
+    float: right;
+    font-size: 12px;
+    padding:2px;
+  }
+  
+
+</style>
+
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Show Bills
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li><a href="#">Money In</a></li>
+      <li><%= link_to "Bills", bills_path %></li>
+      <li class="active">Show Bill</li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <a href="<%= new_email_path(bill_id: @bill.id) %>" class="btn btn-default btn-success btn-lg">SEND EMAIL</a>
+    <a data-confirm="Are you sure?" data-method="delete" href="<%= bill_path(@bill) %>" class="btn btn-default btn-danger btn-lg">VOID BILL</a>
+    <% if flash[:notice] %>
+    <div class="alert alert-danger">
+      <%= flash[:notice] %>
+    </div>
+    <% end %>
+    <header class="panel-heading head-border">
+      Showing A Vendor Bill
+    </header>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="bill_vendor_name">Vendor Name </label>
+            <input data-vendors id="vendor_name" type="text" class="form-control"  placeholder="Vendor Name" value="<%= @bill.vendor.name %>" readonly>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="bill_number">Bill #</label>
+            <input id="bill_number" name="bill[bill_number]" type="text" class="form-control" value="<%= @bill.bill_number %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="bill_bill_date">Record Date</label>
+            <input id="bill_record_date" name="bill[bill_date]" class="form-control" value="<%= @bill.bill_date.strftime("%d-%B-%Y") %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="bill_due_date">Due Date</label>
+            <input id="bill_due_date" name="bill[due_date]" class="form-control" value="<%= @bill.due_date.strftime("%d-%B-%Y") %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="bill_amount_due">Total Amount Due</label>
+            <input id="bill_amount_due" name="bill[due_amount]" type="number" class="form-control" value="<%= @bill.due_amount %>" readonly >
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group" id="toastTypeGroup">
+            <label>Location</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @bill.location.try(:name)  %></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="hideEasing">Terms</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @bill.payment_term.try(:name) %></option>
+            </select>
+          </div>
+          <div class="form-group" id="positionGroup">
+            <label>Department</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @bill.department.try(:name) %></option>
+            </select>
+          </div>
+        </div> 
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="control-label" for="bill_message">Vendor Message</label>
+            <textarea id="bill_message" name="bill[message]" rows="3" class="form-control" readonly ><%= @bill.message %></textarea>
+          </div>
+          <div class="form-group" ng-app="billnoteApp" ng-controller="bnoteCtrl">
+            <label class="control-label" for="bill_note">Notes</label>
+            <div class="drop-box" id="style-2" >
+              <div class="post_area">   
+                <textarea class="sttext" id="bill_note" ng-model="note_text" rows="2" class="form-control" ></textarea>
+                <button type="button" class="btn btn-success" ng-click="add_note()" ng-disabled="note_text==''">Add Note</button>
+              </div>
+              
+                  <div class="notes" ng-repeat="note in notes">
+                    <div class="note_text">
+                      <p style="text-align:left; margin:3px">
+                        {{note.body}}
+                      </p>  
+                    </div>
+                    <div class="note_info"> 
+                      <label class="note_name" style="margin-bottom:0;">{{note.creator.first_name}} {{note.creator.last_name}}</label>
+                      <label class="note_date" style="margin-bottom:0;">{{note.created_at | date}}</label>
+                    </div> 
+                  </div>
+              
+            </div>  
+          </div>  
+        </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <a href="<%= bills_path %>" class="btn btn-success">Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+ </div>
+  
+<div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Bill Items
+        </header>
+        <table class="table small-data-table data-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Location</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+                <%if @bill.bill_items.present?%>
+                  <%@bill.bill_items.each do |bill_item|%>
+                    <tr>
+                      <td><%= bill_item.item.try(:name)%></td>
+                      <td><%= bill_item.try(:description)%></td>
+                      <td><%= bill_item.try(:quantity)%></td>
+                      <td><%= bill_item.try(:price)%></td>
+                      <td><%= bill_item.location.try(:name)%></td>
+                      <td>$<%= bill_item.try(:amount)%></td>
+                    </tr>
+                  <%end%>
+                <%end%>  
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+        <section class="panel">
+          <header class="panel-heading head-border">
+            Bill Attachment 
+          </header>
+          <table class="table small-data-table data-table">
+            <thead>
+              <tr>
+                <th>Attachment</th>
+                <th>Attachment Type</th>
+                <th>Attachment File Size </th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td><%= @bill_attachment.try(:attachment_file_name)%></td>
+                  <td><%= @bill_attachment.try(:attachment_content_type)%></td>
+                  <td><%= number_to_human_size(@bill_attachment.try(:attachment_file_size))%></td>
+                </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+  </div>
+
+</div> 
+<!-- page end-->
+<!--body wrapper end-->
+<%content_for :angular_scripts do %>
+  <script type="text/javascript">
+    
+    var app = angular.module('billnoteApp', []);
+
+    app.factory('notes', function($http){
+        return {
+          list: function(callback){
+            $http.get('/notes/notes_list_by_ajax?id=<%=@bill.id%>&type=Bill').success(callback);
+          }
+        };
+      });
+
+    app.controller('bnoteCtrl', function($scope,$http,notes) {
+
+      $scope.note_text = "";
+
+      notes.list(function(notes) {
+          $scope.notes = notes;
+      });
+
+      $scope.add_note = function(){
+              $http({
+                method: 'GET',
+                url: '/notes/ajax_to_add_note',
+                params: {id: '<%= @bill.id%>',type: 'Bill', body: $scope.note_text }
+              }).then(function(response) {
+                  $scope.note_text ="";
+                  $scope.notes.push(response.data);
+              });
+          }
+      });
+  </script>
+
+<%end%>

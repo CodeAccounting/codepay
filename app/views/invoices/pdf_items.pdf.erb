@@ -1,0 +1,131 @@
+<style type="text/css">
+  .contact { font-size: 12px }
+
+</style>
+
+<% content_for :header_title do %>  
+  <div style= "height:50px;" >
+    <%if current_organization.attachment.present?%>
+      <%= wicked_pdf_image_tag current_organization.attachment.attachment.url %>
+      <div class="pull-right" style="margin: 0">
+        <label class="contact">Name:</label><br>
+        <label class="contact">Email:</label><br>
+        <label class="contact">Contact:</label>
+      </div>
+    <%else%>
+      <div class="pull-right" style="margin: 0">
+        <label class="contact">Name:</label><br>
+        <label class="contact">Email:</label><br>
+        <label class="contact">Contact:</label>
+      </div>
+    <%end%>
+  </div>  
+<% end %>
+<br/>
+
+
+<% if @items.blank? %>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <center><b style="color:red"><%= "No Item Was Selected" %></b></center>
+    </div>
+  </div>
+
+<% else %>
+
+  <div class="col-md-4">
+    <div class="form-group">
+      <center><b>Invoice Information</b></center>
+    </div>
+  </div>
+
+  <% @items.each do |i| %>
+   
+    <%if i.eql?("customer_name") %>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="control-label" for="customer_name">Customer Name:</label> <b><%= @invoice.customer.name.capitalize %></b>
+        </div>
+      </div>  
+    <%end%>
+
+    <%if i.eql?("invoice") %>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="control-label" for="customer_account_number">Invoice#:</label> <b><%= @invoice.invoice_number %></b>
+        </div>
+      </div>
+    <% end %>
+
+    <%if i.eql?("record_date")%>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="control-label" for="customer_account_number">Invoice Date:</label> <b><%= @invoice.invoice_date.strftime("%d-%B-%Y") %></b>
+        </div>
+      </div>
+    <% end %>
+
+    <%if i.eql?("due_date")%>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="control-label" for="customer_account_number">Due Date:</label> <b><%= @invoice.due_date.strftime("%d-%B-%Y") %></b>
+        </div>
+      </div>
+    <% end %>
+
+    <%if i.eql?("total_ammount") %>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="control-label" for="customer_account_number">Amount:</label> <b><%= @invoice.due_amount %></b>
+        </div>
+      </div>
+    <% end %>
+
+    <%if i.eql?("location")%>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="customer_contact">Location:</label> <b><%= @invoice.location.try(:name) %></b>
+        </div>
+      </div>
+    <% end %>
+
+    <%if i.eql?("terms")%>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="customer_contact">Terms:</label> <b><%= @invoice.payment_term.try(:name) %></b>
+        </div>
+      </div>
+    <% end %>
+
+    <%if i.eql?("department")%>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="customer_contact">Department:</label> <b><%= @invoice.department.try(:name) %></b>
+        </div>
+      </div>
+    <% end %>
+
+    <%if i.eql?("status")%>
+      <div class="col-md-4">
+        <div class="form-group">
+          <%if @invoice.received == false %>
+            <label for="customer_contact">Status:</label> <b>UNPAID</b>
+          <%else%>
+            <label for="customer_contact">Status:</label> <b>PAID</b>
+          <%end%>  
+        </div>
+      </div>
+    <% end %>
+
+    <%if i.eql?("customer_message")%>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="customer_contact">Customer Message:</label> <b><%= @invoice.message %></b>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<%end%>
+
+<br/>

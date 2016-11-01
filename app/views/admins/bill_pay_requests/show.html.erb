@@ -1,0 +1,82 @@
+<div class="page-head">
+  <h3 class="m-b-less">
+  Bill Detail
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <% if flash[:notice] %>
+    <div class="alert alert-danger">
+      <%= flash[:notice] %>
+    </div>
+    <% end %>
+    <header class="panel-heading head-border">
+      Showing Bill Detail
+    </header>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="bill_vendor_name">Vendor Name </label>
+            <input data-vendors id="vendor_name" type="text" class="form-control"  placeholder="Vendor Name" value="<%= @bill.vendor.name %>" readonly>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="bill_number">Bill #</label>
+            <input id="bill_number" name="bill[bill_number]" type="text" class="form-control" value="<%= @bill.bill_number %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="bill_bill_date">Record Date</label>
+            <input id="bill_record_date" name="bill[bill_date]" class="form-control" value="<%= @bill.bill_date.strftime("%d-%B-%Y") %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="bill_due_date">Due Date</label>
+            <input id="bill_due_date" name="bill[due_date]" class="form-control" value="<%= @bill.due_date.strftime("%d-%B-%Y") %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="bill_amount_due">Total Amount Due</label>
+            <input id="bill_amount_due" name="bill[due_amount]" type="number" class="form-control" value="<%= @bill.due_amount %>" readonly >
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group" id="toastTypeGroup">
+            <label>Location</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @bill.location.try(:name)  %></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="hideEasing">Terms</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @bill.payment_term.try(:name) %></option>
+            </select>
+          </div>
+          <div class="form-group" id="positionGroup">
+            <label>Department</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @bill.department.try(:name) %></option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="control-label" for="bill_message">Vendor Message</label>
+            <textarea id="bill_message" name="bill[message]" rows="3" class="form-control" readonly ><%= @bill.message %></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <a href="<%= admins_bill_pay_requests_path %>" class="btn btn-danger">Back</a>
+          <a href="<%= admins_create_bill_payment_path(@bill.id)%>" class="btn btn-success">Pay Bill</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  
+
+<!-- page end-->
+<!--body wrapper end-->

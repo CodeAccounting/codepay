@@ -1,0 +1,48 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Payment Information
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class = "wrapper">
+  <div class = "panel">
+  	<div class ="row"> 
+      <div class="col-sm-12">
+        <div class="panel-body">
+      		<div class="col-md-12">
+      			<a href="<%= new_invoice_payment_path%>" class="btn btn-success">Manual Payment</a>
+      			<a href="<%= %>" class="btn btn-success">CodePayer Payment </a>
+      		</div>
+      		<table class="table colvis-data-table data-table">
+              <thead>
+                <tr>
+                  <th>Invoice Payment Detail</th>
+                  <th>Payment Method</th>
+                  <th>Payment Account</th>
+                  <th>Date</th>
+                  <th>Payment Amount</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @invoice_payments.each do |invoice_payment| %>
+                    <tr>
+                      <td><%= link_to "DETAIL", invoice_payment_path(invoice_payment) %></td>
+                      <td><%= invoice_payment.try(:payment_method) %> </td>
+                      <td><%= invoice_payment.try(:payment_account) %> </td>
+                      <td><%= invoice_payment.try(:date).strftime("%d %B %Y") %> </td>
+                      <td>$<%= invoice_payment.try(:payment_amount) %> </td>
+                      <td><%= invoice_payment.try(:message) %> </td>
+                    </tr>
+                <% end %>
+              </tbody>
+          </table>
+        </div>
+  	  </div>
+    </div>
+  </div>
+</div>  
+<!--body wrapper send-->

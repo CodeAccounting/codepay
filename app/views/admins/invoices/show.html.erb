@@ -1,0 +1,130 @@
+<div class="page-head">
+  <h3 class="m-b-less">
+  Show Invoices
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li><a href="#">Money In</a></li>
+      <li><%= link_to "Invoices", invoices_path %></li>
+      <li class="active">Show Invoice</li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    
+    <% if flash[:notice] %>
+    <div class="alert alert-danger">
+      <%= flash[:notice] %>
+    </div>
+    <% end %>
+    <header class="panel-heading head-border">
+      Showing A Customer Invoice
+    </header>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="invoice_customer_name">Customer Name </label>
+            <input data-customers id="customer_name" type="text" class="form-control"  placeholder="Customer Name" value="<%= @invoice.customer.name %>" readonly>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="invoice_number">Invoice #</label>
+            <input id="invoice_number" name="invoice[invoice_number]" type="text" class="form-control" value="<%= @invoice.invoice_number %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="invoice_invoice_date">Record Date</label>
+            <input id="invoice_record_date" name="invoice[invoice_date]" class="form-control" value="<%= @invoice.invoice_date.strftime("%d-%B-%Y") %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="invoice_due_date">Due Date</label>
+            <input id="invoice_due_date" name="invoice[due_date]" class="form-control" value="<%= @invoice.due_date.strftime("%d-%B-%Y") %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="invoice_amount_due">Total Amount Due</label>
+            <input id="invoice_amount_due" name="invoice[due_amount]" type="number" class="form-control" placeholder="1000" value="<%= @invoice.due_amount %>" readonly >
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group" id="toastTypeGroup">
+            <label>Location</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @invoice.location.try(:name)  %></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="hideEasing">Terms</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @invoice.payment_term.try(:name) %></option>
+            </select>
+          </div>
+          <div class="form-group" id="positionGroup">
+            <label>Department</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @invoice.department.try(:name) %></option>
+            </select>
+          </div>
+          <div class="form-group" id="positionGroup">
+            <label>Status</label>
+            <%if @invoice.received == false %>
+              <input id="invoice_amount_due" name="invoice[status]" type="text" class="form-control" value="UNPAID" readonly >
+            <%else%>
+              <input id="invoice_amount_due" name="invoice[status]" type="text" class="form-control" value="PAID" readonly >
+            <%end%>    
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="control-label" for="invoice_message">Customer Message</label>
+            <textarea id="invoice_message" name="invoice[message]" rows="3" class="form-control" readonly ><%= @invoice.try(:message) %></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <a href="<%= admin_invoices_path %>" class="btn btn-success">Back</a>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Invoice Items
+        </header>
+        <table class="table small-data-table data-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Location</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+                <%if @invoice.invoice_items.present?%>
+                  <%@invoice.invoice_items.each do |invoice_item|%>
+                  <tr>
+                    <td><%= invoice_item.item.try(:name)%></td>
+                    <td><%= invoice_item.try(:description)%></td>
+                    <td><%= invoice_item.try(:quantity)%></td>
+                    <td><%= invoice_item.try(:price)%></td>
+                    <td><%= invoice_item.location.try(:name)%></td>
+                    <td>$<%= invoice_item.try(:amount)%></td>
+                  </tr>
+                  <%end%>
+                <%end%>  
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>  

@@ -1,0 +1,58 @@
+<div class="page-head">
+  <h3 class="m-b-less">
+  Bill Request
+  </h3>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <% if flash[:notice] or flash[:error] %>
+          <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <%= flash[:notice] %>
+            <%= flash[:error] %>
+          </div>
+        <% end %>
+
+          <!-- <header class="panel-heading head-border">
+          Current Organization Invoices
+          </header> -->
+          <table class="table colvis-data-table data-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Organization</th>
+                <th>Vendor Name</th>
+                <th>Bill Number</th>
+                <th>Bill Date</th>
+                <th>Due Date</th>
+                <th>Due Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% @bills.each do |bill| %>
+              <tr>
+                <td><%= bill.creator.full_name %></td>
+                <td><%= bill.organization.name %></td>
+                <td><%= bill.vendor.name %></td>
+                <td>
+                  <% if bill.deleted_at %>
+                  VOIDED (<%= link_to "RESTORE", restore_bill_path(bill) %>)
+                  <% else %>
+                  <%= bill.bill_number %> (<%= link_to "SHOW", admins_bill_pay_request_path(bill) %>)
+                  <% end %>
+                </td>
+                <td><%= bill.try(:bill_date).strftime("%d %B %Y") %> </td>
+                <td><%= bill.try(:due_date).strftime("%d %B %Y") %> </td>
+                <td><%= bill.try(:due_amount)%> </td>
+              </tr>
+              <%end%>
+            </tbody>
+          </table>
+      </section>
+    </div>
+  </div>
+</div>

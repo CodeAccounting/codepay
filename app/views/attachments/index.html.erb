@@ -1,0 +1,95 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+    Upload Documents
+  </h3>
+</div>
+<!-- page head end--> 
+<!--body wrapper start-->
+<div class="wrapper"> 
+    <%if flash[:error] %>
+        <div class="alert alert-danger">
+          <ul>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <li><%= flash[:error] %></li>
+          </ul>
+        </div>
+    <% end %>
+  <div class="row"> 
+    <div class="col-sm-12">
+      <div class="form-group">
+        <form id="attachment_form" method="post" enctype="multipart/form-data">
+          <section class="panel">
+            <header class="panel-heading">
+              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+              <span class="tools pull-right">
+                <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+                <a class="t-close fa fa-times" href="javascript:;"></a>
+              </span>
+              <label>Please Choose / Drag and Drop Files Here</label>
+              <input id="user_idetity" type="file" class="form-control" name="document[attachment][]" multiple="multiple" style="width:330px; height:100px;"> 
+              <button id="Save_attachment" class="attachment_button btn btn-success"  style="margin-top: 10px;" >Save Attachment</button>
+            </header>
+            <table class="table colvis-data-table data-table">
+              <thead>
+               <button id="Delete_attachment" class="attachment_button btn btn-danger"  style="margin-top: 20px; margin-left: 15px; width: 130px;">Delete Documents</button>
+                <tr>
+                  <th>Select To Delete</th>
+                  <th>Thumbnail </th>
+                  <th>Select Attachment To Create Bill/Invoice</th>
+                  <th>Click to View Attachment</th>
+                  <th>Attachment Type</th>
+                  <th>Attachment File Size </th>
+                  <th>Created At</th> 
+                </tr>
+              </thead>
+              <tbody>
+                <% @attachments.each do |attachment| %>
+                  <tr>
+                    <td>
+                      <input type="checkbox" value="<%= attachment.id%>"  name="attachment[attachment_ids][]" > <label for="debugInfo">Delete</label>
+                    </td>
+                    <td><img src="<%= attachment.attachment.url(:thumb)%>"></td>
+                    <td>
+                      <%= link_to 'Create Bill', new_bill_path(:attachment_id =>attachment)%> / <%= link_to 'Create Invoice', new_invoice_path(:attachment_id =>attachment)%>
+                    </td>
+                    <td>
+                      <%= link_to attachment.attachment_file_name, attachment.attachment.url, target: '_new' %>
+                    </td>
+                      <td>
+                      <%= attachment.attachment_content_type %>
+                    </td>
+                    <td>
+                      <%= number_to_human_size(attachment.attachment_file_size) %>
+                    </td>
+                    <td>
+                      <%= attachment.created_at.strftime("%d %B %Y") %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </section>  
+        </form>       
+      </div>
+    </div>
+  </div> 
+</div>
+
+<!--body wrapper end-->
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $('.attachment_button').click( function(event) {
+      event.preventDefault();
+        id = $(this).attr('id')
+        if(id=="Save_attachment") {
+          $('#attachment_form').attr('action', '<%=attachments_path%>')
+        } else if(id=="Delete_attachment") {
+          $('#attachment_form').attr('action', '<%=attachment_delete_files_path %>')
+        }
+        $('#attachment_form').submit();
+
+    });
+
+  </script>
+<% end %>

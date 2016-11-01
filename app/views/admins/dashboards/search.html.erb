@@ -1,0 +1,62 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Search Information for keywords: <%= params[:keywords] %>
+  </h3>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+      <!-- <header class="panel-heading head-border">
+          Invoice Attachment 
+        </header> -->
+        <table class="table colvis-data-table data-table">
+          <thead>
+            <tr>
+              <th>
+                Name
+              </th>
+              <th>
+                Type
+              </th>
+              <th>
+                Email
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @results.each do |result| %>
+            <tr>
+              <% if result.class.to_s.eql?("User") %>
+                <td>
+                  <%= link_to result.full_name, admins_user_path(result.id)%>
+                </td>
+                <td>
+                  User
+                </td>
+                <td>
+                  <%= result.email%>
+                </td>
+              <%else%>
+                <td>
+                  <%= link_to result.name, admins_organization_path(result.id)%>
+                </td>
+                <td>
+                  Organization
+                </td>
+                <td>
+                  --
+                </td>
+              <%end%>    
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>
+<!--body wrapper end

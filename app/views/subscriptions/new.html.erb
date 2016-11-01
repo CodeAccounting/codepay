@@ -1,0 +1,46 @@
+<div class="page-head">
+  <h3 class="m-b-less">
+  Subscription
+  </h3>
+</div>
+<%if flash[:notice]%>
+  <div class="alert alert-success fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <%= flash[:notice] %>
+  </div>
+<%end%>  
+
+<% if !current_user.subscription.present? %>
+  <div class="wrapper">
+  	<div class="row state-overview">	
+	  <div class="col-lg-3 col-sm-6">
+		<section class="panel purple"> 
+		  <%= render "pro_plan" %>
+		</section>  	
+      </div>
+      <div class="col-lg-3 col-sm-6">
+		<section class="panel purple"> 
+		  <%= render "silver_plan" %>
+		</section>  	
+      </div>
+      <div class="col-lg-3 col-sm-6">
+		<section class="panel purple"> 
+		  <%= render "gold_plan" %>
+		</section>  	
+      </div>
+	</div>
+  </div>
+  		
+<% elsif current_user.subscription.present?%>
+
+	<% if current_user.subscription.status == "trialing"%>
+		<%= render "trialing_period" %>
+	<%end%>	
+	<% if current_user.subscription.status == "active" %>		  	
+		<%= render "active_period" %>
+	<%end%>
+	<% if current_user.subscription.status == "canceled" %>		  	
+		<%= render "canceled" %>
+	<%end%>
+
+<%end%>

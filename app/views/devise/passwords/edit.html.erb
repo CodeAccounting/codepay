@@ -1,0 +1,40 @@
+<div class="login-body">
+
+  <div class="login-logo">
+      <a href="#top_section" id="logo"><%= image_tag "landing/logo.png", retna: true, alt: "logo" %></a>
+  </div>
+
+  <h2 class="form-heading">
+    <%= flash[:alert].present? ? raw("<font color='red'> #{flash[:alert]} </font>") : "CHANGE YOUR PASSWORD" %>
+  </h2>
+  <div class="container log-row" style="min-height: 300px;">
+
+    <form class="new_user form-signin" id="new_user" action="/users/password" accept-charset="UTF-8" method="post">
+      <% if flash[:errors].present? %>
+        <ul class="well">
+          <% flash[:errors].each do |er| %>
+            <li><%= er %></li>
+          <% end %>
+        </ul>
+      <% end %>
+      <input name="utf8" type="hidden" value="✓">
+      <input type="hidden" name="_method" value="put">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+      <input type="hidden" value="<%= params[:reset_password_token] %>" name="user[reset_password_token]" id="user_reset_password_token">
+
+       <div class="login-wrap">
+
+        <label for="user_email">New Password</label> <em style="color: red;">(6 characters minimum)</em>
+        <input class="form-control" autofocus="autofocus" autocomplete="off" type="password" name="user[password]" id="user_password" >
+
+        <label for="user_email">Confirm New Password</label>
+        <input class="form-control" autocomplete="off" type="password" name="user[password_confirmation]" id="user_password_confirmation">
+
+        <button id="user-login-button" class="btn btn-lg btn-success btn-block" type="submit">
+          CHANGE MY PASSWORD
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

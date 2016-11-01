@@ -1,0 +1,76 @@
+  <!-- page head start-->
+  <div class="page-head">
+    <h3 class="m-b-less">
+      Customer Information
+    </h3>
+    <div class="state-information">
+      <ol class="breadcrumb m-b-less bg-less">
+        <li class="active"><a href="#">All Active Customers</a></li>
+        <li><a href="#">Active and Archived</a></li>
+      </ol>
+    </div>
+  </div>
+  <!-- page head end-->
+
+  <!--body wrapper start-->
+  <div class="wrapper">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <section class="panel">
+          <header class="panel-heading ">
+            Customer Data Table
+            <span class="tools pull-right">
+              <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+              <a class="t-close fa fa-times" href="javascript:;"></a>
+            </span>
+            <br/><br/>
+              <a class="btn btn-default btn-success btn-lg" href="<%= new_customer_path %>">
+                <span>Create Customer</span>
+              </a>
+            <br/><br/>
+            <div class="DTTT btn-group">
+              <!-- <a class="btn btn-default DTTT_button_copy" href="<%= new_customer_path %>">
+                <span>Create</span>
+              </a> -->
+              <a class="btn btn-default DTTT_button_csv" id="ToolTables_DataTables_Table_0_1" tabindex="0" href="<%= customers_path(format: :csv) %>" aria-controls="DataTables_Table_0">
+                <span>CSV</span>
+              </a>
+              <a href="<%= customers_path(format: :xls) %>" class="btn btn-default DTTT_button_xls" id="ToolTables_DataTables_Table_0_2" tabindex="0" aria-controls="DataTables_Table_0">
+                <span>Excel</span>
+              </a>
+              <a target="_blank" href="<%= customers_path(format: :pdf) %>" class="btn btn-default DTTT_button_pdf" id="ToolTables_DataTables_Table_0_3" tabindex="0" aria-controls="DataTables_Table_0">
+                <span>PDF / PRINT</span>
+              </a>
+            </div>
+          </header>
+          <table class="table customer-data-table data-table">
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <td>Account Number</td>
+                <td>Primary Contact</td>
+                <td>Description</td>
+                <td>Payment Terms</td>
+                <td>Billing Address</td>
+                <td>Shipping Address</td>
+              </tr>
+            </thead>
+            <tbody>
+              <% @customers.each do |customer| %>
+                <tr>
+                  <td><%= link_to customer.name, customer_path(customer) %></td>
+                  <td><%= customer.try(:account_number) %></td>
+                  <td><%= customer.primary_contact.try(:email) %></td>
+                  <td><%= customer.try(:description) %></td>
+                  <td><%= customer.try(:payment_terms) %></td>
+                  <td><%= customer.billing_address.try(:full) %></td>
+                  <td><%= customer.shipping_address.try(:full) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </div>
+  </div>

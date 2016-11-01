@@ -1,0 +1,82 @@
+<div class="login-body">
+
+  <div class="login-logo">
+      <a href="#top_section" id="logo"><%= image_tag "landing/logo.png", retna: true, alt: "logo" %></a>
+  </div>
+
+  <h2 class="form-heading">
+    <%= flash[:alert].present? ? raw("<font color='red'> #{flash[:alert]} </font>") : "LOGIN" %>
+  </h2>
+  <div class="container log-row">
+
+    <form id="user-login-form" class="new_user form-signin" action="/users/sign_in" accept-charset="UTF-8" method="post" >
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+      <div class="login-wrap">
+        <label for="user_email">Email</label>
+        <input type="text" class="form-control" id="user_email" name="user[email]" placeholder="Email" autofocus required>
+
+        <label for="user_password">Password</label>
+        <input type="password" class="form-control" id="user_password" name="user[password]" placeholder="Password" required>
+
+        <button id="user-login-button" class="btn btn-lg btn-success btn-block" type="submit">
+          LOGIN
+        </button>
+        
+        <div class="login-social-link">
+          <a href="index.html" class="facebook">
+            Facebook
+          </a>
+          <a href="index.html" class="twitter">
+            Twitter
+          </a>
+        </div>
+        <label class="checkbox-custom check-success">
+          <input name="user[remember_me]" type="hidden" value="0">
+          <input name="user[remember_me]" type="checkbox" value="1" id="remember-me"> <label for="remember-me">Remember me</label>
+          <a class="pull-right" data-toggle="modal" href="#forgotPass"> Forgot Password?</a>
+        </label>
+
+        <div class="registration">
+          Don't have an account yet?
+          <a href="/users/sign_up">
+            Create an account
+          </a>
+        </div>
+
+      </div>
+    </form>
+
+      <!-- Modal -->
+      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="forgotPass" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Forgot Password ?</h4>
+            </div>
+            <form action="/users/password" method="post">
+              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+              <div class="modal-body">
+                <p>Enter your e-mail address below to reset your password.</p>
+                <input type="text" name="user[email]" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
+
+              </div>
+              <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+                <button class="btn btn-success" type="submit">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- modal -->
+  </div>
+</div>
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $('#user-login-form').on('submit', function () {
+        $('#user-login-button').html('Processing...');
+        $('#user-login-button').prop('disabled', true);
+    });
+  </script>
+<% end %>

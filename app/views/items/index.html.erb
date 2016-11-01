@@ -1,0 +1,76 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Items
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class = "wrapper">
+  <div class = "panel">
+  	<div class ="row"> 
+      <div class="col-sm-12">
+        <header class="panel-heading head-border">
+          Invoice Items
+        </header>
+        <div class="panel-body">
+          <div>
+        		<table class="table colvis-data-table data-table">
+              <thead>
+                <tr>
+                  <th>Show Item</th>
+                  <th>Name</th>
+                  <th>Delete Item</th>
+                </tr>
+              </thead>
+              <tbody>
+                <%@invoice_items.each do |invoice_item|%>
+                <tr>
+                  <td><%=link_to 'show', item_path(invoice_item)%></td>
+                  <td><%=invoice_item.name%></td>
+                  <td><%=link_to 'delete', remove_item_path(invoice_item)%></td>
+                </tr>
+                <%end%>
+              </tbody>
+            </table>
+          </div>
+        </div>
+  	  </div>
+    </div>
+  </div>
+
+  <div class = "panel">
+    <div class ="row"> 
+      <div class="col-sm-12">
+        <header class="panel-heading head-border">
+          Bill Items
+        </header>
+        <div class="panel-body">
+          <div>
+            <table class="table colvis-data-table data-table">
+              <thead>
+                <tr>
+                  <th>Show Item</th>
+                  <th>Name</th>
+                  <th>Delete Item</th>
+                </tr>
+              </thead>
+              <tbody>
+                <%@bill_items.each do |bill_item|%>
+                <tr>
+                  <td><%=link_to 'show',item_path(bill_item)%></td>
+                  <td><%=bill_item.name%></td>
+                  <td><%=link_to 'delete', remove_item_path(bill_item)%></td>
+                </tr>
+                <%end%>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>  
+<!--body wrapper send-->

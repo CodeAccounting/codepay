@@ -1,0 +1,402 @@
+<!-- header section start-->
+<div class="header-section">
+  <!--logo and logo icon start-->
+  <div class="logo dark-logo-bg hidden-xs hidden-sm">
+    <%= image_tag("landing/logo.png") %>
+  </div>
+  <div class="icon-logo dark-logo-bg hidden-xs hidden-sm">
+    <a href="index.html">
+      <%= image_tag("logo-icon.png") %>
+      <!--<i class="fa fa-maxcdn"></i>-->
+    </a>
+  </div>
+  <!--logo and logo icon end-->
+  <!--toggle button start-->
+  <a class="toggle-btn"><i class="fa fa-outdent"></i></a>
+  <!--toggle button end-->
+  <div class="notification-wrap">
+    <!--left notification start-->
+    <div class="left-notification">
+      <ul class="notification-menu">
+        <li>
+          <form class="search-content" action="<%= search_path %>" method="get">
+            <input type="text" class="form-control" name="keywords" placeholder="Search..." value="<%= params[:keywords] %>">
+          </form>
+        </li>
+      </ul>
+    </div>
+    <!--left notification end-->
+    <!--right notification start-->
+    <div class="right-notification">
+      <ul class="notification-menu">
+        <li>
+          <!-- <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Dropdown <b class="caret"></b></a>
+            <ul class="dropdown-menu" id="menu1">
+              <li>
+                  <a href="#">2-level Menu <i class="icon-arrow-right"></i></a>
+                  <ul class="dropdown-menu sub-menu">
+                      <li><a href="#">Action</a></li>
+                      <li><a href="#">Another action</a></li>
+                      <li><a href="#">Something else here</a></li>
+                      <li class="divider"></li>
+                      <li class="nav-header">Nav header</li>
+                      <li><a href="#">Separated link</a></li>
+                      <li><a href="#">One more separated link</a></li>
+                  </ul>
+              </li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </li> -->
+          <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-cog" style="margin-right:5px;"></i><span>Settings</span>
+            <span class=" fa fa-angle-down"></span>
+          </a>
+
+          <ul class="dropdown-menu mega-dropdown-menu row pull-right">
+            <h3 class="dropdown" style="margin:0; margin-bottom:-3%; min-width:30px">
+              
+              <a href="javascript:;" style="margin-left:1%;" >
+              <%= current_user.full_name.capitalize %>
+              </a>
+
+              <a class="org_hover" href="javascript:;" style="margin-left:54%;" ><span><%= current_organization.name %></span>
+              </a>
+
+              <!-- <ul class="dropdown-menu sub-menu pull-left">
+                  <% current_user.all_organizations.where("organizations.id is not ?",nil).uniq.each do |org| %>
+                    <li>
+                      <a href="/users/<%= org.id %>/change_user_organization" >
+                      <a href="<%= change_organization_path(org) %>" >
+                        <% if current_user.current_organization_id == org.id %>
+                          <i class="fa fa-check pull-right"></i>
+                        <% end %>
+                        <%= org.name %>
+                      </a>
+                      </li>
+                  <% end %>
+                </ul> -->
+            </h3>
+
+            <li class="col-sm-3 pull-right" >
+              <ul>
+                <li class="dropdown-header">Organization</li>
+                <li>
+                  <a href="<%= new_organization_path %>" >
+                  <span>Add New</span>
+                  </a>
+                </li>
+                <li>
+                  <a id="org_change" href="javascript:;" >
+                  <span>Change Organization</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="<%= organizations_path %>" >
+                  <span>Manage Organization</span>
+                  </a>
+                </li>
+                <li style="display: block; margin-top:10px;">
+                  <a data-logout href="#">
+                  <i class="fa fa-sign-out"></i> Log Out
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="col-sm-3 pull-right">
+              <ul>
+                <li class="dropdown-header">Tools</li>
+                <li>
+                  <a href="<%= support_index_path%>">
+                  <span>Help</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="<%= audits_path%>">
+                  <span>Audit Logs</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:;" onclick="show_hide_calc();">
+                  <span>Calculator</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="col-sm-3 pull-right" style="float:right;">
+              <ul>
+                <li class="dropdown-header">Lists</li>
+                <li>
+                  <a href="<%= attachments_path %>" >
+                  <span>Attachments</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="<%= chart_of_accounts_path %>" >
+                  <span>Chart Of Accounts</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="<%= items_path %>" >
+                  <span>Invoice & Bill Items</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="col-sm-3 pull-right" style="float:right;">
+              <ul>
+                <li class="dropdown-header">User</li>
+                <li>
+                  <a href="<%= edit_profile_path(current_user) %>" >
+                  <span>Profile</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="<%= organization_users_path %>" >
+                  <span>Organization Users</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="<%= new_subscription_path %>" >
+                  <span>Billing and Subscription</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <!-- <ul class="dropdown-menu dropdown-usermenu purple pull-right">
+         
+              <li class="dropdown dropdown-submenu">
+                <a href="javascript:;">
+                  <i class="fa fa-certificate pull-right"></i>
+                  <%= current_organization.name %>
+                </a> -->
+
+                <!-- <ul class="dropdown-menu sub-menu pull-left">
+                  <% current_user.all_organizations.where("organizations.id is not ?",nil).uniq.each do |org| %>
+                    <li> -->
+                      <!-- <a href="/users/<%= org.id %>/change_user_organization" > -->
+            <!--           <a href="<%= change_organization_path(org) %>" >
+                        <% if current_user.current_organization_id == org.id %>
+                          <i class="fa fa-check pull-right"></i>
+                        <% end %>
+                        <%= org.name %>
+                      </a>
+                      </li>
+                  <% end %>
+                </ul>
+              </li>
+          
+            <li>
+              <%= link_to user_path(current_user) do %>
+                <i class="fa fa-user pull-right"></i> Profile
+              <% end %>
+            <li class="dropdown dropdown-submenu">
+              <a href="<%= edit_profile_path(current_user) %>">
+                <i class="fa fa-wrench pull-right"></i>
+                <span>Settings</span>
+              </a>
+
+                <ul class="dropdown-menu sub-menu pull-left">
+                    <li>
+                      <a href="<%= edit_profile_path(current_user) %>" >
+                      <span>User Profile</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="<%= new_organization_path %>" >
+                      <span>Create New Organization</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="<%= organization_users_path %>" >
+                      <span>Manage Organization Users</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="<%= organizations_path %>" >
+                      <span>Manage Organization</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="<%= chart_of_accounts_path %>" >
+                      <span>Chart Of Accounts</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="<%= items_path %>" >
+                      <span>Invoice & Bill Items</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="<%= attachments_path %>" >
+                      <span>Attachments</span>
+                      </a>
+                    </li
+                    <li>
+                      <a href="<%= new_subscription_path %>" >
+                      <span>Billing and Subscription</span>
+                      </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+              <a href="<%= support_index_path%>">
+                <span class="fa fa-life-ring pull-right"></span>
+                Help
+              </a>
+            </li>
+            <li >
+              <a data-logout href="#">
+                <i class="fa fa-sign-out pull-right"></i> Log Out
+              </a>
+            </li>
+          </ul>
+        </li> -->
+        <!-- <li>
+          <div class="sb-toggle-right">
+            <i class="fa fa-comments"></i>
+          </div>
+        </li> -->
+        </li>
+      </ul>
+    </div>
+    <!--right notification end-->
+  </div>
+</div>
+<!-- header section end-->
+
+<style type="text/css">
+
+.dropdown-menu .sub-menu {
+    left: auto;
+    right: 100%;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    margin-top: -1px;
+}
+
+/*.dropdown-menu li:hover .sub-menu {
+    visibility: visible;
+}*/
+
+.dropdown-menu h3:hover .sub-menu {
+    visibility: visible;
+}
+
+/*.org_hover span:hover .sub-menu{
+  visibility: visible;
+}*/
+
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+
+.mega-dropdown {
+  position: static !important;
+  width:100%;
+}
+
+.mega-dropdown-menu {
+  padding: 20px 0px;
+  width: 700%;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.mega-dropdown-menu:before {
+  content: "";
+  border-bottom: 15px solid #fff;
+  border-right: 17px solid transparent;
+  border-left: 17px solid transparent;
+  position: absolute;
+  top: -15px;
+  right: 50px;
+  z-index: 10;
+}
+
+.mega-dropdown-menu:after {
+  content: "";
+  border-bottom: 17px solid #ccc;
+  border-right: 19px solid transparent;
+  border-left: 19px solid transparent;
+  position: absolute;
+  top: -17px;
+  right: 48px;
+  z-index: 8;
+}
+
+.mega-dropdown-menu > li > ul {
+  padding: 0;
+  margin: 0;
+}
+
+.mega-dropdown-menu > li {
+  float:right;
+}
+
+.mega-dropdown-menu > li > ul > li {
+  list-style: none;
+}
+
+.mega-dropdown-menu > li > ul > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.428571429;
+  color: #999;
+  white-space: normal;
+}
+
+.mega-dropdown-menu > li ul > li > a:hover,
+.mega-dropdown-menu > li ul > li > a:focus {
+  text-decoration: none;
+  color: #444;
+  background-color: #f5f5f5;
+}
+
+.mega-dropdown-menu .dropdown-header {
+  color: #428bca;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.mega-dropdown-menu form {
+  margin: 3px 20px;
+}
+
+.notification-menu .dropdown-menu{
+
+}
+
+.notification-menu .dropdown-menu li {
+  display: block;
+  padding:10px;
+}
+
+.right-notification .notification-menu li li a{
+  padding:0px;
+}
+
+.right-notification .notification-menu li a i{
+  position:inherit;
+}
+</style>
+
+<!-- <script type="text/javascript">
+  
+  function show_org_submenu(){
+    $(".sub-menu").css("visibility","visible");
+  } 
+
+  function hide_org_submenu(){
+    $(".sub-menu").css("visibility","hidden");
+  }
+</script> -->

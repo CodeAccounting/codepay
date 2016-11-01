@@ -1,0 +1,31 @@
+<!--body wrapper start-->
+<%if current_user.try(:subscription).try(:status).eql?("trialing")%>
+    <%= render "trial_notification"%>
+<%end%>
+    
+<% if flash[:error] %>
+  <div class="alert alert-danger fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <%= flash[:error] %>
+  </div>
+<% elsif flash[:notice] %>
+  <div class="alert alert-success fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+<div class="wrapper">
+  <%= render "overview" %>
+  <div class="row">
+    <div class="row">
+      <div class="col-md-6">
+        <%= render "news" %>
+      </div>
+      <div class="col-md-6" >
+        <%= render "todo_list" %>
+      </div>
+    </div>
+  </div>
+</div>
+<!--body wrapper end-->

@@ -1,0 +1,63 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Invoice Reminder Information
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li class="active"><a href="#">All Active Invoices</a></li>
+      <li><a href="#">Active and Archived</a></li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading ">
+          Invoice Reminder Data Table
+          <span class="tools pull-right">
+            <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+            <a class="t-close fa fa-times" href="javascript:;"></a>
+          </span>
+          <br/><br/>
+          <div class="DTTT btn-group">
+            <a class="btn btn-default DTTT_button_copy" href="<%= new_invoice_reminder_path %>">
+              <span>New Reminder</span>
+            </a>
+            <a class="btn btn-default DTTT_button_csv" id="ToolTables_DataTables_Table_0_1" tabindex="0" href="<%= invoice_reminders_path(format: :csv) %>" aria-controls="DataTables_Table_0">
+              <span>CSV</span>
+            </a>
+            <a href="<%= invoice_reminders_path(format: :xls) %>" class="btn btn-default DTTT_button_xls" id="ToolTables_DataTables_Table_0_2" tabindex="0" aria-controls="DataTables_Table_0">
+              <span>Excel</span>
+            </a>
+            <a target="_blank" href="<%= invoice_reminders_path(format: :pdf) %>" class="btn btn-default DTTT_button_pdf" id="ToolTables_DataTables_Table_0_3" tabindex="0" aria-controls="DataTables_Table_0">
+              <span>PDF / PRINT</span>
+            </a>
+          </div>
+        </header>
+        <table class="table colvis-data-table data-table">
+          <thead>
+            <tr>
+              <th>Sent To</th>
+              <th>Sent At</th>
+              <th>Invoice Id</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% current_user.sent_invoice_reminders.each do |reminder| %>
+            <tr>
+              <td><%= reminder.sent_to %></td>
+              <td><%= reminder.sent_at.strftime("%l:%M%p [ %d %B %Y ]") %></td>
+              <td><%= reminder.invoice_id %> </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>
+<!--body wrapper end-->

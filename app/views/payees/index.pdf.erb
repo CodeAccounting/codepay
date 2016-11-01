@@ -1,0 +1,52 @@
+<% content_for :header_title do %>
+  <b>Payees Information</b>
+<% end %>
+
+<table class="table colvis-data-table data-table">
+  <thead>
+    <tr>
+      <th>
+        Payee Name
+      </th>
+      <th>
+        Account Number
+      </th>
+      <th>
+        Primary Contact
+      </th>
+      <th>
+        Description
+      </th>
+      <th>
+        Created at
+      </th>
+      <th>
+        Updated at
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @payees.each do |payee| %>
+      <tr>
+        <td>
+          <%= payee.name %>
+        </td>
+        <td>
+          <%= payee.account_number %>
+        </td>
+        <td>
+          <%= payee.primary_contact.email %>
+        </td>
+        <td>
+          <%= payee.description %>
+        </td>
+        <td>
+          <%= payee.created_at.strftime("%d %B %Y") %>
+        </td>
+        <td>
+          <%= payee.updated_at.strftime("%d %B %Y") %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

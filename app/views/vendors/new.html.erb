@@ -1,0 +1,208 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Vendor Information
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li><a href="#">Money In</a></li>
+      <li><%= link_to "Vendors", vendors_path %></li>
+      <li class="active">Create Vendor</li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      Create A Vendor
+    </header>
+    <% if flash[:errors] %>
+    <div class="alert alert-danger">
+      <ul>
+        <% flash[:errors].each do |er| %>
+        <li><%= er %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <form id="vendor-form" action="<%= vendors_path %>" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="vendor_name">Name</label>
+              <input id="vendor_name" name="vendor[name]" type="text" class="form-control" placeholder="Name" value="<%= @vendor.name %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_account_number">Account Number</label>
+              <input id="vendor_account_number" name="vendor[account_number]" type="text" class="form-control"  placeholder="0001" value="<%= @vendor.account_number %>">
+            </div>
+            <div class="form-group">
+              <label for="vendor_contact">Contact</label>
+              <select id="vendor_contact" name="vendor[contact_id]" class="form-control">
+
+                <option value=""></option>
+                <option value="NEW">Create New...</option>
+                <% current_organization.contacts.all.each do |contact| %>
+                <option value="<%= contact.id %>"
+                  <%= @vendor.primary_contact == contact ? "selected": "" %>
+                ><%= contact.full_name %></option>
+                <% end %> 
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_parent_vendor_id">Sub vendor of</label>
+              <select id="vendor_parent_vendor_id" name="vendor[parent_vendor_id]" class="form-control">
+                <option value=""></option>
+                <% current_organization.vendors.all.each do |vendor| %>
+                <option value="<%= vendor.id %>"
+                  <%= @vendor.parent_vendor_id == vendor.id ? "selected": "" %>
+                ><%= vendor.name %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_description">Description</label>
+              <textarea id="vendor_description" name="vendor[description]" type="text" class="form-control" rows="3" placeholder="Enter a description..."><%= @vendor.description %></textarea>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_address1">Billing Address</label>
+              <input id="vendor_billing_address1" name="vendor[billing_address_attributes][address1]" class="form-control" placeholder="Street 1" value="<%= @billing_address.address1 %>">
+            </div>
+            <div class="form-group">
+              <input id="vendor_billing_address2" name="vendor[billing_address_attributes][address2]" class="form-control" placeholder="Street 2" value="<%= @billing_address.address2 %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_city">City</label>
+              <input id="vendor_billing_city" name="vendor[billing_address_attributes][city]" class="form-control"value="<%= @billing_address.city %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_state">State</label>
+              <input id="vendor_billing_state" name="vendor[billing_address_attributes][state]" class="form-control" value="<%= @billing_address.state %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_zip">Zip</label>
+              <input id="vendor_billing_zip" name="vendor[billing_address_attributes][zip]" class="form-control" value="<%= @billing_address.zip %>">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_address1">Shipping Address</label>
+              <input id="vendor_shipping_address1" name="vendor[shipping_address_attributes][address1]" class="form-control" placeholder="Street 1" ></input>
+            </div>
+            <div class="form-group">
+              <input id="vendor_shipping_address2" name="vendor[shipping_address_attributes][address2]" class="form-control" placeholder="Street 2"></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_city">City</label>
+              <input id="vendor_shipping_city" name="vendor[shipping_address_attributes][city]" class="form-control"></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_state">State</label>
+              <input id="vendor_shipping_state" name="vendor[shipping_address_attributes][state]" class="form-control"></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_zip">Zip</label>
+              <input id="vendor_shipping_zip" name="vendor[shipping_address_attributes][zip]" class="form-control"></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_note" >Note(Optional:)</label>
+              <textarea id="vendor_note" name="vendor[vendor_note]" rows="3" class="form-control" placeholder="add a note ..." ></textarea>
+            </div>
+          </div>
+        </div> 
+        <div class="row">
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-success">Save and New</button>
+            <button type="button" class="btn btn-danger" onclick="clearEnteries('vendor-form')">Clear Entries</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- page end-->
+</div>
+<!--body wrapper end-->
+<!-- Modal -->
+<div class="modal fade" id="new-contact-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create Contact</h4>
+      </div>
+      <form id="contact-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="contact_first_name">First Name</label>
+            <input type="text" name="contact[first_name]" id="contact_first_name" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="contact_last_name">Last Name</label>
+            <input type="text" name="contact[last_name]" id="contact_last_name" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="contact_email">Email</label>
+            <input type="email" name="contact[email]" id="contact_email" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="contact_phone">Phone</label>
+            <input type="phone" name="contact[phone]" id="contact_phone" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="contact_fax">Fax</label>
+            <input type="phone" name="contact[fax]" id="contact_fax" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="save-contact">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<% content_for :scripts do %>
+  <script>
+    function addContactToList(contact) {
+      var contactOption = $('<option value="' + contact.id + '" selected>');
+      contactOption.text(contact.first_name + " " + contact.last_name);
+      $('#vendor_contact').prepend(contactOption);
+    }
+
+    $(function () {
+      $('#contact-form').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+          url: "/contacts",
+          type: "POST",
+          data: $(e.currentTarget).serialize(),
+          success: function (contact) {
+            addContactToList(contact);
+            $('#new-contact-modal').modal('hide');
+            location.reload();
+          },
+          error: function (resp) {
+            var errorDiv = $('<div class="alert alert-danger">');
+            errorDiv.text(resp.responseJSON[0]);
+            $('#vendor-form').prepend(errorDiv);
+          },
+        });
+      });
+      $('#vendor_contact').on('change', function (event) {
+        if(event.currentTarget.value === "NEW") {
+          $('#new-contact-modal').modal('show');
+          event.currentTarget.value = "";
+
+        }
+      });
+    });
+  </script>
+<% end %>

@@ -1,0 +1,115 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+    Invoice Payment Detail
+  </h3>
+</div>
+<!-- page head end-->
+
+
+<div class="wrapper">
+  <div class="panel">
+      <div class="row">
+        <% if flash[:errors] %>
+        <div class="alert alert-danger">
+          <ul>
+            <% flash[:errors].each do |er| %>
+            <li><%= er %></li>
+            <% end %>
+          </ul>
+        </div>
+        <% end %>
+        <header class="panel-heading head-border">
+          Showing An Invoice Payment Detail
+        </header>
+          <div class="panel-body">
+            <div>  
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label" for="invoice_payment_date">Date</label>
+                    <input id="bill_record_date" name="invoice_payment[date]" class="form-control" value= "<%= @invoice_payment.date.strftime("%d-%B-%Y")%>" readonly>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="invoice_payment_method">Payment Method </label>
+                  <input id="payment_method" name="invoice_payment[payment_method]" class="form-control" type="text" value= "<%= @invoice_payment.payment_method%>" readonly >
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="incoice_payment_account">Payment Account</label>
+                  <input id="payment_account" name="invoice_payment[payment_account]" class="form-control" type="text" value= "<%= @invoice_payment.payment_account%>" readonly >
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="invoice_reference">Reference </label>
+                  <input id="reference" name="invoice_payment[reference]" type="text" class="form-control" value= "<%= @invoice_payment.reference%>" readonly >
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="invoice_payment_amount">Payment Amount</label>
+                  <input id="payment_amount" name="invoice_payment[payment_amount]" class="form-control" type="text" value= "$<%= @invoice_payment.payment_amount%>" readonly >
+                </div>
+              <div class="form-group">
+                  <% if params[:customer_id].present? %>
+                    <a href="<%= customer_path(params[:customer_id]) %>" class="btn btn-success">Back</a>
+                  <%else%>    
+                    <a href="<%= invoice_payments_path %>" class="btn btn-success">Back</a>
+                  <%end%>  
+                </div>  
+              </div>
+              <div class="row">    
+                <div class="col-md-3">    
+                <div class="form-group">
+                  <label class="control-label" for="hideEasing">Message</label>
+                   <textarea id="message" name="invoice_payment[message]" class="form-control" readonly ><%= @invoice_payment.message%></textarea>
+                </div>
+                </div>
+              </div>  
+            </div>
+          </div>
+      </div>
+  </div>
+   <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Invoices 
+        </header>
+        <table class="table small-data-table data-table">
+          <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Invoice Number</th>
+                <th>Invoice Date</th>
+                <th>Due Date</th>
+                <th>Due Amount</th>
+                <th>Message</th>
+                <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%@invoice_payment.invoices.each do |invoice|%>
+              <tr>
+                <td><%= link_to invoice.customer.name.capitalize, customer_path(invoice.customer) %>
+                </td>
+                <td>
+                  <% if invoice.deleted_at %>
+                  VOIDED (<%= link_to "RESTORE", restore_invoice_path(invoice) %>)
+                  <% else %>
+                  <%= invoice.invoice_number %> (<%= link_to "SHOW", invoice_path(invoice) %>)
+                  <% end %>
+                </td>
+                <td><%= invoice.invoice_date.strftime("%d %B %Y") %> </td>
+                <td><%= invoice.due_date.strftime("%d %B %Y") %> </td>
+                <td>$<%= invoice.due_amount %> </td>
+                <td><%= invoice.message %> </td>
+                <% if invoice.received == false%>
+                  <td><b>UNPAID</b></td>
+                <%else%> 
+                  <td><b>PAID</b></td>
+                <%end%>     
+              </tr>
+            <%end%>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>
+

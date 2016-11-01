@@ -1,0 +1,118 @@
+<div class="modal fade" id="new-vendor-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-left:2%;">
+  <div class="modal-dialog" role="document" style="width:75%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create vendor</h4>
+      </div>
+      <div id="vendor-error" class="alert alert-danger"> </div>
+      <form id="vendor-form">
+        <div class="modal-body">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="vendor_name">Name</label>
+              <input id="vendor_name" name="vendor[name]" type="text" class="form-control" >
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="vendor_account_number">Account Number</label>
+              <input id="vendor_account_number" name="vendor[account_number]" type="text" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="vendor_contact">Contact</label>
+              <select id="vendor_contact" name="vendor[contact_id]" class="form-control">
+                <option value=""></option>
+                <option value="NEW">Create New...</option>
+                <% current_organization.contacts.all.each do |contact| %>
+                  <option value="<%= contact.id %>">
+                    <%= contact.full_name %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="vendor_parent_vendorvendor_id">Sub vendor of</label>
+              <select id="vendor_parent_vendor_id" name="vendor[parent_vendor_id]" class="form-control">
+                <option value=""></option>
+                <% current_organization.vendors.all.each do |vendor| %>
+                  <option value="<%= vendor.id %>">
+                    <%= vendor.name %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="vendor_description">Description</label>
+              <textarea id="vendor_description" name="vendor[description]" type="text" class="form-control" rows="3" placeholder="Enter a description..."></textarea>
+            </div>
+          </div> 
+          <!-- Billing Address -->
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_address1">Billing Address</label>
+              <input id="vendor_billing_address1" name="vendor[billing_address_attributes][address1]" class="form-control" placeholder="Street 1">
+            </div>
+
+            <div class="form-group">
+              <input id="vendor_billing_address2" name="vendor[billing_address_attributes][address2]" class="form-control" placeholder="Street 2">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_city">City</label>
+              <input id="vendor_billing_city" name="vendor[billing_address_attributes][city]" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_state">State</label>
+              <input id="vendor_billing_state" name="vendor[billing_address_attributes][state]" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_zip">Zip</label>
+              <input id="vendor_billing_zip" name="vendor[billing_address_attributes][zip]" class="form-control">
+            </div>
+          </div>  
+
+          <!-- Shipping Address -->
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_address1">Shipping Address</label>
+              <input id="vendor_shipping_address1" name="vendor[shipping_address_attributes][address1]" class="form-control" placeholder="Street 1"></input>
+            </div>
+
+            <div class="form-group">
+              <input id="vendor_shipping_address2" name="vendor[shipping_address_attributes][address2]" class="form-control" placeholder="Street 2"></input>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_city">City</label>
+              <input id="vendor_shipping_city" name="vendor[shipping_address_attributes][city]" class="form-control"></input>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_state">State</label>
+              <input id="vendor_shipping_state" name="vendor[shipping_address_attributes][state]" class="form-control"></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_zip">Zip</label>
+              <input id="vendor_shipping_zip" name="vendor[shipping_address_attributes][zip]" class="form-control"></input>
+            </div>
+          </div>    
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="save-contact">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

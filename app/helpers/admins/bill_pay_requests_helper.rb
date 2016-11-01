@@ -1,0 +1,2 @@
+module Admins::BillPayRequestsHelper
+end

@@ -1,0 +1,58 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+      Contact Detail
+  </h3>
+</div>
+<!-- page head end-->
+
+
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel">
+        <header class="panel-heading head-border">
+          Enter Details 
+        </header>
+        <% if flash[:errors] %>
+        <div class="alert alert-danger">
+          <ul>
+            <% flash[:errors].each do |er| %>
+            <li><%= er %></li>
+            <% end %>
+          </ul>
+        </div>
+        <% end %>
+
+        <form id="contact-detail-form" action="" method="post">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <div class="panel-body">
+            <div class="row toastr-row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label" for="contact_name">Name</label>
+                  <input id="coa_name" name="contactDetail[name]" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="contact_number">Contact Number</label>
+                  <input id="coa_number" name="contactDetail[contact_number]" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="contact_email">Email</label>
+                  <input id="coa_type" name="chart_of_accounts[chart_of_account_type]" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="contact_message">Message</label>
+                  <textarea id="contact_message" name="contactDetail[message]" type="text" class="form-control"></textarea>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-success" id="cleartoasts">Send Mail</button>
+              </div>
+            </div>    
+          </div>
+        </form>
+      </div>
+    </div> 
+  </div>  
+</div>

@@ -1,0 +1,56 @@
+  <!-- page head start-->
+       <div class="page-head">
+           <h3 class="m-b-less">
+               Approve Bill/Invoice Request
+           </h3>
+           <!--<span class="sub-title">Welcome to Static Table</span>-->
+       </div>
+       <!-- page head end-->
+
+       <div class="wrapper">
+         <div class="row">
+               <div class="col-sm-12">
+                    <form action="<%= pay_bills_path %>" method="post" >
+                      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                      <section class="panel">
+                       <table class="table colvis-data-table data-table">
+                         <thead>
+                           <tr>
+                               <th>
+                                   Show Details
+                               </th>
+                               <th>
+                                   Bill Id
+                               </th>
+
+                               <th>
+                                   Assigned By
+                               </th>
+                               
+                               <th>
+                                   status
+                               </th>                               
+                           </tr>
+                         </thead>
+                         <tbody>
+                            <% if @bills_for_approval.present? %>
+                               <% @bills_for_approval.each do |approval|%>
+                                  <tr>
+                                    <td><%= link_to 'show', bill_approval_path(approval.bill_id)%></td>
+                                    <td><%= approval.bill_id %></td>
+                                    <td><%= approval.assigner.full_name %></td>
+                                    <td><%= approval.status %></td>
+                                  </tr>
+                                <%end%>    
+                            <%end%>
+                         </tbody>
+                       </table>
+                   </section>
+                  </form>
+               </div>
+           </div>
+
+       </div>
+
+       <!--body wrapper end-->
+

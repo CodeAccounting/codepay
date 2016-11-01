@@ -1,0 +1,150 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Invoice Information
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li class="active"><a href="#">All Active Invoices</a></li>
+      <li><a href="#">Active and Archived</a></li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <% if flash[:notice] or flash[:error] %>
+          <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <%= flash[:notice] %>
+            <%= flash[:error] %>
+          </div>
+        <% end %>
+
+        <form id="invoice-form" action="<%= invoice_reminders_path %>" method="post">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <header class="panel-heading ">
+            <button id="reminder" type="submit" class="btn btn-default btn-success btn-lg">SEND REMINDERS</button>
+            <a class="btn btn-default btn-success btn-lg" href="<%= new_invoice_path %>">
+                <span>Create Invoice</span>
+            </a>
+            <span class="tools pull-right">
+              <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+              <a class="t-close fa fa-times" href="javascript:;"></a>
+            </span>
+
+            <br/><br/>
+            <div class="DTTT btn-group">
+              <% if current_user.created_invoices or current_user.customer %>
+                <button id="copy" type="submit" class="btn btn-default DTTT_button_copy">
+                <span>COPY</span>
+                </button>
+              <% end %>
+              <a class="btn btn-default DTTT_button_csv" tabindex="0" href="<%= invoices_path(format: :csv) %>" aria-controls="DataTables_Table_0">
+                <span>CSV</span>
+              </a>
+              <a class="btn btn-default DTTT_button_xls" tabindex="0" href="<%= invoices_path(format: :xls) %>" aria-controls="DataTables_Table_0">
+                <span>Excel</span>
+              </a>
+              <a target="_blank" class="btn btn-default DTTT_button_pdf" href="<%= invoices_path(format: :pdf) %>" tabindex="0" aria-controls="DataTables_Table_0">
+                <span>PDF / PRINT</span>
+              </a>
+            </div>
+          </header>
+          <table class="table invoice-data-table data-table">
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <th>Invoice Number</th>
+                <th>Invoice Date</th>
+                <th>Due Date</th>
+                <th>Due Amount</th>
+                <th>Payment Terms</th>
+                <th>Location</th>
+                <th>Department</th>
+                <th>Template</th>
+                <th>PO Number</th>
+                <th>Sales REP</th>
+                <th>Message</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @invoices.each do |invoice| %>
+              <tr>
+                <td>
+                  <label class="check-success">
+                    <input type="checkbox" class="copy-check" name="id[<%= "invoice_#{invoice.id}" %>]" value="<%= invoice.id %>" <%= invoice.deleted_at ? "disabled" : "" %>> <label><%= link_to invoice.customer.name.capitalize, customer_path(invoice.customer) %></label>
+                  </label>
+                </td>
+                <td>
+                  <% if invoice.deleted_at %>
+                  VOIDED (<%= link_to "RESTORE", restore_invoice_path(invoice) %>)
+                  <% else %>
+                  <%= invoice.invoice_number %> (<%= link_to "SHOW", invoice_path(invoice) %>)
+                  <% end %>
+                </td>
+                <td><%= invoice.invoice_date.strftime("%d %B %Y") %> </td>
+                <td><%= invoice.due_date.strftime("%d %B %Y") %> </td>
+                <td>$<%= invoice.due_amount %> </td>
+                <td><%= invoice.payment_term.try(:name) %> </td>
+                <td><%= invoice.location.try(:name) %> </td>
+                <td><%= invoice.department.try(:name) %> </td>
+                <td><%= invoice.invoice_template_id %> </td>
+                <td><%= invoice.po_number %> </td>
+                <td><%= invoice.sales_rep %> </td>
+                <td><%= invoice.message %> </td>
+                <% if invoice.approvals.present?%>
+                  <% if invoice.received == false || invoice.received == nil %>
+                    <% if invoice.status_check == "Approved" %>
+                      <td><b>UNPAID/APPROVED</b></td>
+                    <%else%>
+                      <td><b><%= invoice.status_check == "Pending" ? "UNPAID/PENDING" : "CANCELLED" %></b></td>
+                    <%end%>      
+                  <%else%>
+                    <td><b>PAID</b></td>
+                  <%end%>
+                <%else%>
+                  <% if invoice.received == false%>
+                    <td><b>UNPAID</b></td>
+                  <%else%>
+                    <td><b>PAID</b></td>
+                  <%end%>  
+                <%end%>       
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
+<!--body wrapper end-->
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $('#invoice-form').submit( function(event) {
+      event.preventDefault();
+      id = document.activeElement.getAttribute('id')
+      if(id=="reminder") {
+        $('form').unbind('submit').submit();
+      } else {
+        $.each($("input[class='copy-check']:checked"), function(){
+        invoice_id = $(this).val();
+        window. open("/invoices/copy_invoice/"+invoice_id);
+      });
+      }
+    });
+
+    <% if params[:preview].eql?('true') %>
+      $(window).load(function(){
+        id = <%= params[:invoice_id] %>
+        url = "/invoices/"+id+".pdf"
+        window. open(url,"","width=700,height=650");
+      });
+    <% end %>
+  </script>
+<% end %>

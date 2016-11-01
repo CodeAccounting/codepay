@@ -1,0 +1,43 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Chart Of Accounts
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class = "wrapper">
+  <div class = "panel">
+  	<div class ="row"> 
+      <div class="col-sm-12">
+        <div class="panel-body">
+      		<div class="col-md-12">
+      			<a href="<%= new_chart_of_account_path%>" class="btn btn-success">Create New</a>
+      		</div>
+      		<table class="table colvis-data-table data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Number</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+              <%@chart_of_accounts.each do |coa|%>
+                <tr>
+                  <td><%= link_to coa.try(:name), chart_of_account_path(coa.id)%></td>
+                  <td><%= coa.try(:number)%></td>
+                  <td><%= coa.try(:chart_of_account_type)%></td>
+                  <td><%= coa.try(:description)%></td>
+                </tr>
+                <%end%>
+              </tbody>
+          </table>
+        </div>
+  	  </div>
+    </div>
+  </div>
+</div>  
+<!--body wrapper send-->

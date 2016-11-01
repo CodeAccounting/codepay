@@ -1,0 +1,54 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+    Organization User (Users that are under your organization)
+  </h3>
+</div>
+<!-- page head end-->
+
+  <!--body wrapper start-->
+  <div class="wrapper">
+    <!-- page start-->
+    <div class="panel">
+      <header class="panel-heading head-border">
+        Edit A Organization User
+      </header>
+      <% if flash[:errors] %>
+        <div class="alert alert-danger">
+          <ul>
+            <% flash[:errors].each do |er| %>
+              <li><%= er %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <form action="<%= organization_user_path %>" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input name="_method" type="hidden" value="patch" />
+        <input type="hidden" name="id" value="<%= @user.id %>">
+        <div class="panel-body">
+          <div class="row toastr-row">
+          	<div class="col-md-4">
+
+	            <div class="form-group">
+	              <label for="organization_id">Assign Role</label>
+	              <select id="organization_id" name="role" class="form-control">
+                  <option value="accountant" <%= "selected" if @user.which_role?(current_organization.id) == "accountant" %>>Accountant</option>
+                  <option value="payer" <%= "selected" if @user.which_role?(current_organization.id) == "payer" %>>Payer</option>
+	                <option value="approver" <%= "selected" if @user.which_role?(current_organization.id) == "approver" %>>Approver</option>
+	                <option value="clerk" <%= "selected" if @user.which_role?(current_organization.id) == "clerk" %>>Clerk</option>
+	              </select>
+	            </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-success">Edit Role</button>
+              <button type="button" class="btn btn-danger">Clear Entries</button>
+            </div>
+          </div>
+       	</div>
+     	</form>
+    </div>
+  </div>

@@ -1,0 +1,36 @@
+<% content_for :header_title do %>
+  <b>Invoices Information</b>
+<% end %>
+
+<table class="table colvis-data-table data-table">
+  <thead>
+    <tr>
+      <th>Customer Name</th>
+      <th>Invoice Number</th>
+      <th>Invoice Date</th>
+      <th>Due Date</th>
+      <th>Amount</th>
+      <th>Terms</th>
+      <th>Location</th>
+      <th>Department</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @invoices.each do |invoice| %>
+      <tr>
+        <td>
+          <%= invoice.customer.name %></label>
+        </td>
+        <td>
+            <%= invoice.invoice_number %>
+        </td>
+        <td><%= invoice.invoice_date.strftime("%d %B %Y") %> </td>
+        <td><%= invoice.due_date.strftime("%d %B %Y") %> </td>
+        <td><%= invoice.due_amount %> </td>
+        <td><%= invoice.payment_term.try(:name) %> </td>
+        <td><%= invoice.location.try(:name) %> </td>
+        <td style="text-align: right;"><%= invoice.department.try(:name) %> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

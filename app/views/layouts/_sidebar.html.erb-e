@@ -1,0 +1,53 @@
+<!-- sidebar left start-->
+<div class="sidebar-left sticky-sidebar">
+  <!--responsive view logo start-->
+  <div class="logo dark-logo-bg visible-xs-* visible-sm-*">
+    <a href="/">
+      <%= image_tag("logo-icon.png") %>
+      <!--<i class="fa fa-maxcdn"></i>-->
+      <span class="brand-name">CodePaying</span>
+    </a>
+  </div>
+  <!--responsive view logo end-->
+
+  <div class="sidebar-left-info">
+    <!-- visible small devices start-->
+    <div class=" search-field">  </div>
+    <!-- visible small devices end-->
+
+    <!--sidebar nav start-->
+    <ul class="nav nav-pills nav-stacked side-navigation">
+      <li class="active"><a href="index.html"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+      <li class="menu-list"> <a href="moneyin.html"><i class="fa fa-money"></i>  <span>Money In</span></a>
+        <ul class="child-list">
+          <li><%= link_to "Create Invoices", new_invoice_path %></li>
+          <li><a href="send_reminders.html"> Send Reminders</a></li>
+          <li><a href="<%= customers_path %>"> Customer Information</a></li>
+        </ul>
+      </li>
+      <li class="menu-list">  <a href="moneyout.html"><i class="fa fa-shopping-cart"></i>  <span>Money Out</span></a>
+        <ul class="child-list">
+          <li><a href="process_bills.html"> Process Bills</a></li>
+          <li><a href="pay_bills.html"> Pay Bills</a></li>
+          <li><a href="vendor_information.html"> Vendor Information</a></li>
+        </ul>
+      </li>
+      <li class="menu-list"><a href="reports.html"><i class="fa fa-bar-chart-o"></i> <span>Reports </span></a>
+        <ul class="child-list">
+          <li><a href="payment_reports.html"> Payment Reports</a></li>
+          <li><a href="accounting_reports.html"> Accounting Reports</a></li>
+          <li><a href="tax_reports.html"> Tax Reports</a>
+        </ul>
+          </li>
+          <li class=""><a href="settings.html"><i class="fa fa-cogs"></i> <span>Settings </span></a>
+          </li>
+          <!-- <li class=""><a href="email.html"><i class="fa fa-envelope-o"></i> <span>Email  </span></a></li> -->
+    </ul>
+
+    <!--sidebar widget end-->
+
+  </div>
+</div>
+<!-- sidebar left end-->
+
+

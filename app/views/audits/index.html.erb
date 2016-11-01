@@ -1,0 +1,65 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Audits
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class = "wrapper">
+	<div class ="row"> 
+    <div class="col-sm-12">
+      <section class="panel">
+		    <table class="table colvis-data-table data-table">
+            <thead>
+              <tr>
+                <th>When</th>
+                <th>User</th>
+                <th>Where</th>
+                <th>Id</th>
+                <th>What</th>
+                <th>Fields</th>
+                <th>Old Value</th>
+                <th>New Value</th>    
+              </tr>
+            </thead>
+            <tbody>
+              <% if @audits.present? %>
+                <% @audits.each do |audit| %>
+                    <% if audit.action == "update"%>
+                        <% audit.audited_changes.each do |hash| %>
+                          <tr>
+                            <td><%= audit.created_at %> </td>
+                            <% user_name= audit.user.full_name%>
+                            <td><%= user_name %></td>
+                            <td><%= audit.auditable_type %> </td>
+                            <td><%= link_to audit.auditable_id, audit.auditable%></td>
+                            <td><%= audit.action %></td>
+                                  <td><%= hash[0] %></td>
+                                  <td><%= hash[1][0] %></td>
+                                  <td><%= hash[1][1]%></td>
+                          </tr>
+                        <% end %>  
+                    <% else %>
+                          <tr>
+                            <td><%= audit.created_at %> </td>
+                            <% user= User.find(audit.user_id)%>
+                            <td><%= user.first_name + " " +  user.last_name %></td>
+                            <td><%= audit.auditable_type %> </td>
+                            <td><%= link_to audit.auditable_id, audit.auditable%></td>
+                            <td><%= audit.action %></td>
+                                  <td><% "" %></td>
+                                  <td><% "" %></td>
+                                  <td><% ""%></td>
+                          </tr>
+                    <% end %>      
+                <%end%>    
+              <% end %>   
+            </tbody>
+        </table>
+      </section>
+    </div>
+	</div>
+</div>
+<!--body wrapper send

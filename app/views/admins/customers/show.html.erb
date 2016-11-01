@@ -1,0 +1,167 @@
+ <!--page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  <b><%= @customer.name.upcase %></b>
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li><a href="#">Money In</a></li>
+      <li><%= link_to "Customers", customers_path %></li>
+      <li class="active">Customer Deatil</li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      Customer Detail
+      <!-- <%= link_to 'Edit',  class: 'btn btn-success btn-xs' %> -->
+      <!-- <%= link_to 'Back',  class: 'btn btn-success btn-xs' %> -->
+    </header>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="customer_name">Name:</label> <b><%= @customer.name.capitalize %></b>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="customer_account_number">Account Number:</label> <b><%= @customer.account_number %></b>
+          </div>
+          <div class="form-group">
+            <label for="customer_contact">Contact:</label> <b><%= @customer.primary_contact.try(:full_name) %></b>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="customer_billing_address1">Billing Address:</label>
+            <b>
+            <br/>
+            <%= @customer.billing_address.try(:address1) %> <%= @customer.billing_address.try(:address2) %>
+            <br/>
+            <%= @customer.billing_address.try(:city) %>, <%= @customer.billing_address.try(:state) %> (<%= @customer.billing_address.try(:zip) %>)
+            <br/>
+            <%= @customer.billing_address.try(:country) %>
+            </b>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="customer_billing_address1">Shipping Address:</label>
+            <b>
+            <br/>
+            <%= @customer.shipping_address.try(:address1) %> <%= @customer.shipping_address.try(:address2) %>
+            <br/>
+            <%= @customer.shipping_address.try(:city) %>, <%= @customer.shipping_address.try(:state) %> (<%= @customer.shipping_address.try(:zip) %>)
+            <br/>
+            <%= @customer.shipping_address.try(:country) %>
+            </b>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="customer_shipping_address1">Description:</label>
+            <br/>
+            <b><%= @customer.description %> </b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- page end-->
+  <!-- Invoice Section starts here -->
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Customer Invoices
+        </header>
+        <table class="table invoice-data-table data-table">
+          <thead>
+            <tr>
+              <th>Invoice Number</th>
+              <th>Invoice Date</th>
+              <th>Due Date</th>
+              <th>Due Amount</th>
+              <th>Payment Terms</th>
+              <th>Location</th>
+              <th>Department</th>
+              <th>Template</th>
+              <th>PO Number</th>
+              <th>Sales REP</th>
+              <th>Message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @invoices.each do |invoice| %>
+            <tr>
+              <td>
+                <% if invoice.deleted_at %>
+                VOIDED (<%= link_to "RESTORE", restore_invoice_path(invoice) %>)
+                <% else %>
+                <%= invoice.invoice_number %> (<%= link_to "SHOW", invoice_path(invoice) %>)
+                <% end %>
+              </td>
+              <td><%= invoice.invoice_date.strftime("%d %B %Y") %> </td>
+              <td><%= invoice.due_date.strftime("%d %B %Y") %> </td>
+              <td>$<%= invoice.due_amount %> </td>
+              <td><%= invoice.payment_term.try(:name) %> </td>
+              <td><%= invoice.location.try(:name) %> </td>
+              <td><%= invoice.department.try(:name) %> </td>
+              <td><%= invoice.invoice_template_id %> </td>
+              <td><%= invoice.po_number %> </td>
+              <td><%= invoice.sales_rep %> </td>
+              <td><%= invoice.message %> </td>
+              <%if invoice.received == false%>
+                <td><b>UNPAID</b></td>
+              <%else%> 
+                <td><b>PAID</b></td>
+              <%end%>     
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+  <!-- Invoice section ends here -->
+  <!-- Customer Payments section start -->
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Customer Payments
+        </header>
+        <table class="table small-data-table data-table">
+          <thead>
+            <tr>
+              <th>Payment Method</th>
+              <th>Payment Account</th>
+              <th>Date</th>
+              <th>Payment Amount</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @invoices.each do |invoice| %>
+              <%if invoice.invoice_payments.present?%>
+                <%invoice.invoice_payments.each do |invoice_payment|%>
+                <tr>
+                  <td><%= invoice_payment.payment_method %> </td>
+                  <td><%= invoice_payment.payment_account %> </td>
+                  <td><%= invoice_payment.date.strftime("%d %B %Y") %> </td>
+                  <td>$<%= invoice_payment.payment_amount %></td>
+                  <td><%= invoice_payment.message %></td>
+                </tr>
+                <%end%>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+  <!-- Customer Payments section ends -->
+</div>
+<!--body wrapper end

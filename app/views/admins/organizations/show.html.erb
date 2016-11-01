@@ -1,0 +1,83 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Organization Information
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      Organization Detail
+    </header>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="organization_name">Name:</label> <b><%= @organization.name.capitalize %></b>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="customer_account_number">Organization Type:</label> <b><%= @organization.organization_type.try(:capitalize) %></b>
+          </div>
+          <div class="form-group">
+            <label for="customer_contact">Accounting Software:</label> <b><%= @organization.accounting_software.try(:capitalize) %></b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- page end-->
+
+  <!-- Organization Users starts here -->
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Organization Users
+        </header>
+        <table class="table colvis-data-table data-table">
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+                <tr>
+                  <td><%= link_to user.full_name, admins_user_path(user.id) %>
+                  <td><%= user.email %></td>
+                  <td>
+                    <div>
+                      <%= user.which_role?(@organization.id).capitalize %>
+                      <input class="hiddenUserId" type="hidden" value="<%= user.id %>">
+                      <input class="hiddenRole" type="hidden" value="<%= user.which_role?(@organization.id) %>">
+                    </div>
+                  </td>
+                  <td>
+                    <% if user.which_role?(@organization.id).capitalize == "Admin" %>
+                      <%= "Active"%>
+                    <%else%>
+                        <% if user.invitation_accepted_at == nil %>
+                          <%= "In-Active"%>
+                        <%else%>
+                          <%= "Active"%>
+                        <%end%>
+                    <%end%>       
+                  </td>
+                </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+  <!-- Organization Users ends here -->
+</div>
+<!--body wrapper end-->
+

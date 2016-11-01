@@ -1,0 +1,177 @@
+<!-- page head start-->
+<%if params[:format] == "Bill"%>
+  <div class="page-head">
+    <h3 class="m-b-less">
+    Bill Information
+    </h3>
+  </div>
+  <!-- page head end-->
+
+  <!--body wrapper start-->
+  <div class="wrapper">
+    <!-- page start-->
+    <div class="panel">
+      <% if flash[:notice] %>
+        <div class="alert alert-danger">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
+      <header class="panel-heading head-border">
+        Showing A Vendor Bill
+      </header>
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="bill_vendor_name">Vendor Name </label>
+              <input data-vendors id="vendor_name" type="text" class="form-control"  placeholder="Vendor Name" value="<%= @bill_info.vendor.name %>" readonly>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="bill_number">Bill #</label>
+              <input id="bill_number" name="bill[bill_number]" type="text" class="form-control" value="<%= @bill_info.bill_number %>" readonly >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="bill_bill_date">Record Date</label>
+              <input id="bill_record_date" name="bill[bill_date]" class="form-control" value="<%= @bill_info.bill_date.strftime("%d-%B-%Y") %>" readonly >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="bill_due_date">Due Date</label>
+              <input id="bill_due_date" name="bill[due_date]" class="form-control" value="<%= @bill_info.due_date.strftime("%d-%B-%Y") %>" readonly >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="bill_amount_due">Total Amount Due</label>
+              <input id="bill_amount_due" name="bill[due_amount]" type="number" class="form-control" placeholder="1000" value="<%= @bill_info.due_amount %>" readonly >
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group" id="toastTypeGroup">
+              <label>Location</label>
+              <select class="form-control input-small addressRef" disabled>
+                <option><%= @bill_info.location.try(:name)  %></option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="hideEasing">Terms</label>
+              <select class="form-control input-small addressRef" disabled>
+                <option><%= @bill_info.payment_term.try(:name) %></option>
+              </select>
+            </div>
+            <div class="form-group" id="positionGroup">
+              <label>Department</label>
+              <select class="form-control input-small addressRef" disabled>
+                <option><%= @bill_info.department.try(:name) %></option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="control-label" for="bill_message">Vendor Message</label>
+              <textarea id="bill_message" name="bill[message]" rows="3" class="form-control" readonly ><%= @bill_info.message %></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <%= link_to 'Back', approvals_path, class: 'btn btn-success' %>
+            <%= link_to 'Approve', approval_path(@approval, :apparoval => "Approved"), :method=> :patch, class: 'btn btn-success'  %>
+            <%= link_to 'Cancel', approval_path(@approval, :apparoval => "Cancelled"), :method=> :patch, class: 'btn btn-success'  %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- page end-->
+<!--body wrapper end-->
+<%end%>
+
+<%if params[:format] == "Invoice"%>
+  <!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Show Invoices
+  </h3>
+</div>
+<!-- page head end-->
+  <div class="wrapper">
+    <!-- page start-->
+    <div class="panel">
+      <% if flash[:notice] %>
+        <div class="alert alert-danger">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
+      <header class="panel-heading head-border">
+        Showing A Customer Invoice
+      </header>
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="invoice_customer_name">Customer Name </label>
+              <input data-customers id="customer_name" type="text" class="form-control"  placeholder="Customer Name" value="<%= @invoice.customer.name %>" readonly>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="invoice_number">Invoice #</label>
+              <input id="invoice_number" name="invoice[invoice_number]" type="text" class="form-control" value="<%= @invoice.invoice_number %>" readonly >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="invoice_invoice_date">Record Date</label>
+              <input id="invoice_record_date" name="invoice[invoice_date]" class="form-control" value="<%= @invoice.invoice_date.strftime("%d-%B-%Y") %>" readonly >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="invoice_due_date">Due Date</label>
+              <input id="invoice_due_date" name="invoice[due_date]" class="form-control" value="<%= @invoice.due_date.strftime("%d-%B-%Y") %>" readonly >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="invoice_amount_due">Total Amount Due</label>
+              <input id="invoice_amount_due" name="invoice[due_amount]" type="number" class="form-control" placeholder="1000" value="<%= @invoice.due_amount %>" readonly >
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group" id="toastTypeGroup">
+              <label>Location</label>
+              <select class="form-control input-small addressRef" disabled>
+                <option><%= @invoice.location.try(:name)  %></option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="hideEasing">Terms</label>
+              <select class="form-control input-small addressRef" disabled>
+                <option><%= @invoice.payment_term.try(:name) %></option>
+              </select>
+            </div>
+            <div class="form-group" id="positionGroup">
+              <label>Department</label>
+              <select class="form-control input-small addressRef" disabled>
+                <option><%= @invoice.department.try(:name) %></option>
+              </select>
+            </div>
+            <div class="form-group" id="positionGroup">
+              <label>Status</label>
+              <%if @invoice.received == false %>
+                <input id="invoice_amount_due" name="invoice[status]" type="text" class="form-control" value="UNPAID" readonly >
+              <%else%>
+                <input id="invoice_amount_due" name="invoice[status]" type="text" class="form-control" value="PAID" readonly >
+              <%end%>    
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="control-label" for="invoice_message">Customer Message</label>
+              <textarea id="invoice_message" name="invoice[message]" rows="3" class="form-control" readonly ><%= @invoice.try(:message) %></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <%= link_to 'Back', approvals_path, class: 'btn btn-success' %>
+            <%= link_to 'Approve', approval_path(@approval, :apparoval => "Approved"), :method=> :patch, class: 'btn btn-success'  %>
+            <%= link_to 'Cancel', approval_path(@approval, :apparoval => "Cancelled"), :method=> :patch, class: 'btn btn-success'  %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>    
+  <!-- page end-->
+<!--body wrapper end-->
+<%end%>

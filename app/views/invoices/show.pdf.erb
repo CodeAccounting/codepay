@@ -1,0 +1,48 @@
+<% content_for :header_title do %>
+  <b>Invoice Information</b>
+<% end %>
+<br/>
+<div class="col-md-4">
+  <div class="form-group">
+    <label class="control-label" for="customer_name">Customer Name:</label> <b><%= @invoice.customer.name %></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="customer_account_number">Invoice #:</label> <b><%= @invoice.invoice_number %></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="customer_account_number">Invoice Date:</label> <b><%= @invoice.invoice_date.strftime("%d-%B-%Y") %></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="customer_account_number">Due Date:</label> <b><%= @invoice.due_date.strftime("%d-%B-%Y") %></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="customer_account_number">Amount:</label> <b><%= @invoice.due_amount %></b>
+  </div>
+
+  <div class="form-group">
+    <label for="customer_contact">Location:</label> <b><%= @invoice.location.try(:name) %></b>
+  </div>
+
+  <div class="form-group">
+    <label for="customer_contact">Terms:</label> <b><%= @invoice.payment_term.try(:name) %></b>
+  </div>
+
+  <div class="form-group">
+    <label for="customer_contact">Department:</label> <b><%= @invoice.department.try(:name) %></b>
+  </div>
+
+  <div class="form-group">
+    <label for="customer_contact">Customer Message:</label> <b><%= @invoice.message %></b>
+  </div>
+
+</div>
+
+<div class="col-md-4">
+
+</div>
+
+<br/>

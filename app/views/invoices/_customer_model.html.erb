@@ -1,0 +1,98 @@
+<div class="modal fade" id="new-customer-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-left:2%">
+  <div class="modal-dialog" role="document" style="width:75%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create Customer</h4>
+      </div>
+      <div id="customer-error" class="alert alert-danger"> </div>
+      <form id="customer-form"> 
+        <div class="modal-body">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="customer_name">Name</label>
+            <input id="customer_name" name="customer[name]" type="text" class="form-control" >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="customer_parent_customer_id">Sub Customer of</label>
+            <select id="customer_parent_customer_id" name="customer[parent_customer_id]" class="form-control">
+              <option value=""></option>
+              <% current_organization.customers.each do |customer| %>
+                <option value="<%= customer.id %>">
+                  <%= customer.name %>
+                </option>
+              <% end %>
+            </select>
+          </div>
+
+          <!-- Billing Address -->
+          <div class="form-group">
+            <label class="control-label" for="customer_description">Description</label>
+            <textarea id="customer_description" name="customer[description]" type="text" class="form-control" rows="3" placeholder="Enter a description..."></textarea>
+          </div>
+        </div>  
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="customer_billing_address1">Billing Address</label>
+            <input id="customer_billing_address1" name="customer[billing_address_attributes][address1]" class="form-control" placeholder="Street 1">
+          </div>
+
+          <div class="form-group">
+            <input id="customer_billing_address2" name="customer[billing_address_attributes][address2]" class="form-control" placeholder="Street 2">
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="customer_billing_city">City</label>
+            <input id="customer_billing_city" name="customer[billing_address_attributes][city]" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="customer_billing_state">State</label>
+            <input id="customer_billing_state" name="customer[billing_address_attributes][state]" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="customer_billing_zip">Zip</label>
+            <input id="customer_billing_zip" name="customer[billing_address_attributes][zip]" class="form-control">
+          </div>
+        </div>     
+          <!-- Shipping Address -->
+        <div class="col-md-4">  
+          <div class="form-group">
+            <label class="control-label" for="customer_shipping_address1">Shipping Address</label>
+            <input id="customer_shipping_address1" name="customer[shipping_address_attributes][address1]" class="form-control" placeholder="Street 1"></input>
+          </div>
+
+          <div class="form-group">
+            <input id="customer_shipping_address2" name="customer[shipping_address_attributes][address2]" class="form-control" placeholder="Street 2"></input>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="customer_shipping_city">City</label>
+            <input id="customer_shipping_city" name="customer[shipping_address_attributes][city]" class="form-control"></input>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="customer_shipping_state">State</label>
+            <input id="customer_shipping_state" name="customer[shipping_address_attributes][state]" class="form-control"></input>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="customer_shipping_zip">Zip</label>
+            <input id="customer_shipping_zip" name="customer[shipping_address_attributes][zip]" class="form-control"></input>
+          </div>
+        </div>  
+        </div>
+
+        <div class="row">
+        <div class="col-md-12">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="save-contact">Save changes</button>
+        </div>
+        </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<!-- page head start-->
+<div class="page-head">
+	<h3 class="m-b-less">
+	Organization Users Information
+	</h3>
+	<!-- <div class="state-information">
+		<ol class="breadcrumb m-b-less bg-less">
+			<li class="active"><a href="#">All Active Invoices</a></li>
+			<li><a href="#">Active and Archived</a></li>
+		</ol>
+	</div> -->
+</div>
+<!-- page head end-->
+
+<div class="wrapper">
+	<div class="row">
+		<div class="col-sm-12">
+      <section class="panel">
+      	<header class="panel-heading ">
+          <span class="tools pull-right">
+            <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+            <a class="t-close fa fa-times" href="javascript:;"></a>
+          </span>
+          <div class="DTTT btn-group">
+            <% if can? :create, User %>
+            <a class="btn btn-default DTTT_button_create" href="<%= new_organization_user_path %>">
+              <span>Create/Invite</span>
+            </a>
+            <% end %>
+            <button id="copy" type="submit" class="btn btn-default DTTT_button_copy">
+            <span>COPY</span>
+            </button>
+            <a class="btn btn-default DTTT_button_csv" tabindex="0" href="<%= invoices_path(format: :csv) %>" aria-controls="DataTables_Table_0">
+              <span>CSV</span>
+            </a>
+            <a class="btn btn-default DTTT_button_xls" tabindex="0" href="<%= invoices_path(format: :xls) %>" aria-controls="DataTables_Table_0">
+              <span>Excel</span>
+            </a>
+            <a target="_blank" class="btn btn-default DTTT_button_pdf" href="<%= invoices_path(format: :pdf) %>" tabindex="0" aria-controls="DataTables_Table_0">
+              <span>PDF / PRINT</span>
+            </a>
+          </div>
+        </header>
+        <table class="table colvis-data-table data-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Role Name</th>
+              <th>Joined at</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <% unless user.id == current_user.id %>
+                <tr>
+                	<td><%= link_to (user.full_name+" ("+user.email+")"), organization_user_path(user) %></td>
+                  <td>
+                    <%= user.which_role?(current_organization.id).capitalize %>
+                  </td>
+                  <% if user.invitation_accepted_at.present? %>
+                	 <td><%= user.invitation_accepted_at.strftime("%d %B %Y") %></td>
+                  <% else %>
+                    <td>Not Joined Yet</td>
+                  <% end %>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+	</div>
+</div>

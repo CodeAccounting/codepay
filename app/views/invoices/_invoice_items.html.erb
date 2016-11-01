@@ -1,0 +1,95 @@
+<table class="table" style="margin: 2%">
+  <thead>
+    <tr>
+      <th>Item </th>
+      <th>Description </th>
+      <th>Categorization </th>
+      <th>Quantity </th>
+      <th>Price </th>
+      <th>Location </th>
+      <th>Tax </th>
+      <th>Amount </th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="mytbody">
+    <tr class="tr_clone">
+      <td style="width: 15%">
+        <div class="form-group">
+          <select id="invoice-item-name_0" name="invoice[invoice_items_attributes[0][item_id]]" class="item_selection form-control input-small">
+
+            <option></option>
+            <option value="NEW">Add New...</option>
+            <% @items.each do |item| %>
+              <option value="<%= item.id%>"><%= item.name%></option>
+            <%end%>
+          </select>
+        </div>
+      </td>
+      <td style="width: 15%">
+        <input id="invoice-item-description_0" name="invoice[invoice_items_attributes[0][description]]" class="form-control input-small"></input>
+      </td>
+      <td style="width: 15%">
+        <div class="form-group">
+          <select id="invoice-item-categorization_0" name="invoice[invoice_items_attributes[0][chart_of_account_id]]" class="form-control input-small">
+            <option></option>
+            <% @chart_of_accounts.each do |chart_of_account|%>
+              <option value="<%= chart_of_account.id%>"><%= chart_of_account.name%></option>
+            <%end%>
+          </select>
+        </div>
+      </td>
+      <td class="invoice-item-quantity" style="width: 10%">
+        <div class="form-group" id="positionGroup">
+         <input id="invoice-item-quantity_0" name="invoice[invoice_items_attributes[0][quantity]]" class="form-control input-small invoice-item-qp" type="number" min="1"></div>
+        </div>
+      </td>
+      <td class="invoice-item-price" style="width: 10%">
+        <div class="form-group" id="positionGroup">
+         <input id="invoice-item-price_0" name="invoice[invoice_items_attributes[0][price]]" class="form-control input-small invoice-item-qp" type="number" min ="0.01" step="0.01" ></div>
+        </div>
+      </td>
+      <td style="width: 15%">
+        <div class="form-group">
+          <select id="invoice-item-location_0" name="invoice[invoice_items_attributes[0][location_id]]" class="form-control input-small">
+            <option></option>
+            <% @locations.each do |location| %>
+              <option value="<%= location.id %>"><%= location.name %></option>
+            <% end %>
+          </select>
+        </div>
+      </td>
+      <td class="invoice-item-tax" style="width: 8%">
+        <div class="form-group">
+          <select name="invoice[invoice_items_attributes[0][tax_id]]" class="item_tax form-control input-small" >
+            <option></option>
+                <option value="NEW">Add New...</option>
+                <% @taxs.each do |tax|%>
+                  <option value="<%= tax.id %>"><%= tax.tax %></option>
+                <%end%>
+          </select>
+        </div>
+      </td>
+      <td class="invoice-item-amount" style="width: 10%">
+        $ 0.0
+      </td>
+      <input id="invoice-item-amount_0" class="hidden-amount" type="hidden" name="invoice[invoice_items_attributes[0][amount]]" value=""/>
+    </tr>
+    <div class="cloned_area"> </div>
+    <tr id="insertRowBefore">
+      <td><button type="button" class="btn btn-primary" id="tr_clone_add"><span class="glyphicon glyphicon-plus"></span> Add more items</button> </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>
+        Subtotal: <b id='subtotal'>$0.0</b>
+      </td>
+    </tr>
+  </tbody>
+</table>

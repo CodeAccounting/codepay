@@ -1,0 +1,258 @@
+<% if params[:download][:type] == "invoices" %>
+  <% content_for :header_title do %>
+    <b>Invoices</b>
+  <% end %>
+  <table class="table colvis-data-table data-table">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Customer Name</th>
+        <th>Invoice Number</th>
+        <th>Invoice Date</th>
+        <th>Due Date</th>
+        <th>Due Amount</th>
+        <th>Payment Terms</th>
+        <th>Location</th>
+        <th>Department</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @invoices.each do |invoice| %>
+        <tr>
+          <td><%= invoice.id %></td>
+          <td><%= invoice.customer.name %></td>
+          <td><%= invoice.invoice_number %></td>
+          <td><%= invoice.invoice_date.strftime("%d %B %Y")%></td>
+          <td><%= invoice.due_date.strftime("%d %B %Y")%></td>
+          <td><%= invoice.due_amount%></td>
+          <td><%= invoice.payment_term.try(:name) %></td>
+          <td><%= invoice.location.try(:name) %></td>
+          <td><%= invoice.department.try(:name)%></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+<%end%>  
+<% if params[:download][:type] == "bills" %>
+  <% content_for :header_title do %>
+    <b>Bills</b>
+  <% end %>
+  <table class="table colvis-data-table data-table">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Bill Number</th>
+        <th>Bill Date</th>
+        <th>Due Date</th>
+        <th>Due Amount</th>
+        <th>Payment Terms</th>
+        <th>Location</th>
+        <th>Department</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @bills.each do |bill| %>
+        <tr>
+          <td><%= bill.id %></td>
+          <td><%= bill.bill_number %></td>
+          <td><%= bill.bill_date %></td>
+          <td><%= bill.due_date.strftime("%d %B %Y")%></td>
+          <td><%= bill.due_amount%></td>
+          <td><%= bill.payment_term.try(:name) %></td>
+          <td><%= bill.location.try(:name) %></td>
+          <td><%= bill.department.try(:name)%></td> 
+          <td><%= bill.paid%></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+<%end%>
+<% if params[:download][:type] == "unpaid_invoices" %>
+  <% content_for :header_title do %>
+    <b>Unpaid Invoices</b>
+  <% end %>
+  <div class="page-head">
+    <h3 >Invoices Not Due Yet</h3>
+  </div>
+  <div>
+    <table class="table colvis-data-table data-table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Customer Name</th>
+          <th>Invoice Number</th>
+          <th>Invoice Date</th>
+          <th>Due Date</th>
+          <th>Due Amount</th>
+          <th>Payment Terms</th>
+          <th>Location</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @due_not_passed_invoices.each do |invoice|%>
+          <tr>
+            <td><%= invoice.try(:id) %></td>
+            <td><%= invoice.customer.try(:name) %></td>
+            <td><%= invoice.try(:invoice_number) %></td>
+            <td><%= invoice.try(:invoice_date).strftime("%d %B %Y")%></td>
+            <td><%= invoice.try(:due_date).strftime("%d %B %Y")%></td>
+            <td><%= invoice.try(:due_amount)%></td>
+            <td><%= invoice.payment_term.try(:name) %></td>
+            <td><%= invoice.location.try(:name) %></td>
+            <td><%= invoice.department.try(:name)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <br></br>
+  
+  <div class="page-head">
+    <h3>Invoices under 30 days past due</h3>
+  </div>
+  <div>
+    <table class="table colvis-data-table data-table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Customer Name</th>
+          <th>Invoice Number</th>
+          <th>Invoice Date</th>
+          <th>Due Date</th>
+          <th>Due Amount</th>
+          <th>Payment Terms</th>
+          <th>Location</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @due_passed_30_days_invoices.each do |invoice|%>
+          <tr>
+            <td><%= invoice.try(:id) %></td>
+            <td><%= invoice.customer.try(:name) %></td>
+            <td><%= invoice.try(:invoice_number) %></td>
+            <td><%= invoice.try(:invoice_date).strftime("%d %B %Y")%></td>
+            <td><%= invoice.try(:due_date).strftime("%d %B %Y")%></td>
+            <td><%= invoice.try(:due_amount)%></td>
+            <td><%= invoice.payment_term.try(:name) %></td>
+            <td><%= invoice.location.try(:name) %></td>
+            <td><%= invoice.department.try(:name)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <br></br>
+
+  <div class="page-head">
+    <h3>Invoices due 30-60 days</h3>
+  </div>
+  <div>
+    <table class="table colvis-data-table data-table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Customer Name</th>
+          <th>Invoice Number</th>
+          <th>Invoice Date</th>
+          <th>Due Date</th>
+          <th>Due Amount</th>
+          <th>Payment Terms</th>
+          <th>Location</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @due_30_to_60_days_invoices.each do |invoice|%>
+          <tr>
+            <td><%= invoice.try(:id) %></td>
+            <td><%= invoice.customer.try(:name) %></td>
+            <td><%= invoice.try(:invoice_number) %></td>
+            <td><%= invoice.try(:invoice_date).strftime("%d %B %Y")%></td>
+            <td><%= invoice.try(:due_date).strftime("%d %B %Y")%></td>
+            <td><%= invoice.try(:due_amount)%></td>
+            <td><%= invoice.payment_term.try(:name) %></td>
+            <td><%= invoice.location.try(:name) %></td>
+            <td><%= invoice.department.try(:name)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <br></br>
+
+  <div class="page-head">
+    <h3>Invoices due 60-90 days</h3>
+  </div>
+  <div>
+    <table class="table colvis-data-table data-table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Customer Name</th>
+          <th>Invoice Number</th>
+          <th>Invoice Date</th>
+          <th>Due Date</th>
+          <th>Due Amount</th>
+          <th>Payment Terms</th>
+          <th>Location</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @due_60_to_90_days_invoices.each do |invoice|%>
+          <tr>
+            <td><%= invoice.try(:id) %></td>
+            <td><%= invoice.customer.try(:name) %></td>
+            <td><%= invoice.try(:invoice_number) %></td>
+            <td><%= invoice.try(:invoice_date).strftime("%d %B %Y")%></td>
+            <td><%= invoice.try(:due_date).strftime("%d %B %Y")%></td>
+            <td><%= invoice.try(:due_amount)%></td>
+            <td><%= invoice.payment_term.try(:name) %></td>
+            <td><%= invoice.location.try(:name) %></td>
+            <td><%= invoice.department.try(:name)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <br></br>
+  
+  <div class="page-head">
+    <h3>Invoices due 90+ days</h3>
+  </div>
+  <div>
+    <table class="table colvis-data-table data-table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Customer Name</th>
+          <th>Invoice Number</th>
+          <th>Invoice Date</th>
+          <th>Due Date</th>
+          <th>Due Amount</th>
+          <th>Payment Terms</th>
+          <th>Location</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @due_above_90_invoices.each do |invoice|%>
+          <tr>
+            <td><%= invoice.try(:id) %></td>
+            <td><%= invoice.customer.try(:name) %></td>
+            <td><%= invoice.try(:invoice_number) %></td>
+            <td><%= invoice.try(:invoice_date).strftime("%d %B %Y")%></td>
+            <td><%= invoice.try(:due_date).strftime("%d %B %Y")%></td>
+            <td><%= invoice.try(:due_amount)%></td>
+            <td><%= invoice.payment_term.try(:name) %></td>
+            <td><%= invoice.location.try(:name) %></td>
+            <td><%= invoice.department.try(:name)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<%end%>  

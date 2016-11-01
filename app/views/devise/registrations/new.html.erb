@@ -1,0 +1,103 @@
+<div class="login-body">
+  <div class="login-logo">
+    <%= image_tag("logo-icon.png") %> CodePayer
+  </div>
+  <h2 class="form-heading">Registration</h2>
+
+  <div class="container log-row">
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { id: "user-registration-form", class: "form-signin"}) do |f| %>
+
+      <% if devise_error_messages? %>
+        <ul class="well">
+          <%= devise_error_messages! %>
+        </ul>
+      <% end %>
+
+      <label for="user_email">Email</label>
+      <%= f.text_field :email, id: "user_email", class: "form-control", placeholder: "Email", autofocus: true %>
+
+      <label for="user_first_name">First Name</label>
+      <%= f.text_field :first_name, id: "user_first_name", class: "form-control", placeholder: "First Name" %>
+
+      <label for="user_last_name">Last Name</label>
+      <%= f.text_field :last_name, id: "user_last_name", class: "form-control", placeholder: "Last Name" %>
+
+      <label for="user_last_name">Organization Name</label>
+      <input type="text" class="form-control" id="user_organization_name" name="organization[name]" placeholder="Organization Name" autocomplete="off" >
+
+      <label for="user_last_name">Organization Type</label>
+      <select class="form-control" id="user_organization_name" name="organization[organization_type]" >
+        <option value="">Select Organization Type</option>
+        <optgroup>
+          <option value="business">Business</option>
+          <option value="accounting">Accounting Firm</option>
+        </optgroup>
+      </select>
+
+      <label for="user_last_name">Accounting Software</label>
+      <select class="form-control" id="user_organization_name" name="organization[accounting_software]" >
+        <option>Select an Accounting Software</option>
+        <optgroup>
+          <option value="quickbooks_online">QuickBooks Online</option>
+          <option value="quickbooks_pro">QuickBooks Pro/Premier</option>
+          <option value="quickbooks_enterprise">QuickBooks Enterprise</option>
+          <option value="xero">Xero</option>
+          <option value="netsuite">NetSuite</option>
+          <option value="intacct">Intacct</option>
+        </optgroup>
+
+        <optgroup>
+          <option value="microsoft_dynamics">Microsoft Dynamics (AX, GP, NAV, SL)</option>
+          <option value="freshbooks">FreshBooks</option>
+          <option value="quickbooks_mac">QuickBooks for Mac</option>
+          <option value="quicken">Quicken</option>
+          <option value="sage_50">Sage 50 (formerly Peachtree)</option>
+          <option value="sage">Sage (100/200/300/ERP)</option>
+          <option value="sap">SAP</option>
+          <option value="thomson_reuters">Thomson Reuters CBS</option>
+          <option value="yardi">Yardi</option>
+        </optgroup>
+
+        <optgroup>
+          <option value="other">Other</option>
+          <option value="none">None</option>
+          <option value="don't_know">I don't know</option>
+        </optgroup>
+
+      </select>
+
+
+      <label for="user_password">Password</label> <em style="color: red;">(minimum 6 characters)</em>
+      <%= f.password_field :password, id: "user_password", class: "form-control", placeholder: "Password", autocomplete: "off" %>
+
+      <label for="user_password">Confirm Password</label>
+      <%= f.password_field :password_confirmation, id: "user_password_confirmation", class: "form-control", placeholder: "Confirm Password", autocomplete: "off" %>
+
+      <label class="checkbox-custom check-success">
+         <input type="checkbox" value="agree this condition" id="terms-conditions"> <label for="terms-conditions">I agree to the Terms of Service and Privacy Policy</label>
+      </label>
+
+      <button id="user-registration-button" class="btn btn-lg btn-success btn-block" type="submit">
+        Submit
+      </button>
+
+      <div class="registration m-t-20 m-b-20">
+        Already Registered.
+        <a class="" href="/users/sign_in">
+          Login
+        </a>
+      </div>
+    <% end %>
+    <!-- </form> -->
+  </div>
+</div>
+
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $('#user-registration-form').on('submit', function () {
+        $('#user-registration-button').html('Processing...');
+        $('#user-registration-button').prop('disabled', true);
+    });
+  </script>
+<% end %>

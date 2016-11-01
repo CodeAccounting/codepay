@@ -1,0 +1,52 @@
+<% content_for :header_title do %>
+  <b>vendors Information</b>
+<% end %>
+
+<table class="table colvis-data-table data-table">
+  <thead>
+    <tr>
+      <th>
+        vendor Name
+      </th>
+      <th>
+        Account Number
+      </th>
+      <th>
+        Primary Contact
+      </th>
+      <th>
+        Description
+      </th>
+      <th>
+        Created at
+      </th>
+      <th>
+        Updated at
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @vendors.each do |vendor| %>
+      <tr>
+        <td>
+          <%= vendor.name %>
+        </td>
+        <td>
+          <%= vendor.account_number %>
+        </td>
+        <td>
+          <%= vendor.primary_contact.email %>
+        </td>
+        <td>
+          <%= vendor.description %>
+        </td>
+        <td>
+          <%= vendor.created_at.strftime("%d %B %Y") %>
+        </td>
+        <td>
+          <%= vendor.updated_at.strftime("%d %B %Y") %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

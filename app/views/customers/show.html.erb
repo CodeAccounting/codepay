@@ -1,0 +1,337 @@
+
+<style type="text/css">
+ 
+  .drop-box 
+  {
+    background: #F8F8F8;
+    background-color: #eeeeee;
+    border: 1px solid #dfdfdf;
+    padding-top: 5px;
+    margin-top: -5px;
+    min-height: 100px;
+    max-height: 250px;
+    max-width: 275px;
+    overflow-y: scroll;
+  }
+
+  #style-2::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #c3bebe;
+} 
+  .stbody
+  {
+  border: 1px dashed #a3d0ef;
+  min-height:70px;
+  margin-bottom:10px;
+  }
+
+  .post_area
+  {
+    float: left;
+    width: 95%;
+    margin-left: 7px;
+    margin-bottom: 10px;
+  }
+
+  .post_area > button 
+  {
+    float: right;
+    margin-top: 2px;
+  }
+  .sttext
+  {
+    border: 1px solid #beb9b9;
+    width: 100%;
+    max-height:50px;
+    max-width: 250px;
+    word-wrap:break-word; // Text justification
+    overflow:hidden;
+    padding:5px;
+    display:block;
+    font-family:'Georgia', Times New Roman, Times, serif
+  }
+
+.notes
+  {
+    float: left;
+    border: 1px solid #beb9b9;
+    width: 95%;
+    margin-left: 7px;
+    background-color: #eeeeee;
+    /*margin-left:70px;*/
+    margin-bottom: 3px;
+    height:auto; 
+    word-wrap:break-word; // Text justification
+    overflow:hidden;
+    padding:5px;
+    display:block;
+    font-family:'Georgia', Times New Roman, Times, serif
+  }
+
+  .note_text
+  {
+    padding: 5px;
+    background-color: white;
+  }
+  .note_info
+  {
+    height: 15px;
+  }
+  .note_name
+  {
+   float: left;
+   font-size: 12px;
+   padding:2px;
+  }
+  .note_date
+  {
+    float: right;
+    font-size: 12px;
+    padding:2px;
+  }
+  
+
+</style>
+
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  <b><%= @customer.name.upcase %></b>
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li><a href="#">Money In</a></li>
+      <li><%= link_to "Customers", customers_path %></li>
+      <li class="active">Customer Deatil</li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      Customer Detail
+      <%= link_to 'Edit', edit_customer_path(@customer), class: 'btn btn-success btn-xs' %> |
+      <%= link_to 'Back', customers_path, class: 'btn btn-success btn-xs' %>
+    </header>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="customer_name">Name:</label> <b><%= @customer.name.capitalize %></b>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="customer_account_number">Account Number:</label> <b><%= @customer.account_number %></b>
+          </div>
+          <div class="form-group">
+            <label for="customer_contact">Contact:</label> <b><%= @customer.primary_contact.try(:full_name) %></b>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="customer_shipping_address1">Description:</label>
+            <br/>
+            <b><%= @customer.description %> </b>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="customer_billing_address1">Billing Address:</label>
+            <b>
+            <br/>
+            <%= @customer.billing_address.try(:address1) %> <%= @customer.billing_address.try(:address2) %>
+            <br/>
+            <%= @customer.billing_address.try(:city) %>, <%= @customer.billing_address.try(:state) %> (<%= @customer.billing_address.try(:zip) %>)
+            <br/>
+            <%= @customer.billing_address.try(:country) %>
+            </b>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="customer_billing_address1">Shipping Address:</label>
+            <b>
+            <br/>
+            <%= @customer.shipping_address.try(:address1) %> <%= @customer.shipping_address.try(:address2) %>
+            <br/>
+            <%= @customer.shipping_address.try(:city) %>, <%= @customer.shipping_address.try(:state) %> (<%= @customer.shipping_address.try(:zip) %>)
+            <br/>
+            <%= @customer.shipping_address.try(:country) %>
+            </b>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group" ng-app="inoteApp" ng-controller="inoteCtrl">
+            <label class="control-label" for="invoice_note">Notes</label>
+            <div class="drop-box" id="style-2">
+              <div class="post_area">   
+                <textarea class="sttext" id="invoice_note" ng-model="note_text" rows="2" class="form-control" ></textarea>
+                <button type="button" class="btn btn-success" ng-click="add_note()" ng-disabled="note_text==''">Add Note</button>
+              </div>
+              <div class="notes" ng-repeat="note in notes">
+                <div class="note_text">
+                  <p style="text-align:left; margin:3px">
+                    {{note.body}}
+                  </p>  
+                </div>
+                <div class="note_info"> 
+                  <label class="note_name" style="margin-bottom:0;">{{note.creator.first_name}} {{note.creator.last_name}}</label>
+                  <label class="note_date" style="margin-bottom:0;">{{note.created_at | date}}</label>
+                </div> 
+              </div>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- page end-->
+  <!-- Invoice Section starts here -->
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Customer Invoices
+        </header>
+        <table class="table invoice-data-table data-table">
+          <thead>
+            <tr>
+              <th>Invoice Number</th>
+              <th>Invoice Date</th>
+              <th>Due Date</th>
+              <th>Due Amount</th>
+              <th>Payment Terms</th>
+              <th>Location</th>
+              <th>Department</th>
+              <th>Template</th>
+              <th>PO Number</th>
+              <th>Sales REP</th>
+              <th>Message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @invoices.each do |invoice| %>
+            <tr>
+              <td>
+                <% if invoice.deleted_at %>
+                VOIDED (<%= link_to "RESTORE", restore_invoice_path(invoice) %>)
+                <% else %>
+                <%= invoice.invoice_number %> (<%= link_to "SHOW", invoice_path(invoice) %>)
+                <% end %>
+              </td>
+              <td><%= invoice.invoice_date.strftime("%d %B %Y") %> </td>
+              <td><%= invoice.due_date.strftime("%d %B %Y") %> </td>
+              <td>$<%= invoice.due_amount %> </td>
+              <td><%= invoice.payment_term.try(:name) %> </td>
+              <td><%= invoice.location.try(:name) %> </td>
+              <td><%= invoice.department.try(:name) %> </td>
+              <td><%= invoice.invoice_template_id %> </td>
+              <td><%= invoice.po_number %> </td>
+              <td><%= invoice.sales_rep %> </td>
+              <td><%= invoice.message %> </td>
+              <%if invoice.received == false%>
+                <td><b>UNPAID</b></td>
+              <%else%> 
+                <td><b>PAID</b></td>
+              <%end%>     
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+  <!-- Invoice section ends here -->
+  <!-- Customer Payments section start -->
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Customer Payments
+        </header>
+        <table class="table small-data-table data-table">
+          <thead>
+            <tr>
+              <th>Payment Method</th>
+              <th>Payment Account</th>
+              <th>Date</th>
+              <th>Payment Amount</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @invoices.each do |invoice| %>
+              <%if invoice.invoice_payments.present?%>
+                <%invoice.invoice_payments.each do |invoice_payment|%>
+                <tr>
+                  <td><%= invoice_payment.payment_method %> </td>
+                  <td><%= invoice_payment.payment_account %> </td>
+                  <td><%= invoice_payment.date.strftime("%d %B %Y") %> </td>
+                  <td>$<%= invoice_payment.payment_amount %></td>
+                  <td><%= invoice_payment.message %></td>
+                </tr>
+                <%end%>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+  <!-- Customer Payments section ends -->
+</div>
+<!--body wrapper end-->
+
+<%content_for :angular_scripts do %>
+  <script type="text/javascript">
+    
+    var app = angular.module('inoteApp', []);
+
+    
+      
+    app.factory('notes', function($http){
+        return {
+          list: function(callback){
+            $http.get('/notes/notes_list_by_ajax?id=<%=@customer.id%>&type=Customer').success(callback);
+          }
+        };
+      });
+
+    app.controller('inoteCtrl', function($scope,$http,notes) {
+
+      // $scope.loading = false;
+      $scope.note_text = "";
+
+      notes.list(function(notes) {
+          $scope.notes = notes;
+          // $scope.loading = true;
+      });
+
+      $scope.add_note = function(){
+              $http({
+                method: 'GET',
+                url: '/notes/ajax_to_add_note',
+                params: {id: '<%= @customer.id%>',type: 'Customer', body: $scope.note_text }
+              }).then(function(response) {
+                  $scope.note_text ="";
+                  $scope.notes.push(response.data);
+              });
+          }
+      });
+  </script>
+
+<%end%>

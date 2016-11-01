@@ -1,0 +1,109 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+    Organizations
+  </h3>
+</div>
+<!-- page head end-->
+
+  <!--body wrapper start-->
+  <div class="wrapper">
+    <!-- page start-->
+    <div class="panel">
+      <header class="panel-heading head-border">
+        Edit An Organization
+      </header>
+      <% if flash[:errors] %>
+        <div class="alert alert-danger">
+          <ul>
+            <% flash[:errors].each do |er| %>
+              <li><%= er %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <form action="<%= organization_path %>" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input name="_method" type="hidden" value="patch" />
+        <div class="panel-body">
+          <div class="row toastr-row">
+          	<div class="col-md-4">
+	          	<div class="form-group">
+	              <label class="control-label" for="organization_user_email">Name</label>
+	              <input id="organization_user_email" name="organization[name]" type="text" class="form-control" placeholder="Name" value="<%= @organization.name %>" >
+	            </div>
+
+              <div class="form-group">
+                <label for="user_last_name">Organization Type</label>
+                <select class="form-control" id="user_organization_name" name="organization[organization_type]" >
+                  <option value="">Select Organization Type</option>
+                  <optgroup>
+                    <option value="business" <%= "selected" if @organization.organization_type == "business" %>>Business</option>
+                    <option value="accounting" <%= "selected" if @organization.organization_type == "accounting" %>>Accounting Firm</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="user_last_name">Accounting Software</label>
+                <select class="form-control" id="user_organization_name" name="organization[accounting_software]" >
+                  <option>Select an Accounting Software</option>
+                  <optgroup>
+                    <option value="quickbooks_online"  <%= "selected" if @organization.accounting_software == "quickbooks_online" %>>QuickBooks Online</option>
+                    <option value="quickbooks_pro"  <%= "selected" if @organization.accounting_software == "quickbooks_pro" %>>QuickBooks Pro/Premier</option>
+                    <option value="quickbooks_enterprise"  <%= "selected" if @organization.accounting_software == "quickbooks_enterprise" %>>QuickBooks Enterprise</option>
+                    <option value="xero"  <%= "selected" if @organization.accounting_software == "xero" %>>Xero</option>
+                    <option value="netsuite"  <%= "selected" if @organization.accounting_software == "netsuite" %>>NetSuite</option>
+                    <option value="intacct"  <%= "selected" if @organization.accounting_software == "intacct" %>>Intacct</option>
+                  </optgroup>
+
+                  <optgroup>
+                    <option value="microsoft_dynamics"  <%= "selected" if @organization.accounting_software == "microsoft_dynamics" %>>Microsoft Dynamics (AX, GP, NAV, SL)</option>
+                    <option value="freshbooks"  <%= "selected" if @organization.accounting_software == "freshbooks" %>>FreshBooks</option>
+                    <option value="quickbooks_mac"  <%= "selected" if @organization.accounting_software == "quickbooks_mac" %>>QuickBooks for Mac</option>
+                    <option value="quicken"  <%= "selected" if @organization.accounting_software == "quicken" %>>Quicken</option>
+                    <option value="sage_50"  <%= "selected" if @organization.accounting_software == "sage_50" %>>Sage 50 (formerly Peachtree)</option>
+                    <option value="sage"  <%= "sage" if @organization.accounting_software == "business" %>>Sage (100/200/300/ERP)</option>
+                    <option value="sap"  <%= "selected" if @organization.accounting_software == "sap" %>>SAP</option>
+                    <option value="thomson_reuters"  <%= "selected" if @organization.accounting_software == "thomson_reuters" %>>Thomson Reuters CBS</option>
+                    <option value="yardi"  <%= "selected" if @organization.accounting_software == "yardi" %>>Yardi</option>
+                  </optgroup>
+
+                  <optgroup>
+                    <option value="other"  <%= "selected" if @organization.accounting_software == "other" %>>Other</option>
+                    <option value="none"  <%= "selected" if @organization.accounting_software == "none" %>>None</option>
+                    <option value="don't_know"  <%= "selected" if @organization.accounting_software == "don't_know" %>>I don't know</option>
+                  </optgroup>
+
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-6">
+              <% if current_organization.attachment.present? %> 
+                <% if current_organization.attachment.attachment.present?%>
+                  <label>Company Logo Is Present! Attach New Logo To Update </label>
+                <%else%>  
+                  <label>Please Attach Company Logo(.png file)</label>
+                <%end%>
+              <%else%>
+                <label>Please Attach Company Logo(.png file)</label>
+              <%end%>     
+              <% attachment = Attachment.find_or_create_by(attachable_id: current_organization.id, attachable_type: "Organization") %>
+              <img src="<%= attachment.attachment.url(:thumb) %>">
+              <input id="user_avatar" type="file" class="form-control" name="organization[attachment_attributes][attachment]" style="width:330px; height:100px;">
+              <input  type="hidden" class="form-control" name="organization[attachment_attributes][id]" value="<%= attachment.id%>">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-success">Update</button>
+              <button type="button" class="btn btn-danger">Clear Entries</button>
+            </div>
+          </div>
+       	</div>
+     	</form>
+    </div>
+  </div>

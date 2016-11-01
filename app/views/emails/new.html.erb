@@ -1,0 +1,120 @@
+
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Send Invoice Email
+  </h3>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <% if flash[:error] %>
+        <div class="alert alert-danger">
+          <ul>
+            <li><%= flash[:error] %></li>
+          </ul>
+        </div>
+        <% end %>
+        <form action="<%= emails_path %>" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <input type="hidden" name="id" value="<%= params[:invoice_id] %>">
+          <div class="panel-body">
+            <div class="row toastr-row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label" for="invoice_customer_name">From </label>
+                  <select name="from" class="form-control">
+                    <option value="sean@codeaccounting.com">sean@codeaccounting.com</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="invoice_number">To</label>
+                  <input name="to" type="email" class="form-control" value="<%= @customer.email %>">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="invoice_number">CC</label>
+                  <input name="cc" type="email" class="form-control" placeholder="Enter the email address">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="invoice_number">BCC</label>
+                  <input name="bcc" type="email" class="form-control" placeholder="Enter the email address">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label" for="invoice_record_date">Subject</label>
+                  <input name="subject" type="text" class="form-control" value="Enter The Subject Here">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="customer_description">Body</label>
+                  <textarea name="body" type="text" class="form-control" rows="9">
+Hi <%= @customer.full_name %>,
+
+An invoice has been created on your account. If you have any questions or concerns, please contact us at.
+
+Thank you for your business!
+
+
+Invoice Details:
+
+  Invoice #: <%= @invoice.invoice_number %>
+  Amount Due: <%= @invoice.due_amount %>
+  Due Date: <%= @invoice.due_date.strftime("%d %B %Y") %>
+
+A PDF version of this invoice is also attached for your records.
+                            </textarea>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label class="control-label" for="customer_description"><b>Step 1:</b> Select Customer</label>
+                            <select id="customer_email" name="customer[contact_id]" class="form-control">
+                              <option value="">Select Customer</option>
+                              <% current_organization.customers.all.each do |customer| %>
+                                <option value="<%= customer.id %>">
+                                  <%= customer.name %>
+                                </option>
+                              <% end %>
+                            </select>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label" for="customer_description"><b>Step 2:</b> Copy and Paste this into email</label>
+                            <input id="email_here" type="text" class="form-control">
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-12">
+                            <button type="submit" id="send" class="btn btn-success">Send</button>
+                            <a href="<%= invoice_path(params[:invoice_id]) %>" class="btn btn-success">Back</a>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </section>
+              </div>
+          </div>
+
+    </div>
+  <% content_for :scripts do %>
+    <script>
+      $("#customer_email").on('change', function (event) {
+        if(event.currentTarget.value) {
+          $.ajax({
+            type:"GET",
+            url:"/contacts",
+            dataType:"json",
+            data: { id: event.currentTarget.value },
+            success: function(result){
+              $("#email_here").val(result.email);
+            }
+          })
+        }
+      });
+    </script>
+  <% end %>

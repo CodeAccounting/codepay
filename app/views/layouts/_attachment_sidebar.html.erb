@@ -1,0 +1,45 @@
+<!-- Right Slidebar start -->
+<div class="sb-slidebar sb-right sb-style-overlay" > 
+  <div class="right-bar" >
+    <span class="r-close-btn sb-close" style="background-color: #e8e8e8"><i class="fa fa-times" style="color:black"></i></span>
+    <ul class="nav nav-tabs nav-justified-" style="background-color:white;" >
+      <li class="active" style="border-bottom:1px solid #ddd">
+        <a href="#chat" data-toggle="tab" ">Attachments</a>
+      </li>
+    </ul>
+    <div class="tab-content" ng-if="loading">
+    	<table>
+	    	<thead>
+				<tr>
+				  <th></th>	
+				  <th></th>
+				</tr>    		
+	    	</thead>
+	    	<tbody>
+	    		<tr ng-repeat="attachment in all_attachments">
+    				<td style="width:-1px">
+    					<table style="margin:5px 0;width: 190px; background-color:#e8e8e8;">
+    						<tr style="border-bottom: 1px solid #ddd;">
+    							<td style="width:50%"><img ng-if="attachment.attachment_content_type=='image/jpeg'" ng-src="{{attachment.url}}" alt="No Image" class="img-thumbnail"
+                                style="height:80px; width:90px">
+                                <img ng-if="attachment.attachment_content_type=='application/pdf'" ng-src="/images/pdf_icon2.png" alt="No Image" class="img-thumbnail" style="height:80px; width:90px">
+    							</td>
+    							<td style="width:50%">{{attachment.attachment_file_name}}</td>
+    						</tr>
+    						<tr>
+    							<td><button type="button" class="btn btn-success" ng-click="add_image($index)" style="margin-top:5px; width:95%" >Add image</button></td>
+    							<td><a href="{{attachment.url}}" class="btn btn-success" style="margin-top:5px; width:95%;" target="_blank">Preview</a></td>
+    						</tr>
+    					</table>
+	    			</td>
+	    		</tr>
+	    	</tbody>
+    	</table>
+    </div>
+    <div ng-if="!loading">
+        <label>Loading Images</label>
+        <img src="/images/loading.gif" height="20%" width="20%">
+    </div>
+  </div>
+</div>
+<!-- Right Slidebar end -->

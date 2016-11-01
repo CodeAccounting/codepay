@@ -1,0 +1,75 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Search Information for keywords: <%= params[:keywords] %>
+  </h3>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <table class="table colvis-data-table data-table">
+          <thead>
+            <tr>
+              <th>
+                Name
+              </th>
+              <th>
+                Address
+              </th>
+              <th>
+                Representative
+              </th>
+              <th>
+                Description
+              </th>
+              <th>
+                Terms
+              </th>
+              <th>
+                Past Due Amount
+              </th>
+              <th>
+                Total Due Amount
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @results.each do |result| %>
+            <tr>
+              <td>
+                <% if result.class.to_s.eql?("Customer") %>
+                <%= link_to result.name, customer_path(result) %> (Customer)
+                <% else %>
+                <%= link_to result.name, vendor_path(result) %> (Vendor)
+                <% end %>
+              </td>
+              <td>
+                Billing address
+              </td>
+              <td>
+                first name
+              </td>
+              <td>
+                Pencil
+              </td>
+              <td>
+                95
+              </td>
+              <td>
+                1.99
+              </td>
+              <td>
+                189.05
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>
+<!--body wrapper end-->

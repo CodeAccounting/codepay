@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="keyword" content="international bill processing, codeaccounting, pay anyone" />
+    <meta name="description" content="" />
+
+    <%= favicon_link_tag "favicon.png" %>
+
+    <title>CodePaying - Easy Payments To Anyone, Anywhere</title>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body class="sticky-header">
+
+    <%= yield %>
+
+    <%= javascript_include_tag 'application' %>
+
+    <%= yield :scripts %>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //countTo
+            $('.timer').countTo();
+            //owl carousel
+            $("#news-feed").owlCarousel({
+                navigation : true,
+                slideSpeed : 300,
+                paginationSpeed : 400,
+                singleItem : true,
+                autoPlay:true
+            });
+        });
+        $(window).on("resize",function(){
+            var owl = $("#news-feed").data("owlCarousel");
+            owl.reinit();
+        });
+    </script>
+  </body>
+</html>

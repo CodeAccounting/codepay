@@ -1,0 +1,80 @@
+<!-- page head start--> 
+<div class="page-head">
+  <h3 class="m-b-less">
+   Bill Information 
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <!-- <a target="_blank" href= "<%= invoice_path(format: :pdf) %>"" class ="btn btn-default btn-success btn-lg"> DOWNLOAD PDF</a> -->
+     
+    <% if flash[:errors] %>
+    <div class="alert alert-danger">
+      <ul>
+        <% flash[:errors].each do |er| %>
+        <li><%= er %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+       <form id="bill-form" action="<%= bill_information_path %>" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input name="_method" type="hidden" value="patch" />
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+          
+            <label class="control-label" for="bill_info_name"> Vendor name </label>
+            <input data-customers name="billinfo[vendor_name]" type="text" class="form-control"  placeholder="" value="">
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="bill_info_number">Vendor account</label>
+            <input id="vendor_number" name="billinfo[vendor_account]" type="text" class="form-control" value="" >
+          </div>
+        
+          <div class="form-group">
+            <label class="control-label" for="bill_info_invoice_date">Bill ID</label>
+            <input id="vendor_record_date" name="billinfo[bill_id]" class="form-control" value="<%= params[:id] %>" readonly>
+          </div>
+          <div class="form-group">
+          
+            <label class="control-label" for="bill_info_due_date">Processing Date</label>
+            <input id="vendor_due_date" name="billinfo[processing_date]" class="form-control" value="" >
+          </div>
+        </div>
+        <div class="col-md-3">
+       		<div class="form-group">
+	            <label class="control-label" for="bill_info_name"> Due Date </label>
+	            <input data-customers name="billinfo[due_date]" type="text" class="form-control"
+	            value="">
+	        </div>
+          	<div class="form-group">
+	            <label class="control-label" for="bill_info_memo">Memo</label>
+	            <input id="bill_memo" name="billinfo[memo]" type="text" class="form-control" value="">
+          	</div>
+          	<div class="form-group">
+	            <label class="control-label" for="bill_info_description">Description</label>
+	            <input id="bill_description" name="billinfo[description]" type="text" class="form-control" value="" >
+          	</div>
+          	<div class="form-group">
+	            <label class="control-label" for="bill_info_check_number">Check Number</label>
+	            <input id="bill_check_number" name="billinfo[check_number]" type="text" class="form-control" value="">
+          	</div>
+    	</div>
+  			<div class="col-md-12">
+          		<a href="<%= new_payment_path %>" class="btn btn-success">Back</a>
+              <button type="submit" class="btn btn-success" id="cleartoasts">Save changes</button>
+        	</div>
+  	</div>
+  	</form>
+  </div>
+
+</div>
+
+<!-- page end-->
+<!--body wrapper end-->

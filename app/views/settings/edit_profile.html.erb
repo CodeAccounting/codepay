@@ -1,0 +1,172 @@
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      Settings
+    </header>
+    <% if flash[:errors] %>
+    <div class="alert alert-danger">
+      <ul>
+        <% flash[:errors].each do |er| %>
+        <li><%= er %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <section class="panel">
+      <div class="panel-body">
+        <div class="btn-group btn-group-justified">
+           <a class="btn btn-warning" href="<%= edit_profile_path(current_user) %>">Profile and Identity</a>
+          <a class="btn btn-info" href="<%= bank_accounts_path(current_user) %>">Payment Accounts</a>
+          <a class="btn btn-primary" href="<%= edit_software_integration_path(current_user) %>">Software Integrations</a>
+        </div>
+      </div>
+    </section>
+    <form action="<%= user_path %>" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input name="_method" type="hidden" value="patch" />
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="user_first_name">First Name</label>
+              <input id="user_first_name" type="text" class="form-control" name="user[first_name]" placeholder="First Name" value="<%= @user.first_name %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_last_name">Last Name</label>
+              <input id="user_last_name" type="text" class="form-control" name="user[last_name]" placeholder="Last Name" value="<%= @user.last_name %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_last_name">Date of Birth</label>
+              <input id="user_dob" type="date" class="form-control" name="user[date_of_birth]" placeholder="Date of birth" value="<%= @user.date_of_birth.present? ? @user.try(:date_of_birth).strftime("%Y-%m-%d") : "" %>">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="user_last_name">Title</label>
+              <input id="user_title" type="text" class="form-control" name="user[title]" placeholder="Title" value="<%= @user.title %>">
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="user_last_name">Email</label> <i>*</i>
+              <input id="user_email" type="email" class="form-control" name="user[email]" placeholder="Email" value="<%= @user.email %>">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="user_password">Current Password</label>
+              <input id="user_password" type="password" class="form-control" name="user[current_password]" placeholder="Enter the current password">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="user_password">New Password</label> <i>(minimum 6 characters)</i>
+              <input id="user_password" type="password" class="form-control" name="user[password]" placeholder="Enter the new password">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_password">Confirm Password</label>
+              <input id="user_password" type="password" class="form-control" name="user[password_confirmation]" placeholder="Enter again">
+            </div>
+          </div>
+          <div class="col-md-4" style="min-height: 350px;">
+            <div class="form-group">
+              <label class="control-label" for="user_first_name">Profile Image</label>
+              <br/>
+              <% avatar = ProfileImage.find_or_create_by(user_id: @user.id) %>
+              <img src="<%= avatar.file.url(:thumb) %>">
+              <input id="user_avatar" type="file" class="form-control" name="user[profile_image_attributes][file]">
+              <input  type="hidden" class="form-control" name="user[profile_image_attributes][id]" value="<%= avatar.id%>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_first_name">Cover Image</label> (<i>prefered size: 1180x359</i>)
+              <br/>
+              <% cover = BackgroundImage.find_or_create_by(user_id: @user.id) %>
+              <img src="<%= cover.file.present? ? cover.file.url(:thumb) : '/assets/default-background-thumb.jpg' %>">
+              <input id="user_cover" type="file" class="form-control" name="user[background_image_attributes][file]">
+              <input type="hidden" class="form-control" name="user[background_image_attributes][id]" value="<%= cover.id%>">
+            </div>
+           
+           <!--  <div class="form-group">
+              <label class="control-label" for="user_first_name">Upload Your Identity Proof</label> (<i>prefered : Passport or Driving Licence</i>)
+              <br/>
+              <% cover = BackgroundImage.find_or_create_by(user_id: @user.id) %>
+              <img src="">
+              <input id="user_cover" type="file" class="form-control" name="user[background_image_attributes][file]">
+              <input type="hidden" class="form-control" name="user[background_image_attributes][id]" value="<%= cover.id%>">
+            </div> -->
+          </div> 
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="user_billing_address1">Billing Address</label> <i>*</i>
+              <input id="user_billing_address1" name="user[billing_address_attributes][address1]" class="form-control" placeholder="Street 1" value="<%= @billing_address.try(:address1) %>">
+              <input  type="hidden" class="form-control" name="user[billing_address_attributes][id]" value="<%= @billing_address.try(:id) %>">   
+            </div>
+            <div class="form-group">
+              <input id="user_billing_address2" name="user[billing_address_attributes][address2]" class="form-control" placeholder="Street 2" value="<%= @billing_address.try(:address2) %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_billing_city">City</label>
+              <input id="user_billing_city" name="user[billing_address_attributes][city]" class="form-control" value="<%= @billing_address.try(:city) %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_billing_state">State</label>
+              <input id="user_billing_state" name="user[billing_address_attributes][state]" class="form-control" value="<%= @billing_address.try(:state) %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_billing_zip">Zip</label>
+              <input id="user_billing_zip" name="user[billing_address_attributes][zip]" class="form-control" value="<%= @billing_address.try(:zip) %>">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="customer_shipping_address1">Shipping Address</label> <i>*</i>
+              <input id="user_shipping_address1" name="user[shipping_address_attributes][address1]" class="form-control" placeholder="Street 1" value="<%= @shipping_address.try(:address1) %>"></input>
+              <input  type="hidden" class="form-control" name="user[shipping_address_attributes][id]" value="<%= @shipping_address.try(:id) %>">
+            </div>
+            <div class="form-group">
+              <input id="user_shipping_address2" name="user[shipping_address_attributes][address2]" class="form-control" placeholder="Street 2" value="<%= @shipping_address.try(:address2) %>"></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_shipping_city">City</label>
+              <input id="user_shipping_city" name="user[shipping_address_attributes][city]" class="form-control" value="<%= @shipping_address.try(:city) %>" ></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_shipping_state">State</label>
+              <input id="user_shipping_state" name="user[shipping_address_attributes][state]" class="form-control" value="<%= @shipping_address.try(:state) %>" ></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_shipping_zip">Zip</label>
+              <input id="user_shipping_zip" name="user[shipping_address_attributes][zip]" class="form-control" value="<%= @shipping_address.try(:zip) %>" ></input>
+            </div>
+          </div>
+        </div>
+        <br>
+         <div class="form-group" style="width:330px;> 
+              <label class="control-label" for="user_first_name">ID PROOF</label> (<i>Prefered Passport or Driving Licence</i>)
+              <br/>
+              <div style="color:green;">
+              <%if current_user.identification.present? %>
+                <b><%="You Have Already Updated Your ID Proof!"%></b>
+                <%else%>
+                <b><%="Please Upload Your ID Proof!"%></b>
+              <% end %>
+              </div>
+               <select class="form-control input-small" id="onselect" name="user[identification_attributes][doc_type]"">
+                  <option value="Passport" >Passport</option>
+                  <option value="Driving Licence" >Driving Licence</option>
+              </select>
+              <% idetity = Identification.find_or_create_by(user_id: @user.id) %>
+              <input id="user_idetity" type="file" class="form-control" name="user[identification_attributes][file]"> 
+              <input type="hidden" class="form-control" name="user[identification_attributes][id]" value="<%= idetity.id%>">
+            </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-success" id="cleartoasts">Save Settings</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- page end-->
+</div>
+<!--body wrapper end

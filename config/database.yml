@@ -1,0 +1,19 @@
+default: &default
+  host: 127.0.0.1
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+  username: deploy
+  password: deploy
+
+development:
+  <<: *default
+  database: codepaying_dev
+
+test:
+  <<: *default
+  database: codepaying_test
+
+production:
+  <<: *default
+  database: codepaying_prod

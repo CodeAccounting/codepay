@@ -1,0 +1,47 @@
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      Settings
+    </header>
+    <section class="panel">
+      <div class="panel-body">
+        <div class="btn-group btn-group-justified">
+           <a class="btn btn-warning" href="<%= edit_profile_path(current_user) %>">Profile and Identity</a>
+          <a class="btn btn-info" href="<%= bank_account_path(current_user) %>">Payment Accounts</a>
+          <a class="btn btn-primary" href="<%= edit_software_integration_path(current_user) %>">Software Integrations</a>
+        </div>
+      </div>
+    </section>
+    <form action="<%= invoices_path %>" method="post">
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="invoice_customer_name">Bank Name</label>
+              <input id="bank_name" name="bank_name" type="text" class="form-control"  placeholder="Customer Name">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="invoice_customer_name">Routing Number</label>
+              <input id="routing_number" name="routing_number" type="text" class="form-control"  placeholder="Routing Number">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="invoice_customer_name">Account Number</label>
+              <input id="account_number" name="account_number" type="text" class="form-control"  placeholder="Account Number">
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-success" id="cleartoasts">Save Settings</button>
+            <button type="button" class="btn btn-danger" id="clearlasttoast">Clear Changes</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- page end-->
+</div>
+<!--body wrapper end-->

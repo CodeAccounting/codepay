@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html id="ng-app" ng-app="app"> <!-- id="ng-app" IE<8 -->
+    <head>
+       <style>
+       </style>
+        <title>Simple example</title>
+              <!-- Fix for old browsers -->
+      
+        <%= stylesheet_link_tag 'uploader' %>
+       
+        
+        
+        
+       
+    </head>
+
+    <!-- 1. ng-file-drop | ng-file-drop="options" -->
+    <body ng-controller="TestController" ng-file-drop >
+
+        <div class="container" width="100%" >
+           
+
+                <div  style="">
+                    <!--  <input ng-file-select  multiple type="file" /> -->
+                    <div id="dropContainer">
+		              <div id="upload-zone">
+		               <div id="chooseFiles" class="fileUpload" onclick="j('#browse_input').click();" ><%=I18n.t('generic.uploader.choose_files')%>
+		               </div>
+		                <input ng-file-select  multiple type="file" class="upload" id="browse_input" style="display:none"/>	
+		               <p id="dragDropTag"><span style="color:#609EBF"><%=I18n.t('generic.uploader.drag')%></span> & <span style="color:#609EBF"><%=I18n.t('generic.uploader.drop')%> </span><%=I18n.t('generic.uploader.files')%> <br/><span style="font-weight:700;font-size:1.5em"><%=I18n.t('generic.uploader.anywhere')%></span><br/><span style="font-size:1.1em"><%=I18n.t('generic.uploader.screen')%></span></p>
+		             </div>
+		           </div> 
+                </div>
+
+                <div  class="uploader" style="float:left;display:none;width:100%" id="upload_container_div">
+
+                    <table class="uploading_list"  style="float:left; border-collapse: collapse;" width="100%">
+                        <thead>
+                            <tr>
+                            	 <th style="width: 25%"  align="center" ng-show="uploader.isHTML5"><%=I18n.t('generic.uploader.ad_name')%></th>
+                            	 <th style="width: 50%" align="center" ng-show="uploader.isHTML5"><%= I18n.t('campaigns.ads.form.section') %></th>
+                            	 <th style="width: 25%" ng-show="uploader.isHTML5"><%=I18n.t('generic.uploader.ad_duration')%></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="item in uploader.queue">
+
+                             	
+                               
+                                <tr>
+                                <td class="no-padding-uplloader" colspan="2" style="<%= params[:action] == 'ad_create' ?  'width:80%' : 'width:80%' %>;background-color:{{ ($index) % 2 == 0 ? '#ffffff' : '#dddddd' }};border: 1px solid {{ ($index) % 2 == 0 ? '#ffffff' : '#dddddd' }}" ng-show="uploader.isHTML5">
+                                	
+                                	<div>
+                                    
+                                	  <i style="font-size:smaller" >{{ item.file.name.length >= 20 ? item.file.name.slice(0,19) + '...' +  item.file.name.slice(-3)  :  item.file.name }}
+                                      <span ng-show="uploader.isHTML5"  nowrap>{{ item.file.size/1024/1024|number:2 }}MB</span>
+                                      <input ng-show="item.isSuccess" type="hidden" name="ads[][uploaded_file]" value="{{item.remote_file}}"> 
+                                       
+                                     </i>
+                                     <span ng-show="item.isSuccess" ><%=image_tag "green_check.png",{:id => 'complite_green_check' ,:style => "width:10pxd;height:10px" } %></span>
+                                     <div ng-show="item.isError"><%=image_tag "dialog_warning.png" %><span style="color:red">{{item.error_message}}</span></div>
+                                   </div>
+                                    
+                                    <div class="progress" style="margin-bottom: 0">
+                                        <div class="progress-bar" ng-show="!item.isError" role="progressbar" ng-style="{ 'width': item.progress + '%' }" ><span style="color:#000000">{{ item.progress == null ? '0%' : item.progress + '%'  }}</span></div>
+                                        <div class="progress-bar" ng-show="item.isError" role="progressbar" ng-style="{ 'width':'0%' }"><span style="color:#000000">0%</span></div>
+                                    
+                                    </div>
+                                </td>
+                                <td class="no-padding-uplloader" style="width:20%;background-color:{{ ($index) % 2 == 0 ? '#ffffff' : '#dddddd' }};border: 1px solid {{ ($index) % 2 == 0 ? '#ffffff' : '#dddddd' }}">
+                                	<br>
+                                	 
+                                      <img  ng-show="item.isUploading"  class="red_x" src="/images/stop.png" ng-click="item.cancel()">
+                                      <img  ng-show="item.isCancel"  class="red_x" src="/images/download.png" ng-click="item.upload()">
+                                      <img  ng-controller="MyCtrl"  id="cancel_upload_btn_div"  class="red_x" src="/images/no.png" ng-click="removeItem(item,{{$index}})">
+                                     <%if params[:action] == 'ad_create'%>
+                                            <img ng-controller="MyCtrl" ng-click="showItemPreview(item,{{$index}})"  type="hidden" ng-show="item.isSuccess" type="hidden" id="eye_{{ $index }}" class="eye_elem_upload" src="/images/preview_eye.png" temp_file_name="{{item.remote_file}}" >
+                                            <img src="/images/expand_no_checked.png" id="playing_ad_{{$index}}" style="display:none;padding-bottom:15px;padding-left:3px" >
+                                     <%end%>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                   
+                </div>
+
+           
+
+        </div>
+
+    </body>
+</html>
+

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
+    <meta name="keyword" content="international bill processing, codeaccounting, pay anyone" />
+    <meta name="description" content="" />
+    <title>CodePayer - Easy International Payments</title>
+    <!-- Favicon -->
+    <%= favicon_link_tag "landing/favicon.png" %>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <%= stylesheet_link_tag    'landing', media: 'all' %>
+    <%= csrf_meta_tags %>
+    <!-- 1140px Grid styles for IE -->
+    <!--[if lte IE 9]><link rel="stylesheet" href="lib/assets/ie.css" type="text/css" media="screen" /><![endif]-->
+  </head>
+
+  <body>
+    <!-- BEGIN LivePerson Monitor. -->
+<script type="text/javascript"> window.lpTag=window.lpTag||{};if(typeof window.lpTag._tagCount==='undefined'){window.lpTag={site:'20378007'||'',section:lpTag.section||'',autoStart:lpTag.autoStart===false?false:true,ovr:lpTag.ovr||{},_v:'1.5.1',_tagCount:1,protocol:location.protocol,events:{bind:function(app,ev,fn){lpTag.defer(function(){lpTag.events.bind(app,ev,fn);},0);},trigger:function(app,ev,json){lpTag.defer(function(){lpTag.events.trigger(app,ev,json);},1);}},defer:function(fn,fnType){if(fnType==0){this._defB=this._defB||[];this._defB.push(fn);}else if(fnType==1){this._defT=this._defT||[];this._defT.push(fn);}else{this._defL=this._defL||[];this._defL.push(fn);}},load:function(src,chr,id){var t=this;setTimeout(function(){t._load(src,chr,id);},0);},_load:function(src,chr,id){var url=src;if(!src){url=this.protocol+'//'+((this.ovr&&this.ovr.domain)?this.ovr.domain:'lptag.liveperson.net')+'/tag/tag.js?site='+this.site;}var s=document.createElement('script');s.setAttribute('charset',chr?chr:'UTF-8');if(id){s.setAttribute('id',id);}s.setAttribute('src',url);document.getElementsByTagName('head').item(0).appendChild(s);},init:function(){this._timing=this._timing||{};this._timing.start=(new Date()).getTime();var that=this;if(window.attachEvent){window.attachEvent('onload',function(){that._domReady('domReady');});}else{window.addEventListener('DOMContentLoaded',function(){that._domReady('contReady');},false);window.addEventListener('load',function(){that._domReady('domReady');},false);}if(typeof(window._lptStop)=='undefined'){this.load();}},start:function(){this.autoStart=true;},_domReady:function(n){if(!this.isDom){this.isDom=true;this.events.trigger('LPT','DOM_READY',{t:n});}this._timing[n]=(new Date()).getTime();},vars:lpTag.vars||[],dbs:lpTag.dbs||[],ctn:lpTag.ctn||[],sdes:lpTag.sdes||[],ev:lpTag.ev||[]};lpTag.init();}else{window.lpTag._tagCount+=1;} </script>
+<!-- END LivePerson Monitor. -->
+
+    <!--begin top section -->
+    <div id="top_section">
+      <!--begin header_wrapper -->
+      <header id="header_wrapper">
+        <!--begin header -->
+        <div id="header" class="clearfix">
+          <!--begin logo -->
+          <a href="#top_section" id="logo"><%= image_tag "landing/logo.png", retna: true, alt: "logo" %></a>
+          <!--end logo -->
+          <!--begin nav -->
+          <!-- <nav id="navigation" role="navigation">
+            <ul id="nav"> -->
+              <!-- <li>
+                <a href="#overview"><span style="color:#36FF00">Overview</span></a>
+              </li> -->
+              <!-- <li> -->
+                <!-- <a href="/users/sign_up"><span style="color:#36FF00">Sign up</span></a> -->
+              <!-- </li>
+              </ul>
+          </nav> -->
+          <!--end nav -->
+          <a href="/users/sign_up" class="button_green alignright"><strong>Sign Up</strong></a>
+          <a href="users/sign_in" class="button_green alignright"><strong>Log In</strong></a>
+        </div>
+        <!--end header -->
+      </header>
+      <!--end header_wrapper -->
+
+      <!--begin home section -->
+      <div id="home">
+
+        <!--begin home_box -->
+        <div class="home_box">
+
+          <!--begin row -->
+          <div class="row align_center">
+
+            <h1 class="home_title"> Easy International and Multi-Currency Payments.</h1>
+
+            <h2 class="home_subtitle">Pay and get paid quickly, around the world, without any hassle.</h2>
+
+          </div>
+          <!--end row -->
+
+        </div>
+        <!-- end home_box -->
+
+      </div>
+      <!--end home section -->
+
+    </div>
+    <!--end top section -->
+
+    <!--begin container -->
+    <div id="container">
+
+      <!--begin overview section -->
+      <section id="overview" class="section_wrapper" style="background:black">
+
+        <!--begin intro_box -->
+        <div class="intro_box">
+
+          <!--begin row -->
+          <div class="row">
+
+            <!--begin twelvecol -->
+            <div class="twelvecol align_center">
+
+
+              <h3><span style="color:white">Don't ever pay too much to keep track of your money</span></h3>
+
+            </div>
+            <!--end twelvecol -->
+
+          </div>
+          <!--end row -->
+
+        </div>
+        <!--end intro_box -->
+
+      </section>
+      <!--end overview section -->
+
+      <!--begin section_wrapper -->
+      <div id="showcase" class="section_wrapper grey_bg">
+
+        <!--begin section_full -->
+        <div class="section_full">
+
+          <!--begin half_col -->
+          <div class="half_col">
+
+            <%= image_tag "landing/creditcards.jpg" %>
+
+          </div>
+          <!--end half_col -->
+
+          <!--begin half_col -->
+          <div class="half_col">
+
+            <!--begin half_col_inside -->
+            <div class="half_col_inside">
+
+              <h2 class="page_subtitle">Designed for business, built for everyone.</h2>
+
+              <h5>Clean, Simple &amp; Elegant</h5>
+
+              <p>Keep full and accurate accounting records of all payments, consolidate payment information for tax reporting, make payments without any unreasonable restrictions, and do it all quickly and easily.</p>
+
+              <!--begin store_icons -->
+              <!-- <ul class="store_icons">
+                <li>
+                <a href="#">
+                <i class="icon icon-apple"></i>
+                </a>
+                </li>
+                <li>
+                <a href="#">
+                <i class="icon icon-android"></i>
+                </a>
+                </li>
+                <li>
+                <a href="#">
+                <i class="icon icon-windows"></i>
+                </a>
+                </li>
+                </ul> -->
+                <!--end store_icons -->
+
+            </div>
+            <!--end half_col_inside -->
+
+          </div>
+          <!--end half_col -->
+
+        </div>
+        <!--end section_full -->
+
+        <!--begin section_full -->
+        <div class="section_full">
+
+          <!--begin half_col -->
+          <div class="half_col">
+
+            <!--begin half_col_inside -->
+            <div class="half_col_inside">
+
+              <h3>Amazing Minimal Design</h3>
+
+              <p>Strength in simplicity. We build everything for easy access to your money and information on where it is sent.</p>
+
+              <p>No hidden fees and no limitations.</p>
+
+              <!-- <a href="#" class="button_transparent button_small">Discover More</a> -->
+
+            </div>
+            <!--end half_col_inside -->
+
+          </div>
+          <!--end half_col -->
+
+          <!--begin half_col -->
+          <div class="half_col">
+
+            <%= image_tag "landing/ripple-map1.png", retna: true %>
+
+          </div>
+          <!--end half_col -->
+
+        </div>
+        <!--end section_full -->
+
+      </div>
+      <!-- end section_wrapper -->
+
+      <!-- begin newsletter_wrapper -->
+      <div id="subscribe" class="newsletter_wrapper">
+
+        <!--begin info_transparent -->
+        <div class="info_transparent">
+          <h3>Sign up for the CodePayer <br>newsletter below</h3>
+        </div>
+        <!--end info_transparent -->
+
+        <!-- begin newsletter_box -->
+        <div class="newsletter_box">
+
+          <!-- begin row -->
+          <div class="row">
+
+            <!-- begin twelvecol -->
+            <div class="twelvecol">
+
+              <!--begin newsletter_form_wrap -->
+              <div class="newsletter_form_wrap">
+
+                <!--begin success_box -->
+                <p class="success_box" style="display:none;">We received your message and you'll hear from us soon. Thank You!</p>
+                <!--end success_box -->
+
+                <!--begin newsletter-form -->
+                <form class="newsletter_form" action="/beta_signups" method="post">
+                  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+                  <input id="email_newsletter" type="email" name="signup[email]" placeholder="Your Email Address" />
+                  <input type="submit" value="Subscribe!" id="submit-button-newsletter" />
+                </form>
+                <!--end newsletter-form -->
+
+                <!-- <span class="nospam">We don't spam! We promise :) </span>  -->
+
+              </div>
+              <!--end newsletter_form_wrap -->
+
+            </div>
+            <!-- end twelvecol -->
+
+          </div>
+          <!-- end row -->
+
+        </div>
+        <!-- end newsletter_box -->
+
+      </div>
+      <!-- end newsletter_wrapper -->
+
+    </div>
+    <!--! end of #container -->
+
+    <!--begin footer -->
+    <footer id="footer" class="top_border">
+
+      <!--begin footer_box -->
+      <div id="footer_box">
+
+        <!--begin row -->
+        <div class="row">
+
+          <!--begin twelvecol -->
+          <div class="twelvecol align_center">
+
+            <!--begin copyright -->
+            <div class="copyright ">
+              <p><a href="http://www.codeaccounting.com">© Copyright 2015, CodeAccounting P.C.</a></p>
+
+            </div>
+            <!--end copyright -->
+
+            <!--begin footer_social -->
+            <ul class="footer_social">
+              <li>
+                <a href="http://www.twitter.com/codeaccounting">
+                  <i class="icon icon-twitter"></i>
+                </a>
+              </li>
+              <!-- <li>
+                <a href="#">
+                <i class="icon icon-pinterest"></i>
+                </a>
+                </li> -->
+                <li>
+                  <a href="http://www.facebook.com/codeaccounting">
+                    <i class="icon icon-facebook"></i>
+                  </a>
+                </li>
+                <!-- <li>
+                  <a href="#">
+                  <i class="icon icon-instagram"></i>
+                  </a>
+                  </li>
+                  <li>
+                  <a href="#">
+                  <i class="icon icon-youtube"></i>
+                  </a>
+                  </li>
+                  <li>
+                  <a href="#">
+                  <i class="icon icon-skype"></i>
+                  </a>
+                  </li>
+                  <li>
+                  <a href="#">
+                  <i class="icon icon-dribble"></i>
+                  </a>
+                  </li> -->
+            </ul>
+            <!--end footer_social -->
+
+          </div>
+          <!--end twelvecol -->
+
+        </div>
+        <!--end row -->
+
+      </div>
+      <!--end footer_box -->
+
+    </footer>
+    <!--end footer -->
+
+    <%= javascript_include_tag 'landing' %>
+  </body>
+</html>

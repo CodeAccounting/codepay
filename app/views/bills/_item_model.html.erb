@@ -1,0 +1,25 @@
+<div class="modal fade" id="new-item-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create Item</h4>
+      </div>
+      <div id="item-error" class="alert alert-danger"> </div>
+      <form id="item-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label" for="item_name">Name</label>
+            <input id="item_name" name="item[name]" type="text" class="form-control" >
+            <input id="item_name" name="item[item_of]" type="hidden" class="form-control" value="Bill" >
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="save-item">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

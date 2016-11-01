@@ -1,0 +1,197 @@
+  <!-- page head start-->
+       <div class="page-head">
+           <h3 class="m-b-less">
+               Payment Information
+           </h3>
+           <!--<span class="sub-title">Welcome to Static Table</span>-->
+           <div class="state-information">
+               <ol class="breadcrumb m-b-less bg-less">
+                   <li class="active"><a href="#">All Active Bills</a></li>
+                   <li><a href="#">Active and Archived</a></li>
+               </ol>
+           </div>
+       </div>
+       <!-- page head end-->
+
+       <div class="wrapper">
+           <%if flash[:error]%>
+          <div class ="alert alert-danger">
+            <ul>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <%= flash[:error]%>
+            </ul>
+          </div>
+          <%end%>
+         <div class="row">
+               <div class="col-sm-12">
+                    <form action="<%= pay_bills_path %>" method="post" >
+                      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                      <section class="panel">
+                       <header class="panel-heading ">
+                           <button type="submit" id="pay_bill"  class="btn btn-default btn-success btn-lg">PAY BILLS</button>
+                          <!--  <button id="create_bill" type="button" class="btn btn-default btn-success btn-lg">Create Bill</button> -->
+                           <a href="<%= new_bill_path %>" class="btn btn-default btn-success btn-lg">Create Bill</a>
+                           <span class="tools pull-right">
+                               <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+                               <a class="t-close fa fa-times" href="javascript:;"></a>
+                           </span>
+                           <br/><br/>
+                           <div class="DTTT btn-group">
+                                 <a class="btn btn-default DTTT_button_copy" id="ToolTables_DataTables_Table_0_0" tabindex="0" aria-controls="DataTables_Table_0">
+                                   <span>Copy</span>
+                                   <div style="position: absolute; left: 0px; top: 0px; width: 59px; height: 34px; z-index: 99;">
+                                     <embed id="ZeroClipboard_TableToolsMovie_1" src="/swf/copy_csv_xls_pdf.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="59" height="34" name="ZeroClipboard_TableToolsMovie_1" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=59&amp;height=34" wmode="transparent">
+                                     </div>
+                                       </a>
+                                 <a class="btn btn-default DTTT_button_csv" id="ToolTables_DataTables_Table_0_1" tabindex="0" aria-controls="DataTables_Table_0">
+                                   <span>CSV</span>
+                                   <div style="position: absolute; left: 0px; top: 0px; width: 54px; height: 34px; z-index: 99;">
+                                     <embed id="ZeroClipboard_TableToolsMovie_2" src="/swf/copy_csv_xls_pdf.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="54" height="34" name="ZeroClipboard_TableToolsMovie_2" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=2&amp;width=54&amp;height=34" wmode="transparent">
+                                     </div>
+                                       </a>
+                                 <a class="btn btn-default DTTT_button_xls" id="ToolTables_DataTables_Table_0_2" tabindex="0" aria-controls="DataTables_Table_0">
+                                   <span>Excel</span>
+                                   <div style="position: absolute; left: 0px; top: 0px; width: 61px; height: 34px; z-index: 99;">
+                                     <embed id="ZeroClipboard_TableToolsMovie_3" src="/swf/copy_csv_xls_pdf.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="61" height="34" name="ZeroClipboard_TableToolsMovie_3" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=3&amp;width=61&amp;height=34" wmode="transparent">
+                                     </div>
+                                       </a>
+                                 <a class="btn btn-default DTTT_button_pdf" id="ToolTables_DataTables_Table_0_3" tabindex="0" aria-controls="DataTables_Table_0">
+                                   <span>PDF</span>
+                                   <div style="position: absolute; left: 0px; top: 0px; width: 54px; height: 34px; z-index: 99;">
+                                     <embed id="ZeroClipboard_TableToolsMovie_4" src="/swf/copy_csv_xls_pdf.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="54" height="34" name="ZeroClipboard_TableToolsMovie_4" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=4&amp;width=54&amp;height=34" wmode="transparent">
+                                     </div>
+                                       </a>
+                                 <a class="btn btn-default DTTT_button_print" id="ToolTables_DataTables_Table_0_4" title="View print view" tabindex="0" aria-controls="DataTables_Table_0">
+                                   <span>Print</span>
+                                     </a>
+                             </div>
+                       </header>
+                       <table class="table colvis-data-table data-table">
+                         <thead>
+                           <tr>
+                               <th>
+                                   Select Bills To Pay
+                               </th>
+                               <th>
+                                   Vendor
+                               </th>
+
+                               <th>
+                                   Bill Number
+                               </th>
+                               
+                               <th>
+                                   Bill Date
+                               </th>
+                               
+                               <th>
+                                   Due Date
+                               </th>
+                               
+                               <th>
+                                   Status
+                               </th>
+                               
+                           </tr>
+                         </thead>
+                         <tbody>
+                            <% @bills.each do |bill| %>
+                            <tr>
+                              <td>
+                                 <label>
+                                  <% if bill.approvals.present? %>
+                                    <% if bill.status_check == "Pending" || bill.status_check == "Cancelled" %>
+                                      <input type="checkbox" disabled > <label for="debugInfo">Pay Now</label>
+                                    <% else %>
+                                      <% if bill.paid %>
+                                        <input type="checkbox" disabled > <label for=  "debugInfo">Pay Now</label>
+                                      <% elsif bill.paid == nil%>
+                                        <input type="checkbox" disabled > <label for=  "debugInfo">Pay Now</label>  
+                                      <% else%>
+                                          <input type="checkbox" value="<%= bill.id%>"  name="bill_ids[]" > <label for="debugInfo">Pay Now</label>
+                                      <%end%>
+                                    <% end %> 
+                                  <%else%>
+                                      <% if bill.paid%>
+                                        <input type="checkbox" disabled > <label for=  "debugInfo">Pay Now</label>
+                                      <% elsif bill.paid == nil%>
+                                        <input type="checkbox" disabled > <label for=  "debugInfo">Pay Now</label>  
+                                      <%else%>
+                                          <input type="checkbox" value="<%= bill.id%>"  name="bill_ids[]" > <label for="debugInfo">Pay Now</label>
+                                      <%end%>
+                                  <%end%>    
+                                 </label>
+                              </td>
+                              <td><%= bill.vendor.name.try(:capitalize) %></td>
+                              <td><%= bill.bill_number%></td>
+                              <td><%= bill.bill_date.strftime("%d %B %Y") %></td>
+                              <td><%= bill.due_date.strftime("%d %B %Y") %> </td>
+                              <td><% if bill.approvals.present? %>
+                                      <% if bill.status_check == "Approved" %>
+                                          Unpaid/Approved
+                                      <% else %> 
+                                          <%= bill.status_check == "Pending" ? "Unpaid/Pending" : "Cancelled" %> 
+                                      <%end%>
+                                    <%elsif bill.paid%>
+                                        <%= link_to "Paid",bill_information_path(bill) %>
+                                    <%elsif bill.paid == nil%>
+                                        <%#= link_to "Paid",bill_information_path(bill) %>    
+                                        <%= "Waiting"%>    
+                                  <%else%>
+                                        Unpaid 
+                                  <%end%>       
+                              </td>
+                            </tr>
+                            <% end %>
+                         </tbody>
+                       </table>
+                   </section>
+                  </form>
+               </div>
+           </div>
+
+       </div>
+
+<%#= render "create_bill_model" %>
+       <!--body wrapper end-->
+
+<% content_for :scripts_autocomplete do %>
+  <script type="text/javascript">
+
+    // $('#create_bill').on('click', function (event) {
+    //       $('#create-bill-modal').modal('show');
+    // });
+
+    // $('#attachment-form').on('submit', function (e) {
+    //     e.preventDefault()
+    //     var formData = new FormData(this);
+    //     $.ajax({
+    //       url: "/attachments",
+    //       type: "POST",
+    //       processData: false,
+    //       contentType: false,
+    //       data: formData,
+    //       dataType: "json",
+    //       success: function (object) {
+    //         debugger;
+    //         // $('#new-addressref-modal').modal('hide');
+    //       },
+    //       error: function (resp) {
+    //         debugger;
+    //         var errorDiv = $('<div class="alert alert-danger">');
+    //         errorDiv.text(resp.responseJSON[0]);
+    //         // $('#addressref-form').prepend(errorDiv);
+    //       },
+    //     });
+    //   });
+
+
+
+    // $('#Save_attachment').on('click',function(event){
+    //     var val = $('#progress').val();
+    //     for (i = 0; i <= 100 ; i++){
+    //        $('#progress').val(i);
+    //     }
+    // });
+  </script>
+<%end%>

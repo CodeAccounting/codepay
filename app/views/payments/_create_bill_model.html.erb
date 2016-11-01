@@ -1,0 +1,31 @@
+<div class="modal fade" id="create-bill-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <%if flash[:error] %>
+        <div class="alert alert-danger">
+          <ul>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <li><%= flash[:error] %></li>
+          </ul>
+        </div>
+    <% end %>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create Bill</h4>
+      </div>
+      <div id="customer-error" class="alert alert-danger"> </div>
+        <form id="attachment-form" enctype="multipart/form-data" method="post">
+          <div class="modal-body">
+            <label>Please Choose / Drag and Drop Files Here</label>
+            <input id="user_idetity" type="file" class="form-control" name="document[attachment][]" multiple="multiple" style="width:330px; height:100px;">
+            <button id="Save_attachment" type="button" class="attachment_button btn btn-success"  style="margin-top: 10px;" >Save Attachment</button>
+            <progress id="progress" value="0" max="100">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="save-contact">Save changes</button>
+          </div>
+        </form>
+      </div>
+  </div>
+</div>

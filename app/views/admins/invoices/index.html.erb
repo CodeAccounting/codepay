@@ -1,0 +1,93 @@
+<div class="page-head">
+  <h3 class="m-b-less">
+  Invoices
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li class="active"><a href="#">All Active Invoices</a></li>
+      <li><a href="#">Active and Archived</a></li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <% if flash[:notice] or flash[:error] %>
+          <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <%= flash[:notice] %>
+            <%= flash[:error] %>
+          </div>
+        <% end %>
+
+          <header class="panel-heading head-border">
+          Current Organization Invoices
+          </header>
+          <table class="table invoice-data-table data-table">
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <th>Invoice Number</th>
+                <th>Invoice Date</th>
+                <th>Due Date</th>
+                <th>Due Amount</th>
+                <th>Payment Terms</th>
+                <th>Location</th>
+                <th>Department</th>
+                <th>Template</th>
+                <th>PO Number</th>
+                <th>Sales REP</th>
+                <th>Message</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @invoices.each do |invoice| %>
+              <tr>
+                <td><%= link_to invoice.customer.name.capitalize, admin_customer_path(invoice.customer) %>
+                </td>
+                <td>
+                  <% if invoice.deleted_at %>
+                  VOIDED (<%= link_to "RESTORE", restore_invoice_path(invoice) %>)
+                  <% else %>
+                  <%= invoice.invoice_number %> (<%= link_to "SHOW", admin_invoice_path(invoice) %>)
+                  <% end %>
+                </td>
+                <td><%= invoice.invoice_date.strftime("%d %B %Y") %> </td>
+                <td><%= invoice.due_date.strftime("%d %B %Y") %> </td>
+                <td>$<%= invoice.due_amount %> </td>
+                <td><%= invoice.payment_term.try(:name) %> </td>
+                <td><%= invoice.location.try(:name) %> </td>
+                <td><%= invoice.department.try(:name) %> </td>
+                <td><%= invoice.invoice_template_id %> </td>
+                <td><%= invoice.po_number %> </td>
+                <td><%= invoice.sales_rep %> </td>
+                <td><%= invoice.message %> </td>
+                <% if invoice.approvals.present?%>
+                  <% if invoice.received == false || invoice.received == nil %>
+                    <% if invoice.status_check == "Approved" %>
+                      <td><b>UNPAID/APPROVED</b></td>
+                    <%else%>
+                      <td><b><%= invoice.status_check == "Pending" ? "UNPAID/PENDING" : "CANCELLED" %></b></td>
+                    <%end%>      
+                  <%else%>
+                    <td><b>PAID</b></td>
+                  <%end%>
+                <%else%>
+                  <% if invoice.received == false%>
+                    <td><b>UNPAID</b></td>
+                  <%else%>
+                    <td><b>PAID</b></td>
+                  <%end%>  
+                <%end%>       
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+      </section>
+    </div>
+  </div>
+</div>

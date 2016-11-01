@@ -1,0 +1,115 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Send Invoices Reminder
+  </h3>
+  <!--<span class="sub-title">Welcome to Static Table</span>-->
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li class="active"><a href="#">All Active Invoices</a></li>
+      <li><a href="#">Active and Archived</a></li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <% if flash[:error] %>
+        <div class="alert alert-danger">
+          <ul>
+            <li><%= flash[:error] %></li>
+          </ul>
+        </div>
+        <% end %>
+        <form action="<%= invoice_reminders_path %>" method="post">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <header class="panel-heading ">
+            <button type="submit" class="btn btn-default btn-success btn-lg">SEND REMINDERS</button>
+            <span class="tools pull-right">
+              <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+              <a class="t-close fa fa-times" href="javascript:;"></a>
+            </span>
+            <br/><br/>
+            <div class="DTTT btn-group">
+              <a class="btn btn-default DTTT_button_copy" id="ToolTables_DataTables_Table_0_0" tabindex="0" aria-controls="DataTables_Table_0">
+                <span>Copy</span>
+                <div style="position: absolute; left: 0px; top: 0px; width: 59px; height: 34px; z-index: 99;">
+                  <embed id="ZeroClipboard_TableToolsMovie_1" src="/swf/copy_csv_xls_pdf.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="59" height="34" name="ZeroClipboard_TableToolsMovie_1" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=59&amp;height=34" wmode="transparent">
+                </div>
+              </a>
+              <a class="btn btn-default DTTT_button_csv" id="ToolTables_DataTables_Table_0_1" tabindex="0" aria-controls="DataTables_Table_0">
+                <span>CSV</span>
+                <div style="position: absolute; left: 0px; top: 0px; width: 54px; height: 34px; z-index: 99;">
+                  <embed id="ZeroClipboard_TableToolsMovie_2" src="/swf/copy_csv_xls_pdf.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="54" height="34" name="ZeroClipboard_TableToolsMovie_2" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=2&amp;width=54&amp;height=34" wmode="transparent">
+                </div>
+              </a>
+              <a class="btn btn-default DTTT_button_xls" id="ToolTables_DataTables_Table_0_2" tabindex="0" aria-controls="DataTables_Table_0">
+                <span>Excel</span>
+                <div style="position: absolute; left: 0px; top: 0px; width: 61px; height: 34px; z-index: 99;">
+                  <embed id="ZeroClipboard_TableToolsMovie_3" src="/swf/copy_csv_xls_pdf.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="61" height="34" name="ZeroClipboard_TableToolsMovie_3" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=3&amp;width=61&amp;height=34" wmode="transparent">
+                </div>
+              </a>
+              <a class="btn btn-default DTTT_button_pdf" id="ToolTables_DataTables_Table_0_3" tabindex="0" aria-controls="DataTables_Table_0">
+                <span>PDF</span>
+                <div style="position: absolute; left: 0px; top: 0px; width: 54px; height: 34px; z-index: 99;">
+                  <embed id="ZeroClipboard_TableToolsMovie_4" src="/swf/copy_csv_xls_pdf.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="54" height="34" name="ZeroClipboard_TableToolsMovie_4" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=4&amp;width=54&amp;height=34" wmode="transparent">
+                </div>
+              </a>
+              <a class="btn btn-default DTTT_button_print" id="ToolTables_DataTables_Table_0_4" title="View print view" tabindex="0" aria-controls="DataTables_Table_0">
+                <span>Print</span>
+              </a>
+            </div>
+          </header>
+          <table class="table colvis-data-table data-table">
+            <thead>
+              <tr>
+                <th>
+                  Select Customer Invoices
+                </th>
+                <th>
+                  Due Date
+                </th>
+                <th>
+                  Vendor
+                </th>
+                <th>
+                  Memo
+                </th>
+                <th>
+                  Credits
+                </th>
+                <th>
+                  Cost
+                </th>
+                <th>
+                  Total Due
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% current_user.created_invoices.each do |invoice| %>
+              <tr>
+                <td>
+                  <label class="check-success">
+                    <input type="checkbox" name="ids[<%= invoice.id %>]" id="debugInfo"> <label for="debugInfo">Remind</label>
+                  </label>
+                </td>
+                <td><%= invoice.due_date.strftime("%d %B %Y") %></td>
+                <td><%= invoice.customer.primary_contact.full_name.try(:capitalize) %></td>
+                <td> memo here </td>
+                <td> credits here </td>
+                <td> cost here </td>
+                <td><%= invoice.due_amount %> </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
+<!--body wrapper end-->

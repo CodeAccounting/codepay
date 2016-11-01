@@ -1,0 +1,73 @@
+<!-- page head start--> 
+<div class="page-head">
+  <h3 class="m-b-less">
+  Bill Information 
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <!-- <a target="_blank" href= "<%= invoice_path(format: :pdf) %>"" class ="btn btn-default btn-success btn-lg"> DOWNLOAD PDF</a> -->
+
+    <% if flash[:notice] %>
+    <div class="alert alert-danger">
+      <%= flash[:notice] %>
+    </div>
+    <% end %>
+    <header class="panel-heading head-border">
+    </header>
+    <form id="bill-form" action="<%= admins_create_bill_payment_path%>" method="post">
+       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-4">
+            <div class="form-group">
+            
+              <label class="control-label" for="payment_info_name"> Vendor name </label>
+              <input data-customers id="vendor_name" type="text" class="form-control"  placeholder="Vendor Name" name="payment_info[vendor_name]" value="<%= @bill.vendor.name%>" readonly >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="payment_info_number">Vendor account</label>
+              <input id="vendor_number" name="payment_info[vendor_account]" type="text" class="form-control" >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="payment_info_invoice_date">Bill ID</label>
+              <input id="vendor_record_date" class="form-control" value="<%= @bill.id%>" readonly >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="payment_info_due_date">Processing Date</label>
+              <input type="date" id="vendor_due_date" name="payment_info[processing_date]" class="form-control" >
+            </div>
+          </div>
+          <div class="col-md-3">
+         		<div class="form-group">
+  	            <label class="control-label" for="payment_info_name"> Due Date </label>
+  	            <input data-customers id="vendor_name" type="text" class="form-control" name="payment_info[due_date]" value="<%= @bill.due_date.strftime("%d-%B-%Y") %>" readonly>
+  	        </div>
+            	<div class="form-group">
+  	            <label class="control-label" for="payment_info_memo">Memo</label>
+  	            <input id="bill_memo" name="payment_info[memo]" type="textfield" class="form-control">
+            	</div>
+            	<div class="form-group">
+  	            <label class="control-label" for="payment_info_description">Description</label>
+  	            <input id="bill_description" name="payment_info[description]" type="textfield" class="form-control">
+            	</div>
+            	<div class="form-group">
+  	            <label class="control-label" for="payment_info_check_number">cheque Number</label>
+  	            <input id="bill_check_number" name="payment_info[check_number]" type="text" class="form-control" >
+            	</div>
+      	  </div>
+    			<div class="col-md-12">
+        		<a href="<%= admins_bill_pay_request_path(params[:id]) %>" class="btn btn-danger">Back</a>
+            <button type="submit" class="btn btn-success create_bill" id="save_bill">Mark Bill As Paid</button>
+          </div>
+    	  </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- page end-->
+<!--body wrapper end-->

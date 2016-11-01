@@ -1,0 +1,100 @@
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      User Detail 
+    </header>
+    <% if flash[:errors] %>
+    <div class="alert alert-danger">
+      <ul>
+        <% flash[:errors].each do |er| %>
+        <li><%= er %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %> 
+
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="user_first_name">First Name</label>
+              <input id="user_first_name" type="text" class="form-control" name="user[first_name]" placeholder="First Name" value="<%= @user.first_name %>" readonly>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_last_name">Last Name</label>
+              <input id="user_last_name" type="text" class="form-control" name="user[last_name]" placeholder="Last Name" value="<%= @user.last_name %>" readonly>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_last_name">Date of Birth</label>
+              <input id="user_dob" type="date" class="form-control" name="user[date_of_birth]" placeholder="Date of birth" value="<%= @user.date_of_birth.present? ? @user.try(:date_of_birth).strftime("%Y-%m-%d") : "" %>" readonly>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="user_last_name">Title</label>
+              <input id="user_title" type="text" class="form-control" name="user[title]" placeholder="Title" value="<%= @user.title %>" readonly>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="user_last_name">Email</label> <i>*</i>
+              <input id="user_email" type="email" class="form-control" name="user[email]" placeholder="Email" value="<%= @user.email %>" readonly>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="user_billing_address1">Billing Address</label> <i>*</i>
+              <input id="user_billing_address1" name="user[billing_address_attributes][address1]" class="form-control" placeholder="Street 1" value="<%= @billing_address.try(:address1) %>" readonly>
+              <input  type="hidden" class="form-control" name="user[billing_address_attributes][id]" value="<%= @billing_address.try(:id) %>" readonly>   
+            </div>
+            <div class="form-group" style="margin-top:45px;">
+              <input id="user_billing_address2" name="user[billing_address_attributes][address2]" class="form-control" placeholder="Street 2" value="<%= @billing_address.try(:address2) %>" readonly>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_billing_city">City</label>
+              <input id="user_billing_city" name="user[billing_address_attributes][city]" class="form-control" value="<%= @billing_address.try(:city) %>" readonly>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_billing_state">State</label>
+              <input id="user_billing_state" name="user[billing_address_attributes][state]" class="form-control" value="<%= @billing_address.try(:state) %>" readonly>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="customer_billing_zip">Zip</label>
+              <input id="user_billing_zip" name="user[billing_address_attributes][zip]" class="form-control" value="<%= @billing_address.try(:zip) %>" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="customer_shipping_address1">Shipping Address</label> <i>*</i>
+              <input id="user_shipping_address1" name="user[shipping_address_attributes][address1]" class="form-control" placeholder="Street 1" value="<%= @shipping_address.try(:address1) %>" readonly></input>
+              <input  type="hidden" class="form-control" name="user[shipping_address_attributes][id]" value="<%= @shipping_address.try(:id) %>" readonly>
+            </div>
+            <div class="form-group"  style="margin-top:45px;">
+              <input id="user_shipping_address2" name="user[shipping_address_attributes][address2]" class="form-control" placeholder="Street 2" value="<%= @shipping_address.try(:address2) %>" readonly></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_shipping_city">City</label>
+              <input id="user_shipping_city" name="user[shipping_address_attributes][city]" class="form-control" value="<%= @shipping_address.try(:city) %>" readonly ></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_shipping_state">State</label>
+              <input id="user_shipping_state" name="user[shipping_address_attributes][state]" class="form-control" value="<%= @shipping_address.try(:state) %>" readonly></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="user_shipping_zip">Zip</label>
+              <input id="user_shipping_zip" name="user[shipping_address_attributes][zip]" class="form-control" value="<%= @shipping_address.try(:zip) %>" readonly ></input>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-danger" id="cleartoasts" onclick="window.history.back();">Back</button>
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- page end-->
+</div>
+<!--body wrapper end

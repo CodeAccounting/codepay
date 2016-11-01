@@ -1,0 +1,29 @@
+<p>
+  Hi <%= @customer.full_name %>,
+</p>
+
+<p>
+An invoice has been created on your account. If you have any questions or concerns, please contact us at.
+</p>
+
+<p>
+Thank you for your business!<br>
+</p>
+
+<hr>
+
+<p>
+<h3>Invoice Details:</h3>
+
+	Invoice #: <%= @invoice.invoice_number %><br>
+  Amount Due: <%= @invoice.due_amount %><br>
+  Due Date: <%= @invoice.due_date.strftime("%d %B %Y") %><br>
+</p>
+
+<p>
+A PDF version of this invoice is also attached for your records.
+</p>
+
+<p>
+Please do not respond to this email. This e-mail was sent from a notification-only e-mail address.
+</p>

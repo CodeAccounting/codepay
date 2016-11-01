@@ -1,0 +1,97 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Payment Information
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li class="active"><a href="#">All Active Venders</a></li>
+      <li><a href="#">Active and Archived</a></li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading ">
+          Vender Data Table
+          <span class="tools pull-right">
+            <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+            <a class="t-close fa fa-times" href="javascript:;"></a>
+          </span>
+          <br/><br/>
+            <a class="btn btn-default btn-success btn-lg" href="<%= new_vendor_path %>">
+                <span>Create Vendor</span>
+            </a>
+            <br/><br/>
+          <div class="DTTT btn-group">
+            <!-- <a class="btn btn-default DTTT_button_copy" href="<%= new_vendor_path %>">
+              <span>Create</span>
+            </a> -->
+            <a class="btn btn-default DTTT_button_csv" id="ToolTables_DataTables_Table_0_1" tabindex="0" href="<%= vendors_path(format: :csv) %>" aria-controls="DataTables_Table_0">
+              <span>CSV</span>
+            </a>
+            <a class="btn btn-default DTTT_button_xls" id="ToolTables_DataTables_Table_0_2" tabindex="0" href="<%= vendors_path(format: :xls) %>" aria-controls="DataTables_Table_0">
+              <span>Excel</span>
+            </a>
+            <a target="_blank" class="btn btn-default DTTT_button_pdf" id="ToolTables_DataTables_Table_0_3" href="<%= vendors_path(format: :pdf) %>" tabindex="0" aria-controls="DataTables_Table_0">
+              <span>PDF / PRINT</span>
+            </a>
+          </div>
+        </header>
+        <table class="table colvis-data-table data-table">
+          <thead>
+            <tr>
+              <th>
+                Vendor Name
+              </th>
+              <th>
+                Account Number
+              </th>
+              <th>
+                Primary Contact
+              </th>
+              <th>
+                Description
+              </th>
+              <th>
+                Created at
+              </th>
+              <th>
+                Updated at
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% current_organization.vendors.each do |vendor| %>
+            <tr>
+              <td>
+                <%= link_to vendor.name, vendor_path(vendor) %>
+              </td>
+              <td>
+                <%= vendor.try(:account_number) %>
+              </td>
+              <td>
+                <%= vendor.try(:primary_contact).try(:email) %>
+              </td>
+              <td>
+                <%= vendor.try(:description) %>
+              </td>
+              <td>
+                <%= vendor.created_at.strftime("%d %B %Y") %>
+              </td>
+              <td>
+                <%= vendor.updated_at.strftime("%d %B %Y") %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>
+<!--body wrapper end-->

@@ -1,0 +1,202 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Payer Information (Anyone that pays you)
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li><a href="#">Money In</a></li>
+      <li><%= link_to "Payees", payees_path %></li>
+      <li class="active">Payee Deatil</li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      payee Detail
+    </header>
+    <% if flash[:errors] %>
+    <div class="alert alert-danger">
+      <ul>
+        <% flash[:errors].each do |er| %>
+        <li><%= er %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="payee_name">Name</label>
+            <input id="payee_name" name="payee[name]" type="text" class="form-control" placeholder="Name" value="<%= @payee.name %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="payee_account_number">Account Number</label>
+            <input id="payee_account_number" name="payee[account_number]" type="text" class="form-control"  placeholder="0001" value="<%= @payee.account_number %>" readonly >
+          </div>
+          <div class="form-group">
+            <label for="payee_contact">Contact</label>
+            <select disabled id="payee_contact" name="payee[contact_id]" class="form-control">
+              <option value=""></option>
+              <option value="NEW">Create New...</option>
+              <% current_organization.contacts.all.each do |contact| %>
+              <option value="<%= contact.id %>"
+                <%= @payee.primary_contact == contact ? "selected": "" %>
+              ><%= contact.full_name %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="payee_parent_payee_id">Sub payee of</label>
+            <select disabled id="payee_parent_payee_id" name="payee[parent_payee_id]" class="form-control">
+              <option value=""></option>
+              <% current_organization.payees.all.each do |payee| %>
+              <option value="<%= payee.id %>"
+                <%= @payee.parent_payee_id == payee.id ? "selected": "" %>
+              ><%= payee.name %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="payee_description">Description</label>
+            <textarea id="payee_description" name="payee[description]" type="text" class="form-control" rows="3" placeholder="Enter a description..." readonly ><%= @payee.description %> </textarea>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="payee_billing_address1">Billing Address</label>
+            <input id="payee_billing_address1" name="payee[billing_address_attributes][address1]" class="form-control" placeholder="Street 1" value="<%= @payee.billing_address.address1 %>" readonly >
+          </div>
+          <div class="form-group">
+            <input id="payee_billing_address2" name="payee[billing_address_attributes][address2]" class="form-control" placeholder="Street 2" value="<%= @payee.billing_address.address2 %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="payee_billing_city">City</label>
+            <input id="payee_billing_city" name="payee[billing_address_attributes][city]" class="form-control"value="<%= @payee.billing_address.city %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="payee_billing_state">State</label>
+            <input id="payee_billing_state" name="payee[billing_address_attributes][state]" class="form-control" value="<%= @payee.billing_address.state %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="payee_billing_zip">Zip</label>
+            <input id="payee_billing_zip" name="payee[billing_address_attributes][zip]" class="form-control" value="<%= @payee.billing_address.zip %>" readonly >
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="payee_shipping_address1">Shipping Address</label>
+            <input id="payee_shipping_address1" name="payee[shipping_address_attributes][address1]" class="form-control" placeholder="Street 1" value="<%= @payee.shipping_address.address1 %>" readonly ></input>
+          </div>
+          <div class="form-group">
+            <input id="payee_shipping_address2" name="payee[shipping_address_attributes][address2]" class="form-control" placeholder="Street 2" value="<%= @payee.shipping_address.address2 %>" readonly ></input>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="payee_shipping_city">City</label>
+            <input id="payee_shipping_city" name="payee[shipping_address_attributes][city]" class="form-control" value="<%= @payee.shipping_address.city %>" readonly ></input>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="payee_shipping_state">State</label>
+            <input id="payee_shipping_state" name="payee[shipping_address_attributes][state]" class="form-control" value="<%= @payee.shipping_address.state %>" readonly ></input>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="payee_shipping_zip">Zip</label>
+            <input id="payee_shipping_zip" name="payee[shipping_address_attributes][zip]" class="form-control" value="<%= @payee.shipping_address.zip %>" readonly ></input>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <%= link_to 'Edit', edit_payee_path(@payee), class: 'btn btn-success' %> |
+          <%= link_to 'Back', payees_path, class: 'btn btn-success' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- page end-->
+</div>
+<!-- Modal -->
+<div class="modal fade" id="new-contact-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create Contact</h4>
+      </div>
+      <form id="contact-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="contact_first_name">First Name</label>
+            <input type="text" name="contact[first_name]" id="contact_first_name" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_last_name">Last Name</label>
+            <input type="text" name="contact[last_name]" id="contact_last_name" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_email">Email</label>
+            <input type="email" name="contact[email]" id="contact_email" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_phone">Phone</label>
+            <input type="phone" name="contact[phone]" id="contact_phone" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_fax">Fax</label>
+            <input type="phone" name="contact[fax]" id="contact_fax" class="form-control">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="save-contact">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<% content_for :scripts do %>
+  <script>
+    function addContactToList(contact) {
+      var contactOption = $('<option value="' + contact.id + '" selected>');
+      contactOption.text(contact.first_name + " " + contact.last_name);
+      $('#payee_contact').prepend(contactOption);
+    }
+
+    $(function () {
+      $('#contact-form').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+          url: "/contacts",
+          type: "POST",
+          data: $(e.currentTarget).serialize(),
+          success: function (contact) {
+            addContactToList(contact);
+            $('#new-contact-modal').modal('hide');
+          },
+          error: function (resp) {
+            var errorDiv = $('<div class="alert alert-danger">');
+            errorDiv.text(resp.responseJSON[0]);
+            $('#contact-form').prepend(errorDiv);
+          },
+        });
+      });
+      $('#payee_contact').on('change', function (event) {
+        if(event.currentTarget.value === "NEW") {
+          $('#new-contact-modal').modal('show');
+          event.currentTarget.value = "";
+        }
+      });
+    });
+  </script>
+<% end %>

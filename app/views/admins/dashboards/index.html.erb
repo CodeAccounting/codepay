@@ -1,0 +1,15 @@
+ <!--body wrapper start-->
+ <% if flash[:notice] or flash[:error] %>
+    <div class="alert alert-danger fade in">
+     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+     <%= flash[:notice] %>
+     <%= flash[:error] %>
+    </div>
+  <%end%>
+
+  	<div class="wrapper">
+  	  <% if can? :manage, Admins::BillPayRequestsController %>
+    	 <%= render "to_do_list" %>
+      <%end%>
+   	</div>
+<!--body wrapper end-->

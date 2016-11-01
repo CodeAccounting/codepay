@@ -1,0 +1,128 @@
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+   Manual Invoice Payment
+  </h3>
+</div>
+<!-- page head end-->
+
+
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel">
+        <header class="panel-heading head-border">
+          Create Mannual Invoice Payment 
+        </header>
+        <% if flash[:errors] %>
+        <div class="alert alert-danger">
+          <ul>
+            <% flash[:errors].each do |er| %>
+            <li><%= er %></li>
+            <% end %>
+          </ul>
+        </div>
+        <% end %>
+
+        <form id="mannual_invoice_payment-form" action="<%= invoice_payments_path%>" method="post">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <div class="panel-body">
+            <div class="row toastr-row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label" for="customer">Customer</label>
+                  <select class="form-control input-small" id="customer" name="customer_id" >
+                  <option>Select a Customer</option>
+                    <% current_organization.customers.each do |customer| %>
+                      <option value="<%= customer.id %>" ><%= customer.name%></option>
+                    <% end %>
+                  </select>
+                </div>
+                <div class="form-group invoice_select">
+                  <label class="control-label" for="invoice_number">Invoice Number</label>
+                  <select class="form-control input-small" id="invoiceNumber" name="invoice_id[]" multiple="multiple" data-placeholder="select invoices">
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="invoice_payment_date">Date</label>
+                  <input id="bill_record_date" name="invoice_payment[date]" type="date" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="invoice_payment_method">Payment Method </label>
+                  <input id="payment_method" name="invoice_payment[payment_method]" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="incoice_payment_account">Payment Account</label>
+                  <input id="payment_account" name="invoice_payment[payment_account]" type="text" class="form-control"  placeholder="0001">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="invoice_reference">Reference </label>
+                  <input id="reference" name="invoice_payment[reference]" type="text" class="form-control" >
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label" for="invoice_payment_amount">Payment Amount</label>
+                  <input id="payment_amount" name="invoice_payment[payment_amount]" type="number" class="form-control" >
+                </div>
+                <div class="form-group" id="toastTypeGroup">
+                  <div class="form-group">
+                    <label class="control-label" for="hideEasing">Message</label>
+                     <textarea id="message" name="invoice_payment[message]" rows="3" class="form-control" placeholder="Enter a message..." ></textarea>
+          		    </div>
+         	      </div>
+              </div>
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-success" id="cleartoasts">Save</button>
+              </div>
+            </div>    
+          </div>
+        </form>
+      </div>
+    </div> 
+  </div>  
+</div>
+<% content_for :scripts_autocomplete do %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+  
+  <script>
+      $(window).load(function() {
+        var selected = $("#customer").is(':selected');
+        if (selected == false){
+          $(".invoice_select").hide();  
+        }
+        else {
+         $(".invoice_select").show(); 
+        }
+      });
+
+      $("#invoiceNumber").select2();
+
+      $('#customer').change(function() {
+        $("#invoiceNumber").html("");
+        id = $(this).val()
+          $.ajax({
+            url: "/invoice_payments/on_change",
+            type: "POST",
+            dataType: "json",
+            data: {customer_id: id},
+            success: function (invoices) {
+              $(invoices).each(function(){
+                var id=$(this).attr('id');
+                var invoice_number = $(this).attr('invoice_number');
+                $("#invoiceNumber").append("<option value ="+id+">"+invoice_number+"</option>");
+              });
+              $(".invoice_select").show();
+            },
+            error: function (resp) {
+              var errorDiv = $('<div class="alert alert-danger">');
+              errorDiv.text(resp.responseJSON[0]);
+            },
+          });
+      });
+      
+  </script>
+<%end%>

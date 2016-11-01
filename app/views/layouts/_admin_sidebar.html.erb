@@ -1,0 +1,45 @@
+
+<div class="sidebar-left sticky-sidebar">
+  <!--responsive view logo start-->
+  <!--responsive view logo end-->
+  <div class="sidebar-left-info">
+    <!-- visible small devices start-->
+    <div class=" search-field">  </div>
+    <!-- visible small devices end-->
+    <!--sidebar nav start-->
+    <ul class="nav nav-pills nav-stacked side-navigation">
+      <li class=""><a href="<%= admins_dashboards_path %>"><i class="fa fa-home"></i>Dashboard</a></li>
+
+    <!--   <li class="">
+        <% if can? :index, Invoice %>
+          <a href="/admins/invoices">
+            <i class="fa fa-money"></i>
+            Invoices
+          </a>
+        <% end %>
+      </li> -->
+      <%if can? :manage, Admins::BillPayRequestsController%>
+        <li>
+          <a href="<%= new_admins_report_path %>">
+            <i class="fa fa-bar-chart-o"></i>
+            Reports
+          </a>
+        </li>
+      <%end%>  
+
+      <%# if current_admin.user_type == "Admin"%>
+        <li class="menu-list"> <a href="#"><i class="fa fa-cogs"></i>Settings</a>
+          <ul class="child-list">
+          
+            <li><%= link_to "Audits"%></li>
+            
+            <li><%= link_to "COA" %></li>
+          </ul>
+        </li>
+      <%#end%>  
+
+    </ul>
+  <!--sidebar widget end-->
+  </div>
+</div>
+<!-- sidebar left end

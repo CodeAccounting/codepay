@@ -1,0 +1,102 @@
+<div class="wrapper">
+  <div class="row"> 
+	  <div class="col-sm-12">
+	  	<section class = "panel">
+	  	  <div class="form-group">
+		    <label>You Have Now Subscribed For One Month</label>
+		  </div>
+
+		  <div class="form-group">
+		    <label>Subscription Detail</label>
+		  </div>
+
+		  <div class="form-group">	
+		  	<label class="control-label" for="plan_name">Plan Name:</label> <b><%= current_user.subscription.plan_name%></b>
+		  </div>
+
+		  <div class="form-group">	  
+		  	<label class="control-label" for="start date">Start Date:</label> <b><%= current_user.subscription.started_at.strftime("%d %B %Y")%></b>
+		  </div>
+
+		  <div class="form-group">	  
+		  	<label class="control-label" for="start date">End Date :</label> <b><%= current_user.subscription.ended_at.strftime("%d %B %Y")%></b>
+		  </div>
+		  <% if period_continue %>
+		  	<div class="form-group">
+			    <label>After subscription end date you will be subscribed automatically for next one month</label>
+
+			    <form id = "plan_form" action="<%= upgrade_active_subscription_path%>" method="post">
+				  	<input id ="plan_id" type="hidden" name="plan_id" >
+				  	
+				  	<%if current_user.subscription.plan_id == @plans[2].id %>
+				  		<label>upgrade plan to:</label><br>
+					  	<button id = "silver" type="submit" class="plan btn btn-danger">Devcode Silver</button>
+					  	<button id = "gold" type="submit" class="plan btn btn-danger">Devcode Gold</button>
+					<%elsif current_user.subscription.plan_id == @plans[1].id %>
+				  		<label>downgrade plan to:</label><br>
+					  	<button id = "pro" type="submit" class="plan btn btn-danger">Devcode Pro</button><br>
+					  	<label>upgrade plan to:</label><br>
+					  	<button id = "gold" type="submit" class="plan btn btn-danger">Devcode Gold</button>
+					<%else %>
+				  		<label>downgrade plan to:</label><br>
+					  	<button id = "pro" type="submit" class="plan btn btn-danger">Devcode Pro</button>
+					  	<button id = "silver" type="submit" class="plan btn btn-danger">Devcode Silver</button>  	  	
+					<%end%>
+			  	</form>
+		  	</div> 
+		  	<div>
+				<form action="<%= cancel_subscription_path%>" method="post">
+			  		<button type="submit" class="btn btn-danger">Cancel Subscription</button>
+			  	</form>
+		  	</div>
+		  <%else%>	
+		    <div class="form-group">
+			    <label>Your Subscription Will Cancel Automatically After Subscription End Date</label>
+			    <form id = "plan_form" action="<%= upgrade_active_subscription_path%>" method="post">
+				  	<input id ="plan_id" type="hidden" name="plan_id" >
+				  	
+				  	<%if current_user.subscription.plan_id == @plans[2].id %>
+				  		<label>Reactivate Plan:</label><br>
+				  		<button id = "pro" type="submit" class="plan btn btn-danger">Devcode Pro</button><br>
+				  		<label>Subscribe to plan:</label><br>
+					  	<button id = "silver" type="submit" class="plan btn btn-danger">Devcode Silver</button>
+					  	<button id = "gold" type="submit" class="plan btn btn-danger">Devcode Gold</button>
+					<%elsif current_user.subscription.plan_id == @plans[1].id %>
+				  		<label>Reactivate Plan:</label><br>
+				  		<button id = "silver" type="submit" class="plan btn btn-danger">Devcode Silver</button><br>
+				  		<label>Subscribe to plan: </label><br>
+					  	<button id = "pro" type="submit" class="plan btn btn-danger">Devcode Pro</button>
+					  	<button id = "gold" type="submit" class="plan btn btn-danger">Devcode Gold</button>
+					<%else %>
+						<label>Reactivate Plan:</label><br>
+				  		<button id = "gold" type="submit" class="plan btn btn-danger">Devcode Gold</button><br>
+				  		<label>Subscribe to plan:</label><br>
+					  	<button id = "pro" type="submit" class="plan btn btn-danger">Devcode Pro</button>
+					  	<button id = "silver" type="submit" class="plan btn btn-danger">Devcode Silver</button>  	  	
+					<%end%>
+			  	</form>
+		    </div>
+		  <%end%>   
+	  	</section>
+	  </div>
+  </div>
+</div>
+
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $('.plan').click( function(event) {
+      event.preventDefault();
+        id = $(this).attr('id')
+        if(id=="silver") {
+          $('#plan_id').attr('value', '<%= @plans[1].id %>' )
+        } 
+        if(id=="gold") {
+          $('#plan_id').attr('value', '<%= @plans[0].id %>' )
+        }
+        if(id=="pro") {
+          $('#plan_id').attr('value', '<%= @plans[2].id %>' )
+        }
+        $('#plan_form').submit();
+    });
+  </script>
+<% end %>

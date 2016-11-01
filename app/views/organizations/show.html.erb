@@ -1,0 +1,142 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Organization Information
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      Customer Detail
+      <%= link_to 'Edit', edit_organization_path(@organization), class: 'btn btn-success btn-xs' %>
+      <%= link_to 'Back', organizations_path, class: 'btn btn-success btn-xs' %>
+    </header>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="customer_name">Name:</label> <b><%= @organization.name %></b>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="customer_account_number">Organization Type:</label> <b><%= @organization.organization_type.try(:capitalize) %></b>
+          </div>
+          <div class="form-group">
+            <label for="customer_contact">Accounting Software:</label> <b><%= @organization.accounting_software.try(:capitalize) %></b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- page end-->
+
+  <!-- Organization Users starts here -->
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Organization Users
+        </header>
+        <table class="table colvis-data-table data-table">
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Assigned Role</th>
+              <th>Joined At</th>
+            </tr>
+          </thead>
+          <tbody>
+          	<% @users.each do |user| %>
+          		<% unless user.id == current_user.id %>
+		            <tr>
+		              <td><%= link_to (user.full_name+" ("+user.email+")"), organization_user_path(user) %>
+		              <td><%= user.email %></td>
+		              <td>
+                    <div>
+  		              	<%= user.which_role?(current_organization.id).capitalize %>
+                      <input class="hiddenUserId" type="hidden" value="<%= user.id %>">
+                      <input class="hiddenRole" type="hidden" value="<%= user.which_role?(current_organization.id) %>">
+                      ( <a class="change-role" href="javascript:;">
+                        change
+                      </a> )
+                    </div>
+		              </td>
+		              <% if user.invitation_accepted_at.present? %>
+                	 <td><%= user.invitation_accepted_at.strftime("%d %B %Y") %></td>
+                  <% else %>
+                    <td>Not Joined Yet</td>
+                  <% end %>
+		            </tr>
+	            <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+  <!-- Organization Users ends here -->
+</div>
+<!--body wrapper end-->
+
+<!-- Modal -->
+<div class="modal fade" id="change-role-model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Change Role</h4>
+      </div>
+      <form id="change-role-form">
+        <!-- <input name="_method" type="hidden" value="patch" /> -->
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="contact_first_name">Select Role</label>
+            <select id="role-select" name="role" class="form-control">
+              <option value="accountant">Accountant</option>
+              <option value="payer">Payer</option>
+              <option value="approver">Approver</option>
+              <option value="clerk">Clerk</option>
+            </select>
+            <input type="hidden" name="id" id="user-id" class="form-control">
+            <input type="hidden" name="org_id" value="<%= current_organization.id %>">
+          </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="save-contact">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<% content_for :scripts do %>
+  <script type="text/javascript">
+
+    $('#change-role-form').on('submit', function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: "/change_role",
+        type: "POST",
+        data: $(e.currentTarget).serialize(),
+        success: function () {
+          $('#change-role-model').modal('hide');
+          location.reload();
+        },
+      });
+    });
+
+    $(".change-role").click(function(){
+      userId = $(this).parent().find('.hiddenUserId').val();
+      role = $(this).parent().find('.hiddenRole').val();
+      $("#user-id").val(userId);
+      $("#role-select").val(role);
+      $('#change-role-model').modal('show');
+    });
+  </script>
+<% end %>

@@ -1,0 +1,39 @@
+<!-- Right Slidebar start -->
+<div class="sb-slidebar sb-right sb-style-overlay" > 
+  <div class="right-bar">
+    <span class="r-close-btn sb-close"><i class="fa fa-times"></i></span>
+    <ul class="nav nav-tabs nav-justified-">
+      <li class="active">
+        <a href="#chat" data-toggle="tab">Attachments</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+    	<table>
+	    	<thead>
+				<tr>
+				  <th></th>	
+				  <th></th>
+				</tr>    		
+	    	</thead>
+	    	<tbody>
+	    		<tr ng-repeat="attachment in all_attachments">
+    				<td style="width:100%;">
+    					<table style="margin:5px 0;width:100%;border:1px solid black;">
+    						<tr>
+    							<td style="width:50%"><img src="{{attachment.url}}" alt="No Image" height="60" width="80">
+    							</td>
+    							<td style="width:50%">{{attachment.attachment_file_name}}</td>
+    						</tr>
+    						<tr>
+    							<td><button type="button" ng-click="add_image($index)" >add image</button></td>
+    							<td><a href="{{attachment.url}}" target="_blank">Preview</a></td>
+    						</tr>
+    					</table>
+	    			</td>
+	    		</tr>
+	    	</tbody>
+    	</table>
+    </div>
+  </div>
+</div>
+<!-- Right Slidebar end -->

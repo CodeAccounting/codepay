@@ -1,0 +1,10 @@
+<div class="alert alert-success fade in">
+	<%if current_user.subscription.continue == true%>
+	  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<center>Trial Period Left For <%= trial_remaining_days %> days
+		<%= link_to "Cancel Subscription", new_subscription_path,class: "btn btn-danger"%> </center>
+	<%else%>
+	  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<center>Trial Period Left For <%= trial_remaining_days %> days</center>
+	<%end%>		
+</div>

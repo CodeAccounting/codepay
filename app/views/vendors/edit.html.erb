@@ -1,0 +1,120 @@
+<div class="page-head">
+  <h3 class="m-b-less">
+   Edit Vendor Information
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <!-- <a target="_blank" href= "<%= invoice_path(format: :pdf) %>"" class ="btn btn-default btn-success btn-lg"> DOWNLOAD PDF</a> -->
+     
+    <% if flash[:errors] %>
+    <div class="alert alert-danger">
+      <ul>
+        <% flash[:errors].each do |er| %>
+        <li><%= er %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+ <form id="vendor-form" action="<%= vendor_path %>" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input name="_method" type="hidden" value="patch" />
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-4"> 
+            <div class="form-group">
+              <label class="control-label" for="vendor_name">Name</label>
+              <input id="vendor_name" name="vendor[name]" type="text" class="form-control"  value="<%= @vendor.name %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_account_number">Account Number</label>
+              <input id="vendor_account_number" name="vendor[account_number]" type="text" class="form-control"   value="<%= @vendor.account_number %>">
+            </div>
+            <div class="form-group">
+              <label for="vendor_contact">Contact</label>
+              <select id="vendor_contact" name="vendor[contact_id]" class="form-control">
+                <option value=""></option>
+                <option value="NEW">Create New...</option>
+                <% current_organization.contacts.all.each do |contact| %>
+                <option value="<%= contact.id %>"
+                  <%= @vendor.primary_contact == contact ? "selected": "" %>
+                ><%= contact.full_name %></option>
+                <% end %>
+              </select>
+            </div> 
+            <div class="form-group">
+              <label class="control-label" for="vendor_parent_vendor_id">Sub vendor of</label>
+              <select id="vendor_parent_vendor_id" name="vendor[parent_vendor_id]" class="form-control">
+                <option value=""></option>
+                <% current_organization.vendors.all.each do |vendor| %>
+                <option value="<%= vendor.id %>"
+                  <%= @vendor.parent_vendor_id == vendor.id ? "selected": "" %>
+                ><%= vendor.name %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_description">Description</label>
+              <textarea id="vendor_description" name="vendor[description]" type="text" class="form-control" rows="3" ><%= @vendor.description %></textarea>
+            </div>
+          </div>
+          <div class="col-md-4">
+           
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_address1">Billing Address</label>
+
+              <input id="vendor_billing_address1" name="vendor[billing_address_attributes][address1]" class="form-control"  value="<%= @vendor.billing_address.address1 %>"> 
+            </div>
+            <div class="form-group"> 
+              <input id="vendor_billing_address2" name="vendor[billing_address_attributes][address2]" class="form-control"  value="<%= @vendor.billing_address.address2 %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_city">City</label>
+              <input id="vendor_billing_city" name="vendor[billing_address_attributes][city]" class="form-control"value="<%= @vendor.billing_address.city %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_state">State</label>
+              <input id="vendor_billing_state" name="vendor[billing_address_attributes][state]" class="form-control" value="<%= @vendor.billing_address.state %>">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_billing_zip">Zip</label>
+              <input id="vendor_billing_zip" name="vendor[billing_address_attributes][zip]" class="form-control" value="<%= @vendor.billing_address.zip %>">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_address1">Shipping Address</label>
+              <input id="vendor_shipping_address1" name="vendor[shipping_address_attributes][address1]" class="form-control" value="<%= @vendor.shipping_address.address1 %>" ></input>
+            </div>
+            <div class="form-group">
+              <input id="vendor_shipping_address2" name="vendor[shipping_address_attributes][address2]" class="form-control" value="<%= @vendor.shipping_address.address2 %>" ></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_city">City</label>
+              <input id="vendor_shipping_city" name="vendor[shipping_address_attributes][city]" class="form-control" value="<%= @vendor.shipping_address.city %>"></input> 
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_state">State</label>
+              <input id="vendor_shipping_state" name="vendor[shipping_address_attributes][state]" class="form-control" value="<%= @vendor.shipping_address.state %>"></input>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="vendor_shipping_zip">Zip</label>
+              <input id="vendor_shipping_zip" name="vendor[shipping_address_attributes][zip]" class="form-control" value="<%= @vendor.shipping_address.zip %>"></input>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-danger">Clear Entries</button>
+          </div>
+        </div>
+      </div>
+    </form>
+</div>
+
+</div>

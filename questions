@@ -1,0 +1,73 @@
+International payments
+Bank transaction integration
+
+checkout: yodlee (payments api)
+international payments api: ripple
+
+
+Questions:
+
+What fields does an invoice have? (see mockups)
+What fields does a vendor have? (see mockups)
+What fields does an invoice item have? (see mockups)
+What fields does a bill have?
+Can invoice items have negative values?
+
+Is a duedate a date with time? or just date? (datetime)
+Are amounts strictly in USD? Strictly in some currency? or can people mix and
+match for the same account? (no)
+
+How are accounts related to the region that they're based in? (ideally: multiple
+uses per account, personal account vs business account [like dropbox], multiple
+companies under same account)
+
+Tax report section is for 1099s
+
+Are bills actually uploaded? (yes, one way)
+Incoming emails picked up and entered as a bill
+
+Does it matter what format the bill is in? (either anything goes, or limited to
+.doc, .pdf, .jpg)
+What is a term relative to a vendor?
+Can a vendor login? if so what can a vendor do that another user can't do?
+When creating a vendor can the user search for existing users?
+When paying a bill what does codepaying do? Does the payment happen outside of
+codepaying?
+What fields should the bills list be sorted by?
+What are the options for reminders? How will people set reminders?
+one week? one month? one day?
+What does process bills mean?
+Does codepaying import bills or inovices from other systems?
+How do people login? (username / password or facebook or gmail?)
+Do all users have the same level of permissions?
+How many users do you anticipate? How fast do you think it will grow?
+
+
+Stories:
+As a user, I can see a list of my bills
+As a user, I can sort the list of bills by (need sortable fields)
+As a user, I can filter the list of my bills using search
+As a user, I can export my bills to excel (need format here)
+As a user, I can export my bills to pdf
+As a user, I can chat with support staff
+As a user, I can see payment reports
+As a user, I can see accounting reports
+As a user, I can see tax reports
+As a user, I can see a list of vendors
+As a user, I can sort the list of vendors by (need sortable fields)
+
+Todo:
+setup dns (we need to point this to heroku)
+setup heroku (if you already have one you can add me as a collaborator)
+setup landing page?
+
+
+
+
+
+
+
+Epic: User can login
+Stories:
+As a user, I can login using username and password
+As a user, I can login using gmail / facebook

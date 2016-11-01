@@ -1,0 +1,341 @@
+<style type="text/css">
+ 
+  .drop-box 
+  {
+    background: #F8F8F8;
+    background-color: #eeeeee;
+    border: 1px solid #dfdfdf;
+    padding-top: 5px;
+    margin-top: -5px;
+    min-height: 100px;
+    max-height: 250px;
+    max-width: 275px;
+    overflow-y: scroll;
+  }
+
+  #style-2::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #c3bebe;
+} 
+  .stbody
+  {
+  border: 1px dashed #a3d0ef;
+  min-height:70px;
+  margin-bottom:10px;
+  }
+
+  .post_area
+  {
+    float: left;
+    width: 95%;
+    margin-left: 7px;
+    margin-bottom: 10px;
+  }
+
+  .post_area > button 
+  {
+    float: right;
+    margin-top: 2px;
+  }
+  .sttext
+  {
+    border: 1px solid #beb9b9;
+    width: 100%;
+    max-height:50px;
+    max-width: 250px;
+    word-wrap:break-word; // Text justification
+    overflow:hidden;
+    padding:5px;
+    display:block;
+    font-family:'Georgia', Times New Roman, Times, serif
+  }
+
+.notes
+  {
+    float: left;
+    border: 1px solid #beb9b9;
+    width: 95%;
+    margin-left: 7px;
+    background-color: #eeeeee;
+    /*margin-left:70px;*/
+    margin-bottom: 3px;
+    height:auto; 
+    word-wrap:break-word; // Text justification
+    overflow:hidden;
+    padding:5px;
+    display:block;
+    font-family:'Georgia', Times New Roman, Times, serif
+  }
+
+  .note_text
+  {
+    padding: 5px;
+    background-color: white;
+  }
+  .note_info
+  {
+    height: 15px;
+  }
+  .note_name
+  {
+   float: left;
+   font-size: 12px;
+   padding:2px;
+  }
+  .note_date
+  {
+    float: right;
+    font-size: 12px;
+    padding:2px;
+  }
+  
+
+</style>
+
+
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Vendor Information (Anyone that pays you)
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li><a href="#">Money In</a></li>
+      <li><%= link_to "vendors", vendors_path %></li>
+      <li class="active">Vendor Deatil</li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <header class="panel-heading head-border">
+      Vendor Detail
+      <%= link_to 'Edit', edit_vendor_path(@vendor), class: 'btn btn-success btn-xs' %> |
+      <%= link_to 'Back', vendors_path, class: 'btn btn-success btn-xs' %>
+    </header>
+    <% if flash[:errors] %>
+    <div class="alert alert-danger">
+      <ul>
+        <% flash[:errors].each do |er| %>
+        <li><%= er %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="vendor_name">Name: </label><b><%= @vendor.name.capitalize %></b>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="vendor_account_number">Account Number: </label><b><%= @vendor.account_number %></b>
+          </div>
+          <div class="form-group">
+            <label for="vendor_contact">Contact: </label><b><%= @vendor.primary_contact.try(:full_name) %></b>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="vendor_description">Description: </label><b><%= @vendor.description %></b>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="vendor_billing_address1">Billing Address: </label>
+             <b>
+            <br/>
+            <%= @vendor.billing_address.try(:address1) %> <%= @vendor.billing_address.try(:address2) %>
+            <br/>
+            <%= @vendor.billing_address.try(:city) %>, <%= @vendor.billing_address.try(:state) %> (<%= @vendor.billing_address.try(:zip) %>)
+            <br/>
+            <%= @vendor.billing_address.try(:country) %>
+            </b>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="vendor_shipping_address1">Shipping Address: </label>
+            <b>
+            <br/>
+            <%= @vendor.shipping_address.try(:address1) %> <%= @vendor.shipping_address.try(:address2) %>
+            <br/>
+            <%= @vendor.shipping_address.try(:city) %>, <%= @vendor.shipping_address.try(:state) %> (<%= @vendor.shipping_address.try(:zip) %>)
+            <br/>
+            <%= @vendor.shipping_address.try(:country) %>
+            </b>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group" ng-app="inoteApp" ng-controller="inoteCtrl">
+            <label class="control-label" for="invoice_note">Notes:</label>
+            <div class="drop-box" id="style-2">
+              <div class="post_area">   
+                <textarea class="sttext" id="invoice_note" ng-model="note_text" rows="2" class="form-control" ></textarea>
+                <button type="button" class="btn btn-success" ng-click="add_note()" ng-disabled="note_text==''">Add Note</button>
+              </div>
+              <div class="notes" ng-repeat="note in notes">
+                <div class="note_text">
+                  <p style="text-align:left; margin:3px">
+                    {{note.body}}
+                  </p>  
+                </div>
+                <div class="note_info"> 
+                  <label class="note_name" style="margin-bottom:0;">{{note.creator.first_name}} {{note.creator.last_name}}</label>
+                  <label class="note_date" style="margin-bottom:0;">{{note.created_at | date}}</label>
+                </div> 
+              </div>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- page end-->
+
+  <!-- attachment section -->
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Vendor Attachments
+        </header>
+        <table class="table small-data-table data-table">
+          <thead>
+            <tr>
+              <th>Bill Id</th>
+              <th>Attachment Name</th>
+              <th>Attachment Type</th>
+              <th>Attachment File Size </th>
+              <th>Created At</th> 
+            </tr>
+          </thead>
+          <tbody>
+            <% @vendor_bills.each do |bill| %>
+              <% if bill.attachment.present? %>
+                <tr>
+                  <td>
+                    <%= bill.id %>
+                  </td>
+                  <td>
+                    <%= link_to bill.attachment.attachment_file_name,bill.attachment.attachment.url, target: '_new' %>
+                  </td>
+                    <td>
+                    <%= bill.attachment.attachment_content_type%>
+                  </td>
+                  <td>
+                    <%= number_to_human_size(bill.attachment.attachment_file_size) %>
+                  </td>
+                  <td>
+                    <%= bill.attachment.created_at.strftime("%d %B %Y") %>
+                  </td>
+                </tr>
+              <%end%> 
+            <%end%>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+<!-- attachment section -->
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="new-contact-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create Contact</h4>
+      </div>
+      <form id="contact-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="contact_first_name">First Name</label>
+            <input type="text" name="contact[first_name]" id="contact_first_name" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_last_name">Last Name</label>
+            <input type="text" name="contact[last_name]" id="contact_last_name" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_email">Email</label>
+            <input type="email" name="contact[email]" id="contact_email" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_phone">Phone</label>
+            <input type="phone" name="contact[phone]" id="contact_phone" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="contact_fax">Fax</label>
+            <input type="phone" name="contact[fax]" id="contact_fax" class="form-control">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="save-contact">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%content_for :angular_scripts do %>
+  <script type="text/javascript">
+    
+    var app = angular.module('inoteApp', []);
+
+    
+      
+    app.factory('notes', function($http){
+        return {
+          list: function(callback){
+            $http.get('/notes/notes_list_by_ajax?id=<%=@vendor.id%>&type=Vendor').success(callback);
+          }
+        };
+      });
+
+    app.controller('inoteCtrl', function($scope,$http,notes) {
+
+      // $scope.loading = false;
+      $scope.note_text = "";
+
+      notes.list(function(notes) {
+          $scope.notes = notes;
+          // $scope.loading = true;
+      });
+
+      $scope.add_note = function(){
+              $http({
+                method: 'GET',
+                url: '/notes/ajax_to_add_note',
+                params: {id: '<%= @vendor.id%>',type: 'Vendor', body: $scope.note_text }
+              }).then(function(response) {
+                  $scope.note_text ="";
+                  $scope.notes.push(response.data);
+              });
+          }
+      });
+  </script>
+
+<%end%>
+

@@ -1,0 +1,49 @@
+<% content_for :header_title do %>
+  <b>Bill Information</b>
+<% end %>
+<br/>
+<div class="col-md-4">
+  <div class="form-group">
+    <label class="control-label" for="vendor_name">Vendor Name:</label> <b><%= @bill.vendor.name %></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="vendor_account_number">Bill #:</label> <b><%= @bill.bill_number %></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="vendor_account_number">Bill Date:</label> <b><%= @bill.bill_date.strftime("%d-%B-%Y") %></b>
+
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="vendor_account_number">Due Date:</label> <b><%= @bill.due_date.strftime("%d-%B-%Y") %></b>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="vendor_account_number">Amount:</label> <b><%= @bill.due_amount %></b>
+  </div>
+
+  <div class="form-group">
+    <label for="vendor_contact">Location:</label> <b><%= @bill.location.try(:name) %></b>
+  </div>
+
+  <div class="form-group">
+    <label for="vendor_contact">Terms:</label> <b><%= @bill.payment_term.try(:name) %></b>
+  </div>
+
+  <div class="form-group">
+    <label for="vendor_contact">Department:</label> <b><%= @bill.department.try(:name) %></b>
+  </div>
+
+  <div class="form-group">
+    <label for="vendor_contact">vendor Message:</label> <b><%= @bill.message %></b>
+  </div>
+
+</div>
+
+<div class="col-md-4">
+
+</div>
+
+<br/>

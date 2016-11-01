@@ -1,0 +1,38 @@
+<style type="text/css">
+.profile-hero {
+background: url('<%= @user.cover %>') no-repeat;
+}
+</style>
+<!-- profile head start-->
+<div class="profile-hero">
+  <div class="profile-intro">
+    <img src="<%= @user.avatar %>">
+    <h1><%= @user.full_name %></h1>
+    <span><%= @user.title %></span>
+    <div class="s-n">
+      <a href="#"> <i class="fa fa-facebook-square"></i></a>
+      <a href="#"> <i class="fa fa-twitter"></i></a>
+      <a href="#"> <i class="fa fa-dribbble"></i></a>
+    </div>
+  </div>
+  <div class="profile-follow">
+    <a href="#" class="btn btn-success"> <i class="fa fa-plus"></i> Add Friend</a>
+    <a href="#" class="btn btn-default"> <i class="fa fa-check"></i> Follow me</a>
+    <a href="#" class="btn btn-default"> <i class="fa fa-comment"></i> Message</a>
+  </div>
+  <div class="profile-value-info">
+    <div class="info">
+      <span>2097</span>
+      Friends
+    </div>
+    <div class="info">
+      <span>92</span>
+      Photos
+    </div>
+    <div class="info">
+      <span>205</span>
+      Followers
+    </div>
+  </div>
+</div>
+<!-- profile head end-->

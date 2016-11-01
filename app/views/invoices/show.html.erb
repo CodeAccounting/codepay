@@ -1,0 +1,387 @@
+ <style type="text/css">
+ 
+  .drop-box 
+  {
+    background: #F8F8F8;
+    background-color: #eeeeee;
+    border: 1px solid #dfdfdf;
+    padding-top: 5px;
+    margin-top: -5px;
+    min-height: 100px;
+    max-height: 250px;
+    max-width: 275px;
+    overflow-y: scroll;
+  }
+
+  #style-2::-webkit-scrollbar-track
+  {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+  }
+
+  #style-2::-webkit-scrollbar
+  {
+    width: 12px;
+    background-color: #F5F5F5;
+  }
+
+  #style-2::-webkit-scrollbar-thumb
+  {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #c3bebe;
+  } 
+  .stbody
+  {
+  border: 1px dashed #a3d0ef;
+  min-height:70px;
+  margin-bottom:10px;
+  }
+
+  .post_area
+  {
+    float: left;
+    width: 95%;
+    margin-left: 7px;
+    margin-bottom: 10px;
+  }
+
+  .post_area > button 
+  {
+    float: right;
+    margin-top: 2px;
+  }
+  .sttext
+  {
+    border: 1px solid #beb9b9;
+    width: 100%;
+    max-height:50px;
+    max-width: 250px;
+    word-wrap:break-word; // Text justification
+    overflow:hidden;
+    padding:5px;
+    display:block;
+    font-family:'Georgia', Times New Roman, Times, serif
+  }
+
+.notes
+  {
+    float: left;
+    border: 1px solid #beb9b9;
+    width: 95%;
+    margin-left: 7px;
+    background-color: #eeeeee;
+    /*margin-left:70px;*/
+    margin-bottom: 3px;
+    height:auto; 
+    word-wrap:break-word; // Text justification
+    overflow:hidden;
+    padding:5px;
+    display:block;
+    font-family:'Georgia', Times New Roman, Times, serif
+  }
+
+  .note_text
+  {
+    padding: 5px;
+    background-color: white;
+  }
+  .note_info
+  {
+    height: 15px;
+  }
+  .note_name
+  {
+   float: left;
+   font-size: 12px;
+   padding:2px;
+  }
+  .note_date
+  {
+    float: right;
+    font-size: 12px;
+    padding:2px;
+  }
+</style>
+
+
+ <!-- page head start -->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Show Invoices
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li><a href="#">Money In</a></li>
+      <li><%= link_to "Invoices", invoices_path %></li>
+      <li class="active">Show Invoice</li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <a href="<%= new_email_path(invoice_id: @invoice.id) %>" class="btn btn-default btn-success btn-lg">SEND EMAIL</a>
+    <a data-confirm="Are you sure?" data-method="delete" href="<%= invoice_path(@invoice) %>" class="btn btn-default btn-danger btn-lg">VOID INVOICE</a>
+    
+    <!-- <a target="_blank" href= "<%= invoice_path(format: :pdf) %>"" class ="btn btn-default btn-success btn-lg"> DOWNLOAD PDF</a> -->
+
+    <% if flash[:notice] %>
+    <div class="alert alert-danger">
+      <%= flash[:notice] %>
+    </div>
+    <% end %>
+    <header class="panel-heading head-border">
+      Showing A Customer Invoice
+    </header>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label" for="invoice_customer_name">Customer Name </label>
+            <input data-customers id="customer_name" type="text" class="form-control"  placeholder="Customer Name" value="<%= @invoice.customer.name %>" readonly>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="invoice_number">Invoice #</label>
+            <input id="invoice_number" name="invoice[invoice_number]" type="text" class="form-control" value="<%= @invoice.invoice_number %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="invoice_invoice_date">Record Date</label>
+            <input id="invoice_record_date" name="invoice[invoice_date]" class="form-control" value="<%= @invoice.invoice_date.strftime("%d-%B-%Y") %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="invoice_due_date">Due Date</label>
+            <input id="invoice_due_date" name="invoice[due_date]" class="form-control" value="<%= @invoice.due_date.strftime("%d-%B-%Y") %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="invoice_amount_due">Total Amount Due</label>
+            <input id="invoice_amount_due" name="invoice[due_amount]" type="number" class="form-control" placeholder="1000" value="<%= @invoice.due_amount %>" readonly >
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group" id="toastTypeGroup">
+            <label>Location</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @invoice.location.try(:name)  %></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="hideEasing">Terms</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @invoice.payment_term.try(:name) %></option>
+            </select>
+          </div>
+          <div class="form-group" id="positionGroup">
+            <label>Department</label>
+            <select class="form-control input-small addressRef" disabled>
+              <option><%= @invoice.department.try(:name) %></option>
+            </select>
+          </div>
+          <div class="form-group" id="positionGroup">
+            <label>Status</label>
+            <%if @invoice.received == false %>
+              <input id="invoice_amount_due" name="invoice[status]" type="text" class="form-control" value="UNPAID" readonly >
+            <%else%>
+              <input id="invoice_amount_due" name="invoice[status]" type="text" class="form-control" value="PAID" readonly >
+            <%end%>    
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="control-label" for="invoice_message">Customer Message</label>
+            <textarea id="invoice_message" name="invoice[message]" rows="3" class="form-control" readonly ><%= @invoice.try(:message) %></textarea>
+          </div>
+
+          <div class="form-group" ng-app="inoteApp" ng-controller="inoteCtrl">
+            <label class="control-label" for="invoice_note">Notes</label>
+            <div class="drop-box" id="style-2">
+              <div class="post_area">   
+                <textarea class="sttext" id="invoice_note" ng-model="note_text" rows="2" class="form-control" ></textarea>
+                <button type="button" class="btn btn-success" ng-click="add_note()" ng-disabled="note_text==''">Add Note</button>
+              </div>
+              <div class="notes" ng-repeat="note in notes">
+                <div class="note_text">
+                  <p style="text-align:left; margin:3px">
+                    {{note.body}}
+                  </p>  
+                </div>
+                <div class="note_info"> 
+                  <label class="note_name" style="margin-bottom:0;">{{note.creator.first_name}} {{note.creator.last_name}}</label>
+                  <label class="note_date" style="margin-bottom:0;">{{note.created_at | date}}</label>
+                </div> 
+              </div>
+            </div>  
+          </div>
+        </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <form id="Pdf_items" target="_blank" action="/invoices/pdf_items/<%= @invoice.id %>.pdf" method="post">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" >
+            <label class="control-label" for="invoice_message">Select Columns for PDF:</label>
+            <br>
+            <input type="checkbox" name="items[]" value="customer_name" checked /> Customer Name <br>
+
+            <input type="checkbox" name="items[]" value="invoice" checked /> Invoice# <br>
+
+            <input type="checkbox" name="items[]" value="record_date" checked /> Record Date <br>
+
+            <input type="checkbox" name="items[]" value="due_date" checked /> Due Date<br>
+
+            <input type="checkbox" name="items[]" value="total_ammount" checked /> Total Ammount Due <br>
+
+            <input type="checkbox" name="items[]" value="location" checked /> Location<br>
+
+            <input type="checkbox" name="items[]" value="terms" checked /> Terms<br></td>
+
+            <input type="checkbox" name="items[]" value="department" checked /> Department<br>
+
+            <input type="checkbox" name="items[]" value="status" checked /> Status<br>
+
+            <input type="checkbox" name="items[]" value="customer_message" checked /> Customer Message<br>
+
+            <button type="submit" class="btn btn-success" id="downlaod_pdf">Download pdf</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <a href="<%= invoices_path %>" class="btn btn-success">Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Invoice Items
+        </header>
+        <table class="table small-data-table data-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Location</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+                <%if @invoice.invoice_items.present?%>
+                  <%@invoice.invoice_items.each do |invoice_item|%>
+                  <tr>
+                    <td><%= invoice_item.item.try(:name)%></td>
+                    <td><%= invoice_item.try(:description)%></td>
+                    <td><%= invoice_item.try(:quantity)%></td>
+                    <td><%= invoice_item.try(:price)%></td>
+                    <td><%= invoice_item.location.try(:name)%></td>
+                    <td>$<%= invoice_item.try(:amount)%></td>
+                  </tr>
+                  <%end%>
+                <%end%>  
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <div class="row">
+  <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Invoice Attachment 
+        </header>
+        <table class="table small-data-table data-table">
+          <thead>
+            <tr>
+              <th>Attachment</th>
+              <th>Attachment Type</th>
+              <th>Attachment File Size </th>
+              <th>Uploaded At </th>
+            </tr>
+          </thead>
+          <tbody>
+              <% if @invoice_attachment.present? %>
+                <tr>
+                  <td><%= link_to @invoice_attachment.try(:attachment_file_name), @invoice_attachment.try(:attachment).try(:url), target: '_new' %></td>
+                  <td><%= @invoice_attachment.try(:attachment_content_type)%></td>
+                  <td><%= number_to_human_size(@invoice_attachment.try(:attachment_file_size))%></td>
+                  <td><%= @invoice_attachment.try(:created_at).try(:strftime,"%d %B %Y") %></td>
+                </tr>
+              <%end%>  
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+
+</div>
+<!-- page end-->
+<!-- body wrapper end -->
+
+<% content_for :scripts do %>
+  <script type="text/javascript">
+$('form').submit(function(e) {
+  
+    if ($('input[type=checkbox]:checked').length==0) {
+          e.preventDefault();
+          alert("Please select at least one item.");
+        }
+        else
+        {
+      
+          $('form').submit();
+
+        }
+    });
+  </script>
+<% end %>
+
+<%content_for :angular_scripts do %>
+  <script type="text/javascript">
+    
+    var app = angular.module('inoteApp', []);
+
+    
+      
+    app.factory('notes', function($http){
+        return {
+          list: function(callback){
+            $http.get('/notes/notes_list_by_ajax?id=<%=@invoice.id%>&type=Invoice').success(callback);
+          }
+        };
+      });
+
+    app.controller('inoteCtrl', function($scope,$http,notes) {
+
+      // $scope.loading = false;
+      $scope.note_text = "";
+
+      notes.list(function(notes) {
+          $scope.notes = notes;
+          // $scope.loading = true;
+      });
+
+      $scope.add_note = function(){
+              $http({
+                method: 'GET',
+                url: '/notes/ajax_to_add_note',
+                params: {id: '<%= @invoice.id%>',type: 'Invoice', body: $scope.note_text }
+              }).then(function(response) {
+                  $scope.note_text ="";
+                  $scope.notes.push(response.data);
+              });
+          }
+      });
+  </script>
+
+<%end%>
+
