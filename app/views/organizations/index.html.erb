@@ -31,7 +31,7 @@
         <div class="form-group">
           <% if current_organization.attachment.present?%>
             <% if current_organization.attachment.attachment.present? %>
-              <label for="customer_logo">Company Logo: <img src="<%= current_organization.attachment.attachment.url %>" class="img-thumbnail">
+              <label for="customer_logo">Company Logo: <img src="<%= current_organization.attachment.attachment.url %>" class="img-thumbnail" style="height:100px; width:100px;">
             <%else%>
               <label for="customer_logo">Company Logo:</label><b>No Logo Attached</b>
             <%end%>  
