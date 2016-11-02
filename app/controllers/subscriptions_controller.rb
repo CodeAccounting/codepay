@@ -2,7 +2,7 @@ class SubscriptionsController < ApplicationController
   skip_before_action :verify_authenticity_token, :authenticate_user!
   protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format.json? }
   before_action :plans, only: [:new]
-  # skip_before_filter :subscription
+  skip_before_filter :subscription
 	def index
 	end	
 

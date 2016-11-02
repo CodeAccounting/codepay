@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :configure_permitted_parameters, if: :devise_controller?
   # before_filter :check_organization_user, unless: :devise_controller?
   # before_filter :check_master  
-  # before_filter :subscription, if: :user_signed_in?
+  before_filter :subscription, if: :user_signed_in?
   
 
   rescue_from CanCan::AccessDenied do |exception|
