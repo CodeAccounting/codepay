@@ -1,5 +1,5 @@
 set :stage, :staging
-set :branch, :master
+set :branch, :staging
 
 server '45.55.41.7',
   roles: %w{app web db},
