@@ -161,7 +161,7 @@
               </div>
               </div>
             </div>  
-          <div class="col-md-3" ng-controller="notesCtrl" >
+          <div class="col-md-3" >
             <div class="form-group">
               <label class="control-label" for="bill_note" >Note(Optional:)</label>
               <textarea id="bill_note" name="bill[bill_note]" rows="3" class="form-control" placeholder="add a note ..." ></textarea>
@@ -544,7 +544,6 @@
       $scope.loading = false;
 
       <% if @attachment.present? %>
-          // console.log("<%= @attachment.attachment.url%>");
           $scope.f = {
               result: {
                 id: '<%= @attachment.id%>',
@@ -560,8 +559,7 @@
       <%end%>
 
         $scope.uploadFiles = function(file, errFiles) {
-          console.log($scope);
-
+            $scope.f = file;
             $scope.errFile = errFiles && errFiles[0];
             if (file) {
                 file.upload = Upload.upload({
@@ -573,8 +571,6 @@
                     $timeout(function () {
                         file.result = response.data;
                         file.id = response.data.attachment.id; 
-                        // console.log(response.data)
-                        // console.log($scope.f.result)
                     });
                 }, function (response) {
                     if (response.status > 0)
@@ -586,7 +582,6 @@
                     {
                       file.full = true;
                     }
-                    console.log($scope.f.pprogress);
                 });
             }   
         }
@@ -616,7 +611,6 @@
         }
 
         $scope.add_image = function(index){
-          // console.log($scope.all_attachments[index])
             $scope.attchmnt = $scope.all_attachments[index];
             $scope.f = {
               result: {
@@ -644,11 +638,11 @@
 
     }]);
 
-app.controller('notesCtrl', function($scope) {
-    // $scope.firstName = "John";
-    // $scope.lastName = "Doe";
+// app.controller('notesCtrl', function($scope) {
+//     // $scope.firstName = "John";
+//     // $scope.lastName = "Doe";
 
-});
+// });
 
  </script> 
 

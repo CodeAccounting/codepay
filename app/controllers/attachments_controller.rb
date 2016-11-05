@@ -3,7 +3,7 @@ class AttachmentsController < ApplicationController
 
 
 	def index
-		@attachments = current_user.attachments.where(:referenceable_id => nil)
+		@attachments = current_organization.attachments.where(referenceable_id: nil, attachable_type: "User")
 
 		respond_to do |format|
 			format.html { render :index }
@@ -16,7 +16,8 @@ class AttachmentsController < ApplicationController
 		if params[:document].present?
 			upload_params[:attachment].each do |ar_val|
 				upload_param = {'attachment' => ar_val}
-	    		attach_document = current_user.attachments.new(upload_param) 
+	    		attach_document = current_user.attachments.new(upload_param)
+	    		attach_document.organization_id = current_organization.id
         		attach_document.save
         		attach_document = nil 
         	end    
@@ -47,6 +48,7 @@ class AttachmentsController < ApplicationController
 	def attachment_via_ajax
 		attach_param = {'attachment' => params[:attachment] }
 		attach_document = current_user.attachments.new(attach_param)
+		attach_document.organization_id = current_organization.id
 		if attach_document.save
 			# id = attach_document.id
 			render json: {'attachment': attach_document, 'url': attach_document.attachment.url}

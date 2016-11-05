@@ -48,7 +48,7 @@
           <i class="fa fa-bullseye"></i>
         </div>
         <div class="value gray">
-          <h1 class="green-color timer" data-from="0" data-to="<%= current_user.attachments.where(referenceable_id: nil).try(:count)%>"
+          <h1 class="green-color timer" data-from="0" data-to="<%= current_organization.attachments.where(referenceable_id: nil, attachable_type: "User").try(:count)%>"
                                                       data-speed="3000">
             <!--2345-->
           </h1>

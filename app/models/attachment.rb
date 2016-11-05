@@ -1,6 +1,7 @@
 class Attachment < ActiveRecord::Base
     belongs_to :attachable, polymorphic: true 
-	  belongs_to :referenceable, polymorphic: true 
+	  belongs_to :referenceable, polymorphic: true
+    belongs_to :organization 
 	# belongs_to :bill
   	has_attached_file :attachment, styles: {thumb: "100x100"}
   	validates_attachment_content_type :attachment, content_type: ["image/jpeg", "image/jpg", "image/png", "application/pdf"]

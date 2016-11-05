@@ -91,7 +91,7 @@
               <%else%>
                 <label>Please Attach Company Logo(.png file)</label>
               <%end%>     
-              <% attachment = Attachment.find_or_create_by(attachable_id: current_organization.id, attachable_type: "Organization") %>
+              <% attachment = Attachment.find_or_create_by(attachable_id: current_organization.id, attachable_type: "Organization", organization_id:  current_organization.id) %>
               <img src="<%= attachment.attachment.url(:thumb) %>">
               <input id="user_avatar" type="file" class="form-control" name="organization[attachment_attributes][attachment]" style="width:330px; height:100px;">
               <input  type="hidden" class="form-control" name="organization[attachment_attributes][id]" value="<%= attachment.id%>">
