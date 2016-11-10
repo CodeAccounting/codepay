@@ -7,7 +7,7 @@ class Bill < ActiveRecord::Base
 
   attr_accessor :assigned_to_ids, :bill_note 
 
-  audited
+  audited associated_with: :organization
   acts_as_paranoid 
   
   validates(

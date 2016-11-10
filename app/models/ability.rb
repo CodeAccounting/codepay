@@ -19,15 +19,19 @@ class Ability
         can :manage, [Customer, Vendor], organization_id: user.current_organization_id
         cannot :manage, OrganizationUsersController
         cannot :manage, OrganizationsController
+        cannot :manage, Audit
       elsif user.has_current_role? :payer
         cannot :manage, OrganizationUsersController
         cannot :manage, OrganizationsController
+        cannot :manage, Audit
       elsif user.has_current_role? :approver
         cannot :manage, OrganizationUsersController
         cannot :manage, OrganizationsController
+        cannot :manage, Audit
       elsif user.has_current_role? :clerk
         cannot :manage, OrganizationUsersController
         cannot :manage, OrganizationsController
+        cannot :manage, Audit
       else
         cannot :manage, :all
       end
