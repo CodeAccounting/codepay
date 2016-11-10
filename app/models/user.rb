@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  audited
+  belongs_to :organization, class_name: 'Organization', foreign_key: :current_organization_id 
+  audited associated_with: :organization
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :invitable,
          :confirmable

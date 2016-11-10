@@ -9,6 +9,10 @@
 #
 
 class Organization < ActiveRecord::Base
+  
+  has_many :users
+  has_associated_audits
+
   validates :name, presence: true
 
 
