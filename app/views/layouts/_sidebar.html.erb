@@ -74,34 +74,83 @@
     <ul class="nav nav-pills nav-stacked side-navigation">
       <li class=""><a href="<%= new_dashboard_path %>"><i class="fa fa-home"></i>Dashboard</a></li>
       
-      <li class="menu-list"> <a href="#"><i class="fa fa-money"></i>Money In</a>
+      <!-- <li class="menu-list"> <a href="#"><i class="fa fa-money"></i>Money In</a>
         <ul class="child-list">
-          <% if can? :index, Invoice %>
-            <li><%= link_to "Invoice Information", invoices_path %></li>
-          <% end %>
+          <%# if can? :index, Invoice %>
+            <li><%#= link_to "Invoice Information", invoices_path %></li>
+          <%# end %>
 
-            <li><%= link_to "Payment Information", invoice_payments_path %></li>
+            <li><%#= link_to "Payment Information", invoice_payments_path %></li>
 
-            <li><%= link_to "Customers", customers_path %></li>
+            <li><%#= link_to "Customers", customers_path %></li>
         </ul>
-      </li>
+      </li> -->
 
-      <li class="menu-list">
+      <!-- <li class="menu-list">
         <a href="#">
           <i class="fa fa-shopping-cart"></i>
           Money Out
-        </a>
-        <ul class="child-list">
-          <% if can? :create, Payment %>
-            <li><%= link_to "Bill Information", bills_path %></li>
-          <% end %>
+        </a> -->
+        <!-- <ul class="child-list"> -->
+          <%# if can? :create, Payment %>
+            <!-- <li><%#= link_to "Bill Information", bills_path %></li> -->
+          <%# end %>
 
-          <% if can? :index, Vendor %>
-            <li><%= link_to "Payment Information", new_payment_path %></li>
-          <% end %>
-            <!-- <li><%= link_to "Inbox", attachments_path %></li> -->
-            <li><%= link_to "Vendors", vendors_path %></li>
+          <%# if can? :index, Vendor %>
+            <!-- <li><%#= link_to "Payment Information", new_payment_path %></li> -->
+          <%# end %>
+            <!-- <li><%#= link_to "Inbox", attachments_path %></li> -->
+          <!--   <li><%#= link_to "Vendors", vendors_path %></li>
         </ul>
+      </li> -->
+      
+      <li class="">
+        <%# if can? :index, Vendor %>
+          <a href="<%= attachments_path%>">
+            <i class="fa fa-envelope-o"></i>
+            Inbox
+          </a>
+        <%# end %>
+      </li>
+
+      <li class="">
+        <% if can? :index, Vendor %>
+          <a href="<%= vendors_path%>">
+            <i class="fa fa-users"></i>
+            Vendors
+          </a>
+        <% end %>
+      </li>
+
+
+      <li class="">
+          <a href="<%= bills_path%>">
+            <i class="fa fa-newspaper-o"></i>
+            Bills
+          </a>
+      </li>
+
+      <li class="">
+        <% if can? :create, Payment %>
+          <a href="<%= new_payment_path%>">
+            <i class="fa fa-credit-card"></i>
+            Payments
+          </a>
+        <% end %>
+      </li>
+
+      <li class="">
+          <a href="#">
+            <i class="fa fa-minus-square-o"></i>
+            Credits
+          </a>
+      </li>
+
+      <li class="">
+          <a href="#">
+            <i class="fa fa-square-o"></i>
+            Voids
+          </a>
       </li>
 
       <li class="">

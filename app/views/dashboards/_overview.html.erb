@@ -16,12 +16,12 @@
       </section></a>
   </div>
   <div class="col-lg-3 col-sm-6">
-    <a href="<%=outstanding_invoice_link%>"><section class="panel ">
+    <a href="<%#=outstanding_invoice_link%>"><section class="panel ">
         <div class="symbol purple-color">
           <i class="fa fa-tags"></i>
         </div>
         <div class="value gray">
-          <h1 class="purple-color timer" data-from="0" data-to="<%= current_organization.invoices.try(:count) %>" data-speed="1000">
+          <h1 class="purple-color timer" data-from="0" data-to="0<%#= current_organization.invoices.try(:count) %>" data-speed="1000">
             <!--123-->
           </h1>
           <p>Outstanding Invoices</p>

@@ -1,4 +1,4 @@
-<!-- page head start-->
+ <!-- page head start-->
 <div class="page-head">
   <h3 class="m-b-less">
   Items
@@ -8,7 +8,7 @@
 
 <!--body wrapper start-->
 <div class = "wrapper">
-  <div class = "panel">
+  <!-- <div class = "panel">
   	<div class ="row"> 
       <div class="col-sm-12">
         <header class="panel-heading head-border">
@@ -25,20 +25,20 @@
                 </tr>
               </thead>
               <tbody>
-                <%@invoice_items.each do |invoice_item|%>
+                <%#@invoice_items.each do |invoice_item|%>
                 <tr>
-                  <td><%=link_to 'show', item_path(invoice_item)%></td>
-                  <td><%=invoice_item.name%></td>
-                  <td><%=link_to 'delete', remove_item_path(invoice_item)%></td>
+                  <td><%#=link_to 'show', item_path(invoice_item)%></td>
+                  <td><%#=invoice_item.name%></td>
+                  <td><%#=link_to 'delete', remove_item_path(invoice_item)%></td>
                 </tr>
-                <%end%>
+                <%#end%>
               </tbody>
             </table>
           </div>
         </div>
   	  </div>
     </div>
-  </div>
+  </div> -->
 
   <div class = "panel">
     <div class ="row"> 
@@ -73,4 +73,4 @@
   </div>
 
 </div>  
-<!--body wrapper send-->
+<!--body wrapper send

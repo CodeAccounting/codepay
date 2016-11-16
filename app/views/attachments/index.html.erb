@@ -51,7 +51,7 @@
                     </td>
                     <td><img src="<%= attachment.attachment.url(:thumb)%>"></td>
                     <td>
-                      <%= link_to 'Create Bill', new_bill_path(:attachment_id =>attachment)%> / <%= link_to 'Create Invoice', new_invoice_path(:attachment_id =>attachment)%>
+                      <%= link_to 'Create Bill', new_bill_path(:attachment_id =>attachment)%> <%#= link_to 'Create Invoice', new_invoice_path(:attachment_id =>attachment)%>
                     </td>
                     <td>
                       <%= link_to attachment.attachment_file_name, attachment.attachment.url, target: '_new' %>

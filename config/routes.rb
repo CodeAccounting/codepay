@@ -28,15 +28,15 @@ Rails.application.routes.draw do
   resources :beta_signups, only: [:create, :show]
   resources :contacts, only: [:index, :create]
 
-  resources :invoices
-  get "/invoices/copy_invoice/:id", to: "invoices#copy_invoice"
-  get "/invoices/restore_invoice/:id", to: "invoices#restore", as: :restore_invoice
-  post "/invoices/pdf_items/:id", to: "invoices#pdf_items", as: :pdf_items
-  post "/invoices/invoice_preview", to: "invoices#invoice_preview", as: :invoice_preview
+  # resources :invoices
+  # get "/invoices/copy_invoice/:id", to: "invoices#copy_invoice"
+  # get "/invoices/restore_invoice/:id", to: "invoices#restore", as: :restore_invoice
+  # post "/invoices/pdf_items/:id", to: "invoices#pdf_items", as: :pdf_items
+  # post "/invoices/invoice_preview", to: "invoices#invoice_preview", as: :invoice_preview
 
-  resources :invoice_reminders #for invoice reminders
-  resources :invoice_emails, only: [:index, :show] #for invoice reminders
-  resources :customers
+  # resources :invoice_reminders #for invoice reminders
+  # resources :invoice_emails, only: [:index, :show] #for invoice reminders
+  # resources :customers
 
   resources :bills
   get "/bills/copy_bill/:id", to: "bills#copy_bill"
@@ -72,8 +72,8 @@ Rails.application.routes.draw do
   resources :bank_accounts
   resources :bill_informations
 
-  resources :invoice_payments
-  post "/invoice_payments/on_change", to: "invoice_payments#on_change"               
+  # resources :invoice_payments
+  # post "/invoice_payments/on_change", to: "invoice_payments#on_change"               
 
   resources :audits
   resources :bill_approvals
