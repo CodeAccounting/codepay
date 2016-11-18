@@ -1,0 +1,158 @@
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+   Create Credit
+  </h3>
+</div>
+<!-- page head end-->
+
+
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel">
+        <header class="panel-heading head-border">
+          Create Mannual Bill Credit 
+        </header>
+        <% if flash[:errors] %>
+        <div class="alert alert-danger">
+          <ul>
+            <% flash[:errors].each do |er| %>
+            <li><%= er %></li>
+            <% end %>
+          </ul>
+        </div>
+        <% end %>
+
+        <form id="mannual_bill_credit_form" action="<%= credits_path%>" method="post">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <div class="panel-body">
+            <div class="row toastr-row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label" for="vendor">Vendor</label>
+                  <select class="form-control input-small" id="vendor" name="credit[vendor_id]" >
+                  <option value="">Select a Vendor</option>
+                    <% current_organization.vendors.each do |vendor| %>
+                      <option value="<%= vendor.id %>" ><%= vendor.name%></option>
+                    <% end %>
+                  </select>
+                </div>
+                <div class="form-group bill_select">
+                  <label class="control-label" for="bill_number">Bill Number</label>
+                  <select class="form-control input-small" id="billNumber" name="credit[bill_id]" data-placeholder="select bills...">
+                  <option value="">Select a bill</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="credit_date">Date</label>
+                  <input id="bill_record_date" name="credit[credit_date]" type="date" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="credit_amount">Credit Amount</label>
+                  <input id="payment_amount" name="credit[credit_amount]" type="number" class="form-control" step="0.01">
+                </div>
+                <div class="form-group" id="toastTypeGroup">
+                  <div class="form-group">
+                    <label class="control-label" for="hideEasing">Message</label>
+                     <textarea id="message" name="credit[message]" rows="3" class="form-control" placeholder="Enter a message..." ></textarea>
+                  </div>
+                </div>
+                <!-- <div class="form-group">
+                  <label class="control-label" for="invoice_payment_method">Payment Method </label>
+                  <input id="payment_method" name="invoice_payment[payment_method]" type="text" class="form-control">
+                </div> -->
+                <!-- <div class="form-group">
+                  <label class="control-label" for="incoice_payment_account">Payment Account</label>
+                  <input id="payment_account" name="invoice_payment[payment_account]" type="text" class="form-control"  placeholder="0001">
+                </div> -->
+                <!-- <div class="form-group">
+                  <label class="control-label" for="invoice_reference">Reference </label>
+                  <input id="reference" name="invoice_payment[reference]" type="text" class="form-control" >
+                </div> -->
+              </div>
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-success" id="cleartoasts">Save</button>
+              </div>
+            </div>    
+          </div>
+        </form>
+      </div>
+    </div> 
+  </div>  
+</div>
+
+<% content_for :scripts_autocomplete do %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+  
+  <script>
+
+
+      $(window).load(function() {
+        var selected = $("#vendor").is(':selected');
+        if (selected == false){
+          $(".bill_select").hide();  
+        }
+        else {
+         $(".bill_select").show(); 
+        }
+      });
+
+      $("#vendor").select2();
+
+      $("#billNumber").select2();
+
+      $('#vendor').change(function() {
+        $("#billNumber").html("");
+        id = $(this).val()
+          $.ajax({
+            url: "/vendors/bills_list_by_ajax",
+            type: "POST",
+            dataType: "json",
+            data: {vendor_id: id},
+            success: function (bills) {
+              $("#billNumber").append("<option value ="+""+">"+"select a bill"+"</option>");
+              $(bills).each(function(){
+                var id=$(this).attr('id');
+                var bill_number = $(this).attr('bill_number');
+                $("#billNumber").append("<option value ="+id+">"+bill_number+"</option>");
+              });
+              $(".bill_select").show();
+            },
+            error: function (resp) {
+              var errorDiv = $('<div class="alert alert-danger">');
+              errorDiv.text(resp.responseJSON[0]);
+            },
+          });
+      });
+      
+    //   $("#vendor").select2({
+    //     ajax: {
+    //         type: "POST",
+    //         url: "/vendors/vendors_list_by_ajax.json",
+    //         dataType: 'json',
+    //         contentType: "application/json",
+    //         delay: 250,
+    //         data: function (params) {
+    //             return{
+    //                 name_startsWith: params.term
+    //             };
+    //         },
+    //         processResults: function (data) {
+    //             return {
+    //                 results: $.map(data, function (item, i) {
+    //                     return {
+    //                         text: item.address_label,
+    //                         id: item.id
+    //                     }
+    //                 })
+    //             };
+    //         }
+    //     },
+    // });
+
+  </script>
+<%end%>

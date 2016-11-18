@@ -41,6 +41,7 @@ class Vendor < ActiveRecord::Base
   belongs_to :primary_contact, class_name: 'Contact', foreign_key: :contact_id
   has_many :bills
   has_many :notes, as: :noteable
+  has_many :credits
 
   accepts_nested_attributes_for :billing_address
   accepts_nested_attributes_for :shipping_address

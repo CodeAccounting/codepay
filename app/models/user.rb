@@ -36,12 +36,14 @@ class User < ActiveRecord::Base
   has_many :created_taxs, class_name: 'Tax', foreign_key: :creator_id
   has_many :approvals, class_name: 'Approval', foreign_key: :assigned_to
   has_many :created_chart_of_accounts, class_name: 'ChartOfAccount', foreign_key: :creator_id
+  has_many :created_notes, class_name: 'Note', foreign_key: :creator_id
+  has_many :created_credits, class_name: 'Credit', foreign_key: :creator_id
 
   has_one :profile_image
   has_one :background_image 
   has_one :identification
   has_one :subscription
-  has_many :created_notes, class_name: 'Note', foreign_key: :creator_id
+  
 
 
   has_and_belongs_to_many :roles

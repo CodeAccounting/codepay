@@ -34,6 +34,7 @@ class Organization < ActiveRecord::Base
   has_many :chart_of_accounts
   has_many :notes
   has_many :attachments
+  has_many :credits
 
   has_one  :attachment, as: :attachable
   accepts_nested_attributes_for :attachment, :reject_if => lambda { |t| t['attachment'].nil? }

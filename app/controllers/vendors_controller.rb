@@ -98,6 +98,23 @@ def index
       @vendor_bills = vendor.bills
   end
 
+  # def vendors_list_by_ajax
+  #     @vendors = Vendor.where("name ILIKE ?","%#{params[:name_startsWith]}%").first(10)
+  #     respond_to do |format|
+  #       format.json {render json: @bills.to_json}
+  #     end
+  # end
+
+  def bills_list_by_ajax
+      if params[:vendor_id].present?
+          vendor = current_organization.vendors.find(params[:vendor_id])
+          @bills = vendor.bills
+          respond_to do |format|
+           format.json {render json: @bills.to_json}
+          end 
+      end  
+  end  
+
   private
     def vendor_params
     params

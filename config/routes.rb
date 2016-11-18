@@ -49,6 +49,8 @@ Rails.application.routes.draw do
   
   resources :vendors #changed from "Vendors"
   get "/vendors/:id/show_attachments", to: "vendors#show_attachments", as: :show_attachments
+  post "/vendors/bills_list_by_ajax", to: "vendors#bills_list_by_ajax"
+  post "/vendors/vendors_list_by_ajax", to: "vendors#vendors_list_by_ajax"
 
   resources :organizations
   resources :organization_users
@@ -101,6 +103,9 @@ Rails.application.routes.draw do
   resources :chart_of_accounts
   resources :basic
   resources :support
+  resources :voids
+  resources :credits
+
 
   # resources :notes
   get "/notes/ajax_to_add_note", to: "notes#ajax_to_add_note", as: :ajax_to_add_note
@@ -125,6 +130,7 @@ Rails.application.routes.draw do
 
     resources :users
     resources :audits
+
   end  
   
 end

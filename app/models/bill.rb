@@ -27,6 +27,7 @@ class Bill < ActiveRecord::Base
   
   has_one    :bill_information, dependent: :destroy
   has_one    :attachment, as: :referenceable
+  has_one    :credit
 
   has_many   :bill_approvals
   has_many   :bill_items

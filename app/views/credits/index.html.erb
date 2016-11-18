@@ -1,0 +1,84 @@
+ <!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Credits
+  </h3>
+  <!-- <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li class="active"><a href="#">All Active bills</a></li>
+      <li><a href="#">Active and Archived</a></li>
+    </ol>
+  </div> -->
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <% if flash[:notice] or flash[:error] %>
+          <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <%= flash[:notice] %>
+            <%= flash[:error] %>
+          </div>
+        <% end %>
+
+        <!-- <form id="bill-form" action=" bill_reminders_path " method="post">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>"> -->
+          <header class="panel-heading ">
+          <!--   <button id="reminder" type="submit" class="btn btn-default btn-success btn-lg">SEND REMINDERS</button> -->
+            <a class="btn btn-default btn-success btn-lg" href="<%= new_credit_path %>">
+                <span>Create New Credit</span>
+            </a>
+            <span class="tools pull-right">
+              <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+              <a class="t-close fa fa-times" href="javascript:;"></a>
+            </span>
+
+          </header>
+          <table class="table colvis-data-table data-table">
+            <thead>
+              <tr>
+                <th>Vendor Name</th>
+                <th>Bill Number</th>
+                <th>Credit Amount</th>
+                <th>Message</th>
+                <th>Credit Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @credits.each do |credit| %>
+              <tr>
+
+                <td> <%= credit.vendor.name %> </td>
+                <td>
+                  <%# if bill.deleted_at %>
+                  <!-- VOIDED (<%#= link_to "RESTORE", restore_bill_path(bill) %>) -->
+                  <%# else %>
+                  <%= credit.bill.bill_number %> (<%= link_to "SHOW", credit_path(credit) %>)
+                  <%# end %>
+                </td>
+                <td><%= credit.credit_amount %> </td>
+                <td><%= credit.message %> </td>
+                <td><%= credit.credit_date.strftime("%d %B %Y") %> </td>
+                <td><%= credit.credit_status %></td>
+                <!-- <td><%#= bill.payment_term.try(:name) %> </td>
+                <td><%#= bill.location.try(:name) %> </td>
+                <td><%#= bill.department.try(:name) %> </td>
+                <td><%#= bill.bill_template_id %> </td>
+                <td><%#= bill.po_number %> </td>
+                <td><%#= bill.sales_rep %> </td>
+                <td><%#= bill.message %> </td>
+                <td><%#= bill.deleted_at.strftime("%d %B %Y") %> </td> -->
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <!-- </form> -->
+      </section>
+    </div>
+  </div>
+</div>
+<!--body wrapper end -->
