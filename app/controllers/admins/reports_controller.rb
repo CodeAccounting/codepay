@@ -1,7 +1,7 @@
 require 'csv_generator'
 class Admins::ReportsController < Admins::ApplicationController
-  load_and_authorize_resource :class => false
-  
+  load_and_authorize_resource 
+
 	def index
   end
 
