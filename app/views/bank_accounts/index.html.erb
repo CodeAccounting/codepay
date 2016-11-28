@@ -44,13 +44,13 @@
               <button id="copy" type="submit" class="btn btn-default DTTT_button_copy">
               <span>COPY</span>
               </button>
-              <a class="btn btn-default DTTT_button_csv" tabindex="0" href="<%= invoices_path(format: :csv) %>" aria-controls="DataTables_Table_0">
+              <a class="btn btn-default DTTT_button_csv" tabindex="0" href="<%#= invoices_path(format: :csv) %>" aria-controls="DataTables_Table_0">
                 <span>CSV</span>
               </a>
-              <a class="btn btn-default DTTT_button_xls" tabindex="0" href="<%= invoices_path(format: :xls) %>" aria-controls="DataTables_Table_0">
+              <a class="btn btn-default DTTT_button_xls" tabindex="0" href="<%#= invoices_path(format: :xls) %>" aria-controls="DataTables_Table_0">
                 <span>Excel</span>
               </a>
-              <a target="_blank" class="btn btn-default DTTT_button_pdf" href="<%= invoices_path(format: :pdf) %>" tabindex="0" aria-controls="DataTables_Table_0">
+              <a target="_blank" class="btn btn-default DTTT_button_pdf" href="<%#= invoices_path(format: :pdf) %>" tabindex="0" aria-controls="DataTables_Table_0">
                 <span>PDF / PRINT</span>
               </a>
             </div>

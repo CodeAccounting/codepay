@@ -13,7 +13,6 @@
     <header class="panel-heading head-border">
       Showing A Bank Account
     </header>    
-    <!-- <a target="_blank" href= "<%= invoice_path(format: :pdf) %>"" class ="btn btn-default btn-success btn-lg"> DOWNLOAD PDF</a> -->
 
     <% if flash[:notice] %>
     <div class="alert alert-danger">
@@ -34,10 +33,6 @@
           <div class="form-group">
             <label class="control-label" for="payable">Available For Payable</label>
             <input id="payable" name="account[account_payable]" class="form-control" value="<%= @account.payable%>" readonly >
-          </div>
-          <div class="form-group">
-            <label class="control-label" for="default">Available For Payable</label>
-            <input id="default" name="account[account_default]" class="form-control" value="<%= @account.default%>" readonly >
           </div>
           <div class="form-group">
             <label class="control-label" for="receivable">Available For Receivable</label>
