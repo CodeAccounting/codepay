@@ -1,43 +1,99 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
   <!-- page head start-->
 <div class="page-head">
   <h3 class="m-b-less">
-       Approve Bill/Invoice Request
+       Bill Approval Request
   </h3>
 </div>
  <!-- page head end-->
 
 <div class="wrapper">
+  <%if flash[:error]%>
+    <div class ="alert alert-danger">
+      <ul>
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <%= flash[:error]%>
+      </ul>
+    </div>
+  <%end%>
   <div class="row">
     <div class="col-sm-12">
-      <section class="panel">
-        <table class="table colvis-data-table data-table">
-          <thead>
-            <tr>
-              <th>Show Details</th>
-              <th>Approval Of</th>
-              <th>Id</th>
-              <th>Assigned By</th>
-              <th>status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% if @approvals.present? %>
-              <% @approvals.each do |approval|%>
-                <tr>
-                  <td><%= link_to 'show', approval_path(approval.approvable_id, approval.approvable_type)%></td>
-                  <td><%= approval.approvable_type %></td>
-                  <td><%= approval.approvable_id %></td>
-                  <td><%= approval.assigner.full_name %></td>
-                  <td><%= approval.status %></td>
-                </tr>
-              <%end%>    
-            <%end%>
-          </tbody>
-        </table>
-      </section>
+      <form id="approval_form" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <section class="panel">
+        <header class="panel-heading ">
+            <div class="col-sm-3" style="width: 12%;">
+              <button type="submit" id="approve_bill"  class="btn btn-default btn-success btn-lg header_button">Approve Bills</button>
+            </div>
+            <div class="col-sm-3" style="width: 18%;">
+              <button type="submit" id="assign_bill"  class="btn btn-default btn-success btn-lg header_button">Assign Request Further</button>
+            </div>
+            <div class="col-sm-3" style="width: 20%; margin-top: 6px;">
+              <select name="assigned_to_ids[]" class="form-control input-small" id="approvars" multiple="multiple" data-placeholder="Select approvers...">
+                  <% current_organization.all_organization_users.where.not(invitation_accepted_at: nil).each do |user| %>
+                    <% if user != current_user && user.which_role?(current_organization) == "approver"%> 
+                      <option value="<%= user.id %>"><%= user.full_name %></option>
+                    <% end %>    
+                  <% end %>
+              </select>
+            </div>
+            <!-- <a href="#" class="btn btn-default btn-success btn-lg">Assign Further</a> -->
+        <header>
+          <table class="table colvis-data-table data-table">
+            <thead>
+              <tr>
+                <th>Select Bill To Approve</th>
+                <th>Show Details</th>
+                <th>Approval Of</th>
+                <th>Id</th>
+                <th>Assigned By</th>
+                <th>status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @approvals.present? %>
+                <% @approvals.each do |approval|%>
+                  <tr>
+                    <td>
+                      <input type="checkbox" value="<%= approval.id %>"  name="approval_ids[]" > <label for="debugInfo">Approve Now</label>
+                    </td>
+                    <td><%= link_to 'show', approval_path(approval.approvable_id, approval.approvable_type)%></td>
+                    <td><%= approval.approvable_type %></td>
+                    <td><%= approval.approvable_id %></td>
+                    <td><%= approval.assigner.full_name %></td>
+                    <td><%= approval.status %></td>
+                  </tr>
+                <%end%>    
+              <%end%>
+            </tbody>
+          </table>
+        </section>
+      </form>
     </div>
   </div>
 </div>
+<% content_for :scripts do %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
+<script type="text/javascript">
+  
+  $("#approvars").select2();
+
+  $(".header_button").click(function(){
+    
+    btn_id = $(this).attr('id'); 
+    if ( btn_id == "approve_bill"){
+      $('#approval_form').attr('action','<%= approve_bills_path %>');
+    }
+    if ( btn_id == "assign_bill"){
+      $('#approval_form').attr('action','<%= assign_request_to_other_user_path %>');
+    }
+  });
+
+
+</script>
+
+<%end%>
  <!--body wrapper end-->
 

@@ -31,6 +31,7 @@
                     <option disabled selected value> -- select an option -- </option>
                     <!-- <option value="invoices">Invoice List</option> -->
                     <option value="bills">Bill List</option>
+                    <option value="payment">Payments</option>
                     <!-- <option value="unpaid_invoices">Unpaid Invoices</option> -->
                   </select>
                 </div>
@@ -91,7 +92,7 @@
       event.preventDefault();
         id = $(this).attr('id')
         if(id=="download-pdf") {
-          $('#report-form').attr('action', '/reports/download_file.pdf')
+          $('#report-form').attr('action', '/reports/download_file.pdf', 'target', "_blank")
         } else if(id=="download-csv") {
           $('#report-form').attr('action', '/reports/download_file.csv')
         }

@@ -54,6 +54,16 @@ class ReportsController < ApplicationController
               redirect_to :back
             end
 
+        when "payment"         
+             @payments = current_organization.bill_informations.where(processing_date: start_date..end_date)
+            if @payments.present?
+              csv_g = CsvGenerator.new(@payments)
+              send_data(csv_g.payments_to_csv, :filename => "payments.csv")
+            else
+              flash[:error] = "There is no payment processed on seleted date" 
+              redirect_to :back
+            end
+             
         else
           redirect_to :back
         end
@@ -90,6 +100,14 @@ class ReportsController < ApplicationController
             render pdf: "download_file", layout: 'pdf.html.erb'
           else
             flash[:error] = "There is no unpaid invoice for selected dates" 
+            redirect_to :back
+          end
+        when "payment"
+          @payments = current_organization.bill_informations.where(processing_date: start_date..end_date)
+          if @payments.present?         
+            render pdf: "download_file", layout: 'pdf.html.erb'
+          else
+            flash[:error] = "There is no payment for seleted processed date" 
             redirect_to :back
           end
 

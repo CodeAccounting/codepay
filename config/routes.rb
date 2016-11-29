@@ -100,6 +100,9 @@ Rails.application.routes.draw do
 
   resources :taxs
   resources :approvals
+  post "approvals/approve_bills", to: "approvals#approve_bills", as: :approve_bills  
+  post "approvals/assign_request_to_other_user", to: "approvals#assign_request_to_other_user", as: :assign_request_to_other_user  
+
   resources :chart_of_accounts
   resources :basic
   resources :support

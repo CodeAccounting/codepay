@@ -36,7 +36,9 @@ class Admins::BillPayRequestsController < Admins::ApplicationController
 			:memo,
 			:description,
 			:check_number,
-			:due_date
+			:due_date,
+			:payment_method,
+			:amount
 			)
 	end	
 end

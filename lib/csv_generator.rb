@@ -83,6 +83,39 @@ class CsvGenerator
      end 
   end
 
+  def payments_to_csv(options = {})
+     CSV.generate(options) do |csv|
+      csv << [
+        "vendor_name",
+        "vendor_account",
+        "bill_number",
+        "due_date",
+        "processed_date",
+        "delivery_date",
+        "amount",
+        "payment_method",
+        "check_number",
+        "memo",
+        "description"
+      ]
+      @data.each do |payment|
+        csv << [
+          payment.vendor_name,
+          payment.vendor_account,
+          payment.bill.bill_number,
+          payment.try(:due_date).try(:strftime,"%d %B %Y"),
+          payment.try(:processing_date).try(:strftime, "%d %B %Y"),
+          payment.try(:delivery_date).try(:strftime,"%d %B %Y"),
+          payment.try(:amount),
+          payment.try(:payment_method),
+          payment.try(:check_number),
+          payment.try(:memo),
+          payment.try(:description)
+        ]
+        end
+     end 
+  end
+
   def unpaid_invoice_to_csv(options = {})
       @due_not_passed_invoices = @data.where("due_date > ?", Date.today)
       @due_passed_30_days_invoices = @data.where("due_date <= ? and due_date > ?", Date.today, (Date.today-30.days))
