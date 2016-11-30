@@ -108,7 +108,7 @@ Rails.application.routes.draw do
   resources :support
   resources :voids
   resources :credits
-
+  resources :news
 
   # resources :notes
   get "/notes/ajax_to_add_note", to: "notes#ajax_to_add_note", as: :ajax_to_add_note
@@ -133,6 +133,8 @@ Rails.application.routes.draw do
 
     resources :users
     resources :audits
+    resources :news
+    post "news/delete", to: "news#delete", as: :news_delete
 
   end  
   

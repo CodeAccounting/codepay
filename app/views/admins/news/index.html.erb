@@ -1,0 +1,63 @@
+ <!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  News
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class = "wrapper">
+  <div class = "panel">
+    <% if flash[:errors].present? %>
+      <div class="alert alert-danger">
+        <ul>
+          <% flash[:errors].each do |er| %>
+          <li><%= er %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class ="row"> 
+      <div class="col-sm-12">
+        <form action="<%= admins_news_delete_path %>" method="post" >
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <header class="panel-heading head-border">
+              <a href="<%= new_admins_news_path%>" class="btn btn-success" >Create New</a>
+              <button type="submit" class="btn btn-danger">Delete News</button>
+            </header>
+          <div class="panel-body">
+            <div>
+              <table class="table colvis-data-table data-table">
+                <thead>
+                  <tr>
+                    <th>Select News</th>
+                    <th>Subject</th>
+                    <th>Description</th>
+                    <th>Show</th>
+                    <th>Created_At</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%@news.each do |news|%>
+                    <tr>
+                      <td>
+                        <input type="checkbox" value="<%= news.id%>" name="news_ids[]" > <label for="debugInfo">Select</label>  
+                      </td>
+                      <td><%= news.subject%></td>
+                      <td><%= truncate(news.description, length: 40 )%></td>
+                      <td><%= link_to 'See News Here', admins_news_path(news.id) %></td>
+                      <td><%= news.created_at.strftime("%d %B %Y")%></td>
+                    </tr>
+                  <%end%>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>  
+      </div>
+    </div>
+  </div>
+
+</div>  
+<!--body wrapper send

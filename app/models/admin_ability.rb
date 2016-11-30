@@ -8,6 +8,7 @@ class AdminAbility
             
     elsif admin.has_current_role? :Administrative_Assistant
 	  	cannot :manage, Admins::BillPayRequestsController
+      cannot :manage, Admins::NewsController
 	    # current_organization = Organization.find(user.current_organization_id)
 	    # under_organization_users = current_organization.all_organization_users.map(&:id)
 	    # can :manage, Invoice, creator_id: under_organization_users
@@ -18,6 +19,7 @@ class AdminAbility
     elsif admin.has_current_role? :Data_Engineer
         cannot :manage, Admins::ReportsController
         cannot :manage, Admins::BillPayRequestsController
+        cannot :manage, Admins::NewsController
     end
   end
 end

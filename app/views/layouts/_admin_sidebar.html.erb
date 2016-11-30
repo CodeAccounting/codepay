@@ -27,6 +27,14 @@
         </li>
       <%end%>  
 
+      <%if can? :manage, Admins::NewsController%>
+        <li>
+          <a href="<%= admins_news_index_path %>">
+            <i class="fa fa-newspaper-o"></i>
+            News
+          </a>
+        </li>
+      <%end%>  
       <%# if current_admin.user_type == "Admin"%>
         <li class="menu-list"> <a href="#"><i class="fa fa-cogs"></i>Settings</a>
           <ul class="child-list">
