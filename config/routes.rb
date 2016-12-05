@@ -40,7 +40,10 @@ Rails.application.routes.draw do
 
   resources :bills
   get "/bills/copy_bill/:id", to: "bills#copy_bill"
+  get "/bills/bill_show/:id", to: "bills#bill_show", as: :bill_show
+  get "/bills/approval_request_again/:id", to: "bills#approval_request_again", as: :approval_request_again
   post "/bills/bill_preview", to: "bills#bill_preview", as: :bill_preview
+
   
   
   resources :payments 

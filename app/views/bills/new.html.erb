@@ -366,15 +366,25 @@
       tr = $(this).parent().parent().parent();
       qnty = tr.find('td.bill-item-quantity').children().children();
       prc = tr.find('td.bill-item-price').children().children();
+      tax_op = tr.find('td.bill-item-tax').children().children().children("option:selected")
+
       quantity = 0 + parseInt(qnty.val());
       price = prc.val();
+      tax = parseFloat(tax_op.text());
       if (isNaN(quantity)){
         quantity = 0;
       }
       if (price == ""){
         price = 0;
       }
-      amount = quantity * parseFloat(price);
+      if (isNaN(tax)){
+        amount = quantity * parseFloat(price);
+      }
+      else{
+        amount = quantity * parseFloat(price);
+        tax_amount = (amount * tax)/100;
+        amount = amount + tax_amount;
+      }
       amt = tr.find('td.bill-item-amount');
       if (!(isNaN(amount))){
         amt.html('$'+amount);
@@ -508,7 +518,7 @@
           $('#bill-form').attr('action', '/bills')
         } else if(id=="preview-bill") {
           $('#bill-form').attr('action', '/bills/bill_preview.pdf')
-          $('#bill-form').attr('target', "-blank")
+          $('#bill-form').attr('target', "_blank")
         }
         $('#bill-form').submit();
       });

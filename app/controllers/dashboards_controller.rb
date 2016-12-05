@@ -16,6 +16,7 @@ class DashboardsController < ApplicationController
   def new
     @dashboard = Dashboard.new
     @news = News.all
+    @bill_approvals = current_user.requested_approvals.where(approvable_type: "Bill", status: "Cancelled")
   end
 
   # GET /dashboards/1/edit

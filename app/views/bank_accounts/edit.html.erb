@@ -1,7 +1,7 @@
 <!-- page head start-->
 <div class="page-head">
   <h3 class="m-b-less">
-  Create Bank Account
+  Edit Bank Account
   </h3>
 </div>
 <!-- page head end-->
@@ -9,11 +9,7 @@
 <!--body wrapper start-->
 <div class="wrapper">
   <!-- page start-->
-  <div class="panel">
-    <header class="panel-heading head-border">
-      Create A Bank Account
-    </header>
-    <% if flash[:errors] %>
+  <% if flash[:errors] %>
     <div class="alert alert-danger">
       <ul>
         <% flash[:errors].each do |er| %>
@@ -21,60 +17,63 @@
         <% end %>
       </ul>
     </div>
-    <% end %>
-    <form id="account-form" action="<%= bank_accounts_path %>" method="post">
+  <% end %>
+  <div class="panel">
+    <form id="account-form" action="<%= bank_account_path %>" method="post">
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input name="_method" type="hidden" value="patch">
       <div class="panel-body">
         <div class="row toastr-row">
           <div class="col-md-3">
             <div class="form-group">
               <label class="control-label" for="account_name">International Bank Account Number </label>
-              <input id="account_number" name="account[account_number]" type="text" class="form-control"  >
+              <input id="account_number" name="account[account_number]" type="text" class="form-control"  value="<%= @account.account_number%>">
             </div>
 
             <div class="form-group">
               <label class="control-label" for="bank_name">Bank Name</label>
-              <input id="bank_name" name="account[bank_name]" type="text" class="form-control"  >
+              <input id="bank_name" name="account[bank_name]" type="text" class="form-control" value="<%= @account.bank_name%>" >
             </div>
             <div class="form-group">
               <label class="control-label" for="domestic_routing">Domestic Routing</label>
-              <input id="payable" name="account[domestic_routing]" type="text" class="form-control">
+              <input id="payable" name="account[domestic_routing]" type="text" class="form-control" value="<%= @account.try(:domestic_routing)%>">
             </div>
             <div class="form-group">
               <label class="control-label" for="domestic_account">Domestic Account</label>
-              <input id="default" name="account[domestic_account]" type="text" class="form-control">
+              <input id="default" name="account[domestic_account]" type="text" class="form-control" value="<%= @account.try(:domestic_account)%>">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label class="control-label" for="swift_code">Swift Code</label>
-              <input id="swift_code" name="account[swift_code]" type="text" class="form-control">
+              <input id="swift_code" name="account[swift_code]" type="text" class="form-control" value="<%=@account.try(:swift_code)%>">
             </div>
 
             <div class="form-group">
               <label class="control-label" for="bank_address1">Bank Address 1</label>
-              <input id="address2" name="account[bank_address1]" type="text" class="form-control">
+              <input id="address2" name="account[bank_address1]" type="text" class="form-control" value="<%=@account.try(:bank_address1)%>">
             </div>
 
             <div class="form-group">
               <label class="control-label" for="bank_address2">Bank Address 2</label>
-              <input id="address1" name="account[bank_address2]" type="text" class="form-control">
+              <input id="address1" name="account[bank_address2]" type="text" class="form-control" value="<%=@account.try(:bank_address2)%>">
             </div>
             <div class="form-group">
               <label class="control-label" for="city">City</label>
-              <input id="city" name="account[city]" type="text" class="form-control">
+              <input id="city" name="account[city]" type="text" class="form-control" value="<%=@account.try(:city)%>">
             </div>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <button type="submit" class="btn btn-success" id="cleartacct">Save Detail</button>
-          <button type="button" class="btn btn-danger" onclick="clearEnteries('account-form')" >Clear Entries</button>
+          <button type="submit" class="btn btn-success">Update Account</button>
+          <%= link_to 'Back', :back, class: "btn btn-danger"%>
+          <!-- <button type="button" class="btn btn-danger" onclick="clearEnteries('account-form')" >Clear Entries</button> -->
         </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
 <!-- page end-->
 

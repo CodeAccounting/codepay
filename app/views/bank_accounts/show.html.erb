@@ -31,29 +31,38 @@
             <input id="bank_name" name="account[account_name]" type="text" class="form-control" value="<%= @account.bank_name%>" readonly >
           </div>
           <div class="form-group">
-            <label class="control-label" for="payable">Available For Payable</label>
-            <input id="payable" name="account[account_payable]" class="form-control" value="<%= @account.payable%>" readonly >
+            <label class="control-label" for="payable">Domestic Routing</label>
+            <input id="domestic_routing" name="account[domestic_routing]" class="form-control" value="<%= @account.try(:domestic_routing)%>" readonly >
           </div>
           <div class="form-group">
-            <label class="control-label" for="receivable">Available For Receivable</label>
-            <input id="receivable" name="account[account_receivable]" class="form-control"  value="<%= @account.receivable %>" readonly >
+            <label class="control-label" for="receivable">Domestic Account</label>
+            <input id="domestic_account" name="account[domestic_account]" class="form-control"  value="<%= @account.try(:domestic_account) %>" readonly >
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
           <div class="form-group" id="toastTypeGroup">
-            <label>Status</label>
-              <input id="status" name="account[account_status]"  class="form-control"  value="<%= @account.status %>" readonly >
+            <label>Swift Code</label>
+              <input id="swift_code" name="account[swift_code]"  class="form-control"  value="<%= @account.try(:swift_code) %>" readonly >
           </div>
           <div class="form-group">
-            <label class="control-label" for="hideEasing">Active?</label>
-              <input id="active" name="account[account_active]"  class="  form-control"  value="<%= @account.active %>" readonly >
+            <label class="control-label" for="hideEasing">Bank Address 1</label>
+              <input id="bank_address1" name="account[bank_address1]"  class="  form-control"  value="<%= @account.try(:bank_address1) %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="hideEasing">Bank Address 2</label>
+              <input id="bank_address2" name="account[bank_address2]"  class="  form-control"  value="<%= @account.try(:bank_address2) %>" readonly >
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="hideEasing">City</label>
+              <input id="city" name="account[city]"  class="  form-control"  value="<%= @account.try(:city) %>" readonly >
           </div>
         </div>
         <div class="row">
-        <div class="col-md-12">
-          <a href="<%= bank_accounts_path %>" class="btn btn-success">Back</a>
+          <div class="col-md-12">
+            <a href="<%= bank_accounts_path %>" class="btn btn-danger">Back</a>
+            <a href="<%= edit_bank_account_path %>" class="btn btn-success">Edit</a>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   </div>

@@ -11,12 +11,14 @@
       <div class="row">
         <div class="col-md-6" >
       	  <% if can? :manage, Admins::BillPayRequestsController %>
-        	 <%= render "to_do_list" %>
+        	  <%= render "to_do_list" %>
           <%end%>
         </div>
-        <!-- <div class="col-md-6">
-          <%#= render "news" %>
-        </div> -->
+        <%if can? :manage, Admins::NewsController%>
+          <div class="col-md-6">
+            <%= render "news" %>
+          </div>
+        <%end%>
       </div>
    	</div>
 <!--body wrapper end-->

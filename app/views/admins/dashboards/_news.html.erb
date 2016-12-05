@@ -1,20 +1,27 @@
-<section class="panel" style = "min-height: 278px; width: 563px;">
-  <header class="panel-heading">
-    News
-    <span class="tools pull-right">
-      <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
-      <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
-      <!-- <a class="t-close fa fa-times" href="javascript:;"></a> -->
-    </span>
-  </header>
-  <div class="panel-body">   
+<section class="panel" style="width: 563px;
+    margin-left: 15px;">
+  <div class="slick-carousal">
+    <div class="overlay-c-bg"></div>
+    <div id="news-feed" class="owl-carousel owl-theme">
+      <%if @news.present?%>
+        <% @news.each do |news|%>
+          <div class="item">
+            <label class="date" style="margin-left:78%; font-size:12px;"><%= news.created_at.strftime("%d %B %Y")%></label>
+            <h3 class="text-success">News</h3>
+            <span class="date"><%= news.subject%></span>
+            <h1><%= news.description%></h1>
+            <div class="text-center">
+              <a href="<%= admins_news_index_path%>" class="view-all">View All</a>
+            </div>
+          </div>
+        <%end%>  
+      <%else%>
+        <div class="item">
+          <h3 class="text-success">News</h3>
+          <span class="date"></span>
+          <h1>No News To Show</h1>
+        </div>
+      <%end%>
+    </div>
   </div>
 </section>
-
-<style type="text/css">
-
-  .todo-list-item{
-    overflow-y: auto;
-    max-height: 200px;
-  }
-</style>

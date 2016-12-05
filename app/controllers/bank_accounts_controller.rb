@@ -1,5 +1,5 @@
 class BankAccountsController < ApplicationController
-	before_action :set_account, only: [:show]
+	before_action :set_account, only: [:show, :edit, :update]
 
 	def index
 		@accounts = current_organization.bank_accounts
@@ -22,6 +22,14 @@ class BankAccountsController < ApplicationController
 	def new
 	end
 
+	def update
+		if @account.update(account_params)
+			redirect_to bank_account_path(@account)
+		else
+			flash[:errors] = @account.errors.full_messages
+			redirect_to :back
+		end	
+	end
 
 	private
 
@@ -34,11 +42,12 @@ class BankAccountsController < ApplicationController
       .permit(
       	:account_number, 
       	:bank_name,
-      	:payable,
-    	:default,
-    	:receivable,
-    	:status,
-    	:active
+      	:domestic_routing,
+    	:domestic_account,
+    	:swift_code,
+    	:bank_address1,
+    	:bank_address2,
+    	:city
         )
     end
 end
