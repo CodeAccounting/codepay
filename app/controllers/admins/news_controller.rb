@@ -1,5 +1,5 @@
 class Admins::NewsController < Admins::ApplicationController
-	load_and_authorize_resource
+	load_and_authorize_resource  except: [:index,:show]
 	
 	def index
 		@news = News.all

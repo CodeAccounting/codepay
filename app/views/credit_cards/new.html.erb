@@ -1,0 +1,80 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+    Create Credit Card
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <% if flash[:errors] %>
+    <div class="alert alert-danger">
+      <ul>
+        <% flash[:errors].each do |er| %>
+        <li><%= er %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <header class="panel-heading head-border">
+      Add Credit Card Detail
+    </header>
+    
+    <form id="account-form" action="<%= credit_cards_path %>" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="control-label" for="account_name">Card Number</label>
+              <input id="account_number" name="credit_card[card_number]" type="text" class="form-control"  >
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="bank_name">Expiration Date</label>
+              <input id="bank_name" name="credit_card[expiration_date]" type="date" class="form-control"  >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="domestic_routing">CVV code</label>
+              <input id="payable" name="credit_card[cvv_code]" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="domestic_account">Card Type</label>
+              <input id="default" name="credit_card[card_type]" type="text" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="control-label" for="swift_code">Billing Zip Code</label>
+              <input id="swift_code" name="credit_card[billing_zip_code]" type="text" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="bank_address1">Name</label>
+              <input id="address2" name="credit_card[name]" type="text" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="bank_address2">Address</label>
+              <textarea id="address" name="credit_card[address]" type="text" class="form-control" rows="3"></textarea> 
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-success" id="cleartacct">Save Detail</button>
+            <button type="button" class="btn btn-success" onclick="clearEnteries('account-form')" >Clear Entries</button>
+            <%= link_to 'Back', :back,  class: "btn btn-danger" %>
+          </div>
+        </div>
+      </div>  
+    </form>
+  </div>
+</div>
+<!-- page end-->
+
+<!--body wrapper end-->
+

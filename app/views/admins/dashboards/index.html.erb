@@ -14,7 +14,7 @@
         	  <%= render "to_do_list" %>
           <%end%>
         </div>
-        <%if can? :manage, Admins::NewsController%>
+        <%if can? :show, Admins::NewsController%>
           <div class="col-md-6">
             <%= render "news" %>
           </div>

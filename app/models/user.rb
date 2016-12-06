@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
   has_many :created_chart_of_accounts, class_name: 'ChartOfAccount', foreign_key: :creator_id
   has_many :created_notes, class_name: 'Note', foreign_key: :creator_id
   has_many :created_credits, class_name: 'Credit', foreign_key: :creator_id
+  has_many :created_credit_cards, class_name: 'CreditCard', foreign_key: :creator_id
 
   has_one :profile_image
   has_one :background_image 

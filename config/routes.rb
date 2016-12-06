@@ -112,11 +112,13 @@ Rails.application.routes.draw do
   resources :voids
   resources :credits
   resources :news
-
+  resources :credit_cards
+  
   # resources :notes
   get "/notes/ajax_to_add_note", to: "notes#ajax_to_add_note", as: :ajax_to_add_note
   get "/notes/notes_list_by_ajax", to: "notes#notes_list_by_ajax", as: :notes_list_by_ajax
   
+
   get "/admins" => redirect("/admins/dashboards")
 
   namespace "admins" do
@@ -139,6 +141,7 @@ Rails.application.routes.draw do
     resources :news
     post "news/delete", to: "news#delete", as: :news_delete
 
+    resources :admin_users
   end  
   
 end

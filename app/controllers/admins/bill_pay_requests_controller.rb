@@ -1,5 +1,5 @@
 class Admins::BillPayRequestsController < Admins::ApplicationController
-	# load_and_authorize_resource 
+	load_and_authorize_resource :class => false
 
 	def index
 		@bills = Bill.where(paid: nil)

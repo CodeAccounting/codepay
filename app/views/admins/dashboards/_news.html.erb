@@ -11,7 +11,9 @@
             <span class="date"><%= news.subject%></span>
             <h1><%= news.description%></h1>
             <div class="text-center">
+            <% if can? :index, Admins::NewsController%>  
               <a href="<%= admins_news_index_path%>" class="view-all">View All</a>
+            <% end %>  
             </div>
           </div>
         <%end%>  

@@ -1,0 +1,56 @@
+
+ <!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Credit Cards 
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class = "wrapper">
+  <div class = "panel">
+    <div class ="row"> 
+      <div class="col-sm-12">
+        <header class="panel-heading head-border">
+          <a class="btn btn-success" href="<%= new_credit_card_path %>">Add New</a>
+          <span class="tools pull-right">
+              <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+              <a class="t-close fa fa-times" href="javascript:;"></a>
+          </span>
+        </header>
+        <div class="panel-body">
+          <div>
+            <table class="table colvis-data-table data-table">
+              <thead>
+                <tr>
+                  <th>Card Number</th>
+                  <th>Expiration Date</th>
+                  <th>CVV code</th>
+                  <th>Card Type</th>
+                  <th>Billing Zip Code</th>
+                  <th>Name</th>
+                  <th>Address</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <% @credit_cards.each do |credit_card| %>
+                <tr>
+                  <td><%= credit_card.card_number%>(<%= link_to "SHOW",credit_card_path(credit_card)%>)</td>
+                  <td><%= credit_card.expiration_date.strftime("%d %B %Y")%></td>
+                  <td><%= credit_card.cvv_code %></td>
+                  <td><%= credit_card.card_type %></td>
+                  <td><%= credit_card.billing_zip_code %></td>
+                  <td><%= credit_card.name%></td>
+                  <td><%= credit_card.try(:address)%></td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  
+<!--body wrapper send

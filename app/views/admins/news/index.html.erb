@@ -23,15 +23,21 @@
         <form action="<%= admins_news_delete_path %>" method="post" >
           <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
             <header class="panel-heading head-border">
+            <% if can? [:create,:delete], Admins::NewsController %>  
               <a href="<%= new_admins_news_path%>" class="btn btn-success" >Create New</a>
               <button type="submit" class="btn btn-danger">Delete News</button>
+            <%else%>
+              Showing All News
+            <%end%>  
             </header>
           <div class="panel-body">
             <div>
               <table class="table colvis-data-table data-table">
                 <thead>
                   <tr>
+                  <% if can? :delete, Admins::NewsController %>
                     <th>Select News</th>
+                  <% end %>  
                     <th>Subject</th>
                     <th>Description</th>
                     <th>Show</th>
@@ -41,9 +47,11 @@
                 <tbody>
                   <%@news.each do |news|%>
                     <tr>
+                    <% if can? :delete, Admins::NewsController %>
                       <td>
                         <input type="checkbox" value="<%= news.id%>" name="news_ids[]" > <label for="debugInfo">Select</label>  
                       </td>
+                    <% end %>
                       <td><%= news.subject%></td>
                       <td><%= truncate(news.description, length: 40 )%></td>
                       <td><%= link_to 'See News Here', admins_news_path(news.id) %></td>
