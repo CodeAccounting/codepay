@@ -1,7 +1,7 @@
 <!-- page head start-->
 <div class="page-head">
   <h3 class="m-b-less">
-    Create Credit Card
+    Add Credit Card 
   </h3>
 </div>
 <!-- page head end-->
@@ -20,9 +20,20 @@
     </div>
     <% end %>
     <header class="panel-heading head-border">
+      Payment Accounts
+    </header>
+    <section class="panel">
+      <div class="panel-body">
+        <div class="btn-group btn-group-justified">
+          <a class="btn btn-warning" href="<%= bank_accounts_path %>">Bank Accounts</a>
+          <a class="btn btn-primary" href="<%= credit_cards_path %>">Credit Cards</a>
+          <a class="btn btn-info" href="<%= electronic_payments_path%>">Electronic Payments</a>
+        </div>
+      </div>
+    </section>
+    <header class="panel-heading head-border">
       Add Credit Card Detail
     </header>
-    
     <form id="account-form" action="<%= credit_cards_path %>" method="post">
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
       <div class="panel-body">
@@ -65,9 +76,9 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <button type="submit" class="btn btn-success" id="cleartacct">Save Detail</button>
-            <button type="button" class="btn btn-success" onclick="clearEnteries('account-form')" >Clear Entries</button>
             <%= link_to 'Back', :back,  class: "btn btn-danger" %>
+            <button type="submit" class="btn btn-success" id="cleartacct">Save Detail</button>
+            <button type="button" class="btn btn-danger" onclick="clearEnteries('account-form')" >Clear Entries</button>
           </div>
         </div>
       </div>  

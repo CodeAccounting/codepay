@@ -1,0 +1,2 @@
+class ElectronicPaymentsController < ApplicationController
+end

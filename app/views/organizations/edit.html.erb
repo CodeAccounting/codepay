@@ -27,7 +27,7 @@
         <input name="_method" type="hidden" value="patch" />
         <div class="panel-body">
           <div class="row toastr-row">
-          	<div class="col-md-4">
+          	<div class="col-md-3">
 	          	<div class="form-group">
 	              <label class="control-label" for="organization_user_email">Name</label>
 	              <input id="organization_user_email" name="organization[name]" type="text" class="form-control" placeholder="Name" value="<%= @organization.name %>" >
@@ -78,29 +78,30 @@
                 </select>
               </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <div class="col-md-6">
-              <% if current_organization.attachment.present? %> 
-                <% if current_organization.attachment.attachment.present?%>
-                  <label>Company Logo Is Present! Attach New Logo To Update </label>
-                <%else%>  
+            <div class="form-group">
+              <div class="col-md-4">
+                <% if current_organization.attachment.present? %> 
+                  <% if current_organization.attachment.attachment.present?%>
+                    <label>Company Logo Is Present! Attach New Logo To Update </label>
+                  <%else%>  
+                    <label>Please Attach Company Logo(.png file)</label>
+                  <%end%>
+                <%else%>
                   <label>Please Attach Company Logo(.png file)</label>
-                <%end%>
-              <%else%>
-                <label>Please Attach Company Logo(.png file)</label>
-              <%end%>     
-              <% attachment = Attachment.find_or_create_by(attachable_id: current_organization.id, attachable_type: "Organization", organization_id:  current_organization.id) %>
-              <img src="<%= attachment.attachment.url(:thumb) %>">
-              <input id="user_avatar" type="file" class="form-control" name="organization[attachment_attributes][attachment]" style="width:330px; height:100px;">
-              <input  type="hidden" class="form-control" name="organization[attachment_attributes][id]" value="<%= attachment.id%>">
+                <%end%>     
+                <% attachment = Attachment.find_or_create_by(attachable_id: current_organization.id, attachable_type: "Organization", organization_id:  current_organization.id) %>
+                <img src="<%= attachment.attachment.url(:thumb) %>">
+                <input id="user_avatar" type="file" class="form-control" name="organization[attachment_attributes][attachment]" style="width:330px; height:100px;">
+                <input  type="hidden" class="form-control" name="organization[attachment_attributes][id]" value="<%= attachment.id%>">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="col-md-12">
-              <button type="submit" class="btn btn-success">Update</button>
-              <button type="button" class="btn btn-danger">Clear Entries</button>
+            <div class="form-group">
+              <div class="col-md-12">
+                <%= link_to 'Back', :back, class: "btn btn-danger"%>
+                <button type="submit" class="btn btn-success">Update</button>
+                <button type="button" class="btn btn-danger">Clear Entries</button>
+              </div>
             </div>
           </div>
        	</div>

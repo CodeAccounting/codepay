@@ -102,9 +102,11 @@ Rails.application.routes.draw do
   get "/items/:id/remove_item", to: "items#remove_item", as: :remove_item
 
   resources :taxs
+  get "/approvals/bill_approver_list_by_ajax", to: "approvals#bill_approver_list_by_ajax", as: :bill_approver_list_by_ajax
   resources :approvals
   post "approvals/approve_bills", to: "approvals#approve_bills", as: :approve_bills  
   post "approvals/assign_request_to_other_user", to: "approvals#assign_request_to_other_user", as: :assign_request_to_other_user  
+    
 
   resources :chart_of_accounts
   resources :basic
@@ -113,6 +115,7 @@ Rails.application.routes.draw do
   resources :credits
   resources :news
   resources :credit_cards
+  resources :electronic_payments
   
   # resources :notes
   get "/notes/ajax_to_add_note", to: "notes#ajax_to_add_note", as: :ajax_to_add_note

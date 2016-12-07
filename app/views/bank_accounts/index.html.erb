@@ -2,7 +2,7 @@
  <!-- page head start-->
 <div class="page-head">
   <h3 class="m-b-less">
-  Payment Accounts
+  Bank Accounts
   </h3>
 </div>
 <!-- page head end-->
@@ -10,6 +10,18 @@
 <!--body wrapper start-->
 <div class = "wrapper">
   <div class = "panel">
+    <header class="panel-heading head-border">
+      Payment Accounts
+    </header>
+    <section class="panel">
+      <div class="panel-body">
+        <div class="btn-group btn-group-justified">
+          <a class="btn btn-warning" href="<%= bank_accounts_path %>">Bank Accounts</a>
+          <a class="btn btn-primary" href="<%= credit_cards_path %>">Credit Cards</a>
+          <a class="btn btn-info" href="<%#= %>">Electronic Payments</a>
+        </div>
+      </div>
+    </section>
     <div class ="row"> 
       <div class="col-sm-12">
         <header class="panel-heading head-border">
