@@ -103,6 +103,7 @@ Rails.application.routes.draw do
 
   resources :taxs
   get "/approvals/bill_approver_list_by_ajax", to: "approvals#bill_approver_list_by_ajax", as: :bill_approver_list_by_ajax
+  get "/approvals/approvers_select2_ajax", to: "approvals#approvers_select2_ajax", as: :approvers_select2_ajax
   resources :approvals
   post "approvals/approve_bills", to: "approvals#approve_bills", as: :approve_bills  
   post "approvals/assign_request_to_other_user", to: "approvals#assign_request_to_other_user", as: :assign_request_to_other_user  
