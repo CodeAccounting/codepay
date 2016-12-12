@@ -68,6 +68,43 @@
     </tbody>
   </table>
 <%end%>
+
+<% if params[:download][:type] == "payment" %>
+  <% content_for :header_title do %>
+    <b>Payments</b>
+  <% end %>
+  <table class="table colvis-data-table data-table">
+    <thead>
+      <tr>
+        <th>Vendor Name</th>
+        <th>Vendor Account</th>
+        <th>Bill Number</th>
+        <th>Due Date</th>
+        <th>Processed Date</th>
+        <th>Delivery Date</th>
+        <th>Amount</th>
+        <th>Payment Method</th>
+        <th>Check Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @payments.each do |payment| %>
+        <tr>
+          <td><%= payment.try(:vendor_name) %></td>
+          <td><%= payment.try(:vendor_account) %></td>
+          <td><%= payment.bill.bill_number %></td>
+          <td><%= payment.try(:due_date).try(:strftime,"%d %B %Y")%></td>
+          <td><%= payment.try(:processing_date).try(:strftime, "%d %B %Y")%></td>
+          <td><%= payment.try(:delivery_date).try(:strftime,"%d %B %Y")%></td>
+          <td><%= payment.try(:amount)%></td>
+          <td><%= payment.try(:payment_method) %></td>
+          <td><%= payment.try(:check_number) %></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+<%end%>
+
 <% if params[:download][:type] == "unpaid_invoices" %>
   <% content_for :header_title do %>
     <b>Unpaid Invoices</b>

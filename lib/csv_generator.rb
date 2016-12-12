@@ -315,4 +315,193 @@ class CsvGenerator
     end  
   end
   
+  def unpaid_bills_to_csv(options = {})
+      @due_not_passed_bills = @data.where("due_date > ?", Date.today)
+      @due_passed_30_days_bills = @data.where("due_date <= ? and due_date > ?", Date.today, (Date.today-30.days))
+      @due_30_to_60_days_bills = @data.where("due_date <= ? and due_date > ?", (Date.today-30.days), (Date.today-60.days))
+      @due_60_to_90_days_bills = @data.where("due_date <= ? and due_date > ?", (Date.today-60.days), (Date.today-90.days))
+      @due_above_90_bills = @data.where("due_date <= ?", (Date.today-90.days))
+
+     CSV.generate(options) do |csv|
+      csv << [" ","  <---","----------","---------","Bills","due","date","not","passed", "yet","----------","---->   "]
+      csv << []
+      csv << [
+        "Vendor_name",
+        "Bill_number",
+        "Bill_date",
+        "Due_date",
+        "Due_amount",
+        "Payment_terms",
+        "Location",
+        "Department",
+        "Po_number",
+        "Sales_rep",
+        "Message",
+        "Created_at",
+        "Updated_at"
+      ]
+      @due_not_passed_bills.each do |bill|
+        csv << [
+          bill.vendor.name,
+          bill.bill_number,
+          bill.bill_date.strftime("%d %B %Y"),
+          bill.due_date.strftime("%d %B %Y"),
+          bill.due_amount,
+          bill.payment_term.try(:name),
+          bill.location.try(:name),
+          bill.department.try(:name),
+          bill.po_number,
+          bill.sales_rep,
+          bill.message,
+          bill.created_at.strftime("%d %B %Y"),
+          bill.updated_at.strftime("%d %B %Y")
+        ]
+      end
+      csv << []
+      csv << []
+      csv << [" ","  <---", "----------","---------","Bills","under","30","days","past", "due","----------","---->   "]
+      csv << []
+      csv << [
+        "Vendor_name",
+        "Bill_number",
+        "Bill_date",
+        "Due_date",
+        "Due_amount",
+        "Payment_terms",
+        "Location",
+        "Department",
+        "Po_number",
+        "Sales_rep",
+        "Message",
+        "Created_at",
+        "Updated_at"
+      ]
+      @due_passed_30_days_bills.each do |bill|
+        csv << [
+          bill.vendor.name,
+          bill.bill_number,
+          bill.bill_date.strftime("%d %B %Y"),
+          bill.due_date.strftime("%d %B %Y"),
+          bill.due_amount,
+          bill.payment_term.try(:name),
+          bill.location.try(:name),
+          bill.department.try(:name),
+          bill.po_number,
+          bill.sales_rep,
+          bill.message,
+          bill.created_at.strftime("%d %B %Y"),
+          bill.updated_at.strftime("%d %B %Y")
+        ]
+      end
+      csv << []
+      csv << []
+      csv << [" ","  <---","----------","---------","Bills","30","to","60","days","past","due","---->   "]
+      csv << []
+      csv << [
+        "Vendor_name",
+        "Bill_number",
+        "Bill_date",
+        "Due_date",
+        "Due_amount",
+        "Payment_terms",
+        "Location",
+        "Department",
+        "Po_number",
+        "Sales_rep",
+        "Message",
+        "Created_at",
+        "Updated_at"
+      ]
+      @due_30_to_60_days_bills.each do |bill|
+        csv << [
+          bill.vendor.name,
+          bill.bill_number,
+          bill.bill_date.strftime("%d %B %Y"),
+          bill.due_date.strftime("%d %B %Y"),
+          bill.due_amount,
+          bill.payment_term.try(:name),
+          bill.location.try(:name),
+          bill.department.try(:name),
+          bill.po_number,
+          bill.sales_rep,
+          bill.message,
+          bill.created_at.strftime("%d %B %Y"),
+          bill.updated_at.strftime("%d %B %Y")
+        ]
+      end
+      csv << []
+      csv << []
+      csv << [" ","  <---","----------","---------","Bills","60","to","90","days","past","due","---->   "]
+      csv << []
+      csv << [
+        "Vendor_name",
+        "Bill_number",
+        "Bill_date",
+        "Due_date",
+        "Due_amount",
+        "Payment_terms",
+        "Location",
+        "Department",
+        "Po_number",
+        "Sales_rep",
+        "Message",
+        "Created_at",
+        "Updated_at"
+      ]
+      @due_60_to_90_days_bills.each do |bill|
+        csv << [
+          bill.vendor.name,
+          bill.bill_number,
+          bill.bill_date.strftime("%d %B %Y"),
+          bill.due_date.strftime("%d %B %Y"),
+          bill.due_amount,
+          bill.payment_term.try(:name),
+          bill.location.try(:name),
+          bill.department.try(:name),
+          bill.po_number,
+          bill.sales_rep,
+          bill.message,
+          bill.created_at.strftime("%d %B %Y"),
+          bill.updated_at.strftime("%d %B %Y")
+        ]
+      end
+      csv << []
+      csv << []
+      csv << [" ","  <---","----------","---------","Bills","above","90","days","past","due","----------","---->   "]
+      csv << []
+      csv << [
+        "Vendor_name",
+        "Bill_number",
+        "Bill_date",
+        "Due_date",
+        "Due_amount",
+        "Payment_terms",
+        "Location",
+        "Department",
+        "Po_number",
+        "Sales_rep",
+        "Message",
+        "Created_at",
+        "Updated_at"
+      ]
+      @due_above_90_bills.each do |bill|
+        csv << [
+          bill.vendor.name,
+          bill.bill_number,
+          bill.bill_date.strftime("%d %B %Y"),
+          bill.due_date.strftime("%d %B %Y"),
+          bill.due_amount,
+          bill.payment_term.try(:name),
+          bill.location.try(:name),
+          bill.department.try(:name),
+          bill.po_number,
+          bill.sales_rep,
+          bill.message,
+          bill.created_at.strftime("%d %B %Y"),
+          bill.updated_at.strftime("%d %B %Y")
+        ]
+      end
+    end  
+  end
+
 end	

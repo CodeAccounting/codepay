@@ -31,6 +31,7 @@
                     <option disabled selected value> -- select an option -- </option>
                     <!-- <option value="invoices">Invoice List</option> -->
                     <option value="bills">Bill List</option>
+                    <option value="bills_aging">Bill's A/P Aging</option>
                     <option value="payment">Payments</option>
                     <!-- <option value="unpaid_invoices">Unpaid Invoices</option> -->
                   </select>
@@ -92,9 +93,11 @@
       event.preventDefault();
         id = $(this).attr('id')
         if(id=="download-pdf") {
-          $('#report-form').attr('action', '/reports/download_file.pdf', 'target', "_blank")
+          $('#report-form').attr('action', '/reports/download_file.pdf')
+          // $('#report-form').attr( 'target', '_blank')
         } else if(id=="download-csv") {
           $('#report-form').attr('action', '/reports/download_file.csv')
+          // $('#report-form').attr( 'target', '')
         }
         $('#report-form').submit();
     });

@@ -13,6 +13,7 @@ class ReportsController < ApplicationController
   end
 
   def download_file
+    # debugger
      if params[:download][:period]=="date_interval"
         start_date = report_params[:start_date] + " 00:00:00"
         end_date = report_params[:end_date] + " 11:59:59"
@@ -24,15 +25,6 @@ class ReportsController < ApplicationController
     respond_to do |format|
     format.csv do
         case type 
-        when "invoices"
-            @invoices = current_user.created_invoices.where(:created_at => start_date..end_date)
-            if @invoices.present?
-              csv_g = CsvGenerator.new(@invoices)
-              send_data(csv_g.invoice_to_csv, :filename => "invoices.csv")
-            else
-              flash[:error] = "There is no invoice for selected dates" 
-              redirect_to :back
-            end
 
         when "bills"
             @bills = current_user.created_bills.where(:created_at => start_date..end_date)    
@@ -43,17 +35,17 @@ class ReportsController < ApplicationController
               flash[:error] = "There is no bill for selected dates" 
               redirect_to :back
             end
-
-        when "unpaid_invoices" 
-            @invoices = current_user.created_invoices.where(created_at: start_date..end_date, received: false)
-            if @invoices.present?
-              csv_g = CsvGenerator.new(@invoices)
-              send_data(csv_g.unpaid_invoice_to_csv, :filename => "unpaid_invoices.csv")
+        
+        when "bills_aging" 
+            @bills = current_user.created_bills.where(created_at: start_date..end_date, paid: false)
+            if @bills.present?
+              csv_g = CsvGenerator.new(@bills)
+              send_data(csv_g.unpaid_bills_to_csv, :filename => "bills_a/p_aging.csv")
             else
-              flash[:error] = "There is no unpaid invoice for selected dates" 
+              flash[:error] = "There is no unpaid bills for selected dates" 
               redirect_to :back
             end
-
+        
         when "payment"         
              @payments = current_organization.bill_informations.where(processing_date: start_date..end_date)
             if @payments.present?
@@ -63,55 +55,94 @@ class ReportsController < ApplicationController
               flash[:error] = "There is no payment processed on seleted date" 
               redirect_to :back
             end
+
+        # when "invoices"
+        #     @invoices = current_user.created_invoices.where(:created_at => start_date..end_date)
+        #     if @invoices.present?
+        #       csv_g = CsvGenerator.new(@invoices)
+        #       send_data(csv_g.invoice_to_csv, :filename => "invoices.csv")
+        #     else
+        #       flash[:error] = "There is no invoice for selected dates" 
+        #       redirect_to :back
+        #     end
+                    
+        # when "unpaid_invoices" 
+        #     @invoices = current_user.created_invoices.where(created_at: start_date..end_date, received: false)
+        #     if @invoices.present?
+        #       csv_g = CsvGenerator.new(@invoices)
+        #       send_data(csv_g.unpaid_invoice_to_csv, :filename => "unpaid_invoices.csv")
+        #     else
+        #       flash[:error] = "There is no unpaid invoice for selected dates" 
+        #       redirect_to :back
+        #     end
              
         else
+          flash[:error] = "Wrong option seleted"
           redirect_to :back
         end
       end
 
       format.pdf do 
         case type
-        when "invoices"
-          @invoices = current_user.created_invoices.where(:created_at => start_date..end_date)
-          if @invoices.present?         
-            render pdf: "download_file", layout: 'pdf.html.erb'
-          else
-            flash[:error] = "There is no invoice for selected dates" 
-            redirect_to :back
-          end
-
+        
         when "bills"
           @bills = current_user.created_bills.where(:created_at => start_date..end_date)
           if @bills.present?         
-            render pdf: "download_file", layout: 'pdf.html.erb'
+            render pdf: "bills", layout: 'pdf.html.erb', disposition: :send_file
           else
             flash[:error] = "There is no bill for selected dates" 
             redirect_to :back
           end
 
-        when "unpaid_invoices"
-          invoices = current_user.created_invoices.where(:created_at => start_date..end_date, received: false)
-          @due_not_passed_invoices = invoices.where("due_date > ?", Date.today)
-          @due_passed_30_days_invoices = invoices.where("due_date <= ? and due_date > ?", Date.today, (Date.today-30.days))
-          @due_30_to_60_days_invoices = invoices.where("due_date <= ? and due_date > ?", (Date.today-30.days), (Date.today-60.days))
-          @due_60_to_90_days_invoices = invoices.where("due_date <= ? and due_date > ?", (Date.today-60.days), (Date.today-90.days))
-          @due_above_90_invoices = invoices.where("due_date <= ?", (Date.today-90.days))
-          if invoices.present?         
-            render pdf: "download_file", layout: 'pdf.html.erb'
+        when "bills_aging"
+          bills = current_user.created_bills.where(:created_at => start_date..end_date, paid: false)
+          @due_not_passed_bills = bills.where("due_date > ?", Date.today)
+          @due_passed_30_days_bills = bills.where("due_date <= ? and due_date > ?", Date.today, (Date.today-30.days))
+          @due_30_to_60_days_bills = bills.where("due_date <= ? and due_date > ?", (Date.today-30.days), (Date.today-60.days))
+          @due_60_to_90_days_bills = bills.where("due_date <= ? and due_date > ?", (Date.today-60.days), (Date.today-90.days))
+          @due_above_90_bills = bills.where("due_date <= ?", (Date.today-90.days))
+          if bills.present?         
+            render pdf: "bills_a/p_aging", layout: 'pdf.html.erb', disposition: :send_file
           else
-            flash[:error] = "There is no unpaid invoice for selected dates" 
+            flash[:error] = "There is no unpaid bills for selected dates" 
             redirect_to :back
           end
+
         when "payment"
           @payments = current_organization.bill_informations.where(processing_date: start_date..end_date)
           if @payments.present?         
-            render pdf: "download_file", layout: 'pdf.html.erb'
+            render pdf: "payments", layout: 'pdf.html.erb', disposition: :send_file
           else
             flash[:error] = "There is no payment for seleted processed date" 
             redirect_to :back
           end
 
+        # when "invoices"
+        #   @invoices = current_user.created_invoices.where(:created_at => start_date..end_date)
+        #   if @invoices.present?         
+        #     render pdf: "download_file", layout: 'pdf.html.erb'
+        #   else
+        #     flash[:error] = "There is no invoice for selected dates" 
+        #     redirect_to :back
+        #   end
+  
+        # when "unpaid_invoices"
+        #   invoices = current_user.created_invoices.where(:created_at => start_date..end_date, received: false)
+        #   @due_not_passed_invoices = invoices.where("due_date > ?", Date.today)
+        #   @due_passed_30_days_invoices = invoices.where("due_date <= ? and due_date > ?", Date.today, (Date.today-30.days))
+        #   @due_30_to_60_days_invoices = invoices.where("due_date <= ? and due_date > ?", (Date.today-30.days), (Date.today-60.days))
+        #   @due_60_to_90_days_invoices = invoices.where("due_date <= ? and due_date > ?", (Date.today-60.days), (Date.today-90.days))
+        #   @due_above_90_invoices = invoices.where("due_date <= ?", (Date.today-90.days))
+        #   if invoices.present?         
+        #     render pdf: "download_file", layout: 'pdf.html.erb'
+        #   else
+        #     flash[:error] = "There is no unpaid invoice for selected dates" 
+        #     redirect_to :back
+        #   end
+
         else  
+          flash[:error] = "Wrong option seleted"
+          redirect_to :back
         end
       end  
     end  

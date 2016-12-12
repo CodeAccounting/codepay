@@ -24,15 +24,6 @@ class Admins::ReportsController < Admins::ApplicationController
     respond_to do |format|
     format.csv do
         case type 
-        when "invoices"
-            @invoices = Invoice.where(:created_at => start_date..end_date)
-            if @invoices.present?
-              csv_g = CsvGenerator.new(@invoices)
-              send_data(csv_g.invoice_to_csv, :filename => "invoices.csv")
-            else
-              flash[:error] = "There is no invoice for selected dates" 
-              redirect_to :back
-            end
 
         when "bills"
             @bills = Bill.where(:created_at => start_date..end_date)    
@@ -44,56 +35,89 @@ class Admins::ReportsController < Admins::ApplicationController
               redirect_to :back
             end
 
-        when "unpaid_invoices" 
-            @invoices = Invoice.where(created_at: start_date..end_date, received: false)
-            if @invoices.present?
-              csv_g = CsvGenerator.new(@invoices)
-              send_data(csv_g.unpaid_invoice_to_csv, :filename => "unpaid_invoices.csv")
+        when "payment"         
+             @payments = BillInformation.where(processing_date: start_date..end_date)
+            if @payments.present?
+              csv_g = CsvGenerator.new(@payments)
+              send_data(csv_g.payments_to_csv, :filename => "payments.csv")
             else
-              flash[:error] = "There is no unpaid invoice for selected dates" 
+              flash[:error] = "There is no payment processed on seleted dates" 
               redirect_to :back
-            end
+            end       
+
+        # when "invoices"
+        #     @invoices = Invoice.where(:created_at => start_date..end_date)
+        #     if @invoices.present?
+        #       csv_g = CsvGenerator.new(@invoices)
+        #       send_data(csv_g.invoice_to_csv, :filename => "invoices.csv")
+        #     else
+        #       flash[:error] = "There is no invoice for selected dates" 
+        #       redirect_to :back
+        #     end
+                
+        # when "unpaid_invoices" 
+        #     @invoices = Invoice.where(created_at: start_date..end_date, received: false)
+        #     if @invoices.present?
+        #       csv_g = CsvGenerator.new(@invoices)
+        #       send_data(csv_g.unpaid_invoice_to_csv, :filename => "unpaid_invoices.csv")
+        #     else
+        #       flash[:error] = "There is no unpaid invoice for selected dates" 
+        #       redirect_to :back
+        #     end
 
         else
+          flash[:error] = "Wrong option selected"
           redirect_to :back
         end
       end
 
       format.pdf do 
         case type
-        when "invoices"
-          @invoices = Invoice.where(:created_at => start_date..end_date)
-          if @invoices.present?         
-            render pdf: "download_file", layout: 'pdf.html.erb'
-          else
-            flash[:error] = "There is no invoice for selected dates" 
-            redirect_to :back
-          end
 
         when "bills"
           @bills = Bill.where(:created_at => start_date..end_date)
           if @bills.present?         
-            render pdf: "download_file", layout: 'pdf.html.erb'
+            render pdf: "bills", layout: 'pdf.html.erb', disposition: :send_file
           else
             flash[:error] = "There is no bill for selected dates" 
             redirect_to :back
           end
 
-        when "unpaid_invoices"
-          invoices = Invoice.where(:created_at => start_date..end_date, received: false)
-          @due_not_passed_invoices = invoices.where("due_date > ?", Date.today)
-          @due_passed_30_days_invoices = invoices.where("due_date <= ? and due_date > ?", Date.today, (Date.today-30.days))
-          @due_30_to_60_days_invoices = invoices.where("due_date <= ? and due_date > ?", (Date.today-30.days), (Date.today-60.days))
-          @due_60_to_90_days_invoices = invoices.where("due_date <= ? and due_date > ?", (Date.today-60.days), (Date.today-90.days))
-          @due_above_90_invoices = invoices.where("due_date <= ?", (Date.today-90.days))
-          if invoices.present?         
-            render pdf: "download_file", layout: 'pdf.html.erb'
+        when "payment"
+          @payments = BillInformation.where(processing_date: start_date..end_date)
+          if @payments.present?         
+            render pdf: "payments", layout: 'pdf.html.erb', disposition: :send_file
           else
-            flash[:error] = "There is no unpaid invoice for selected dates" 
+            flash[:error] = "There is no payment for seleted processing date" 
             redirect_to :back
-          end
+          end  
 
-        else  
+        # when "invoices"
+        #   @invoices = Invoice.where(:created_at => start_date..end_date)
+        #   if @invoices.present?         
+        #     render pdf: "download_file", layout: 'pdf.html.erb'
+        #   else
+        #     flash[:error] = "There is no invoice for selected dates" 
+        #     redirect_to :back
+        #   end  
+
+        # when "unpaid_invoices"
+        #   invoices = Invoice.where(:created_at => start_date..end_date, received: false)
+        #   @due_not_passed_invoices = invoices.where("due_date > ?", Date.today)
+        #   @due_passed_30_days_invoices = invoices.where("due_date <= ? and due_date > ?", Date.today, (Date.today-30.days))
+        #   @due_30_to_60_days_invoices = invoices.where("due_date <= ? and due_date > ?", (Date.today-30.days), (Date.today-60.days))
+        #   @due_60_to_90_days_invoices = invoices.where("due_date <= ? and due_date > ?", (Date.today-60.days), (Date.today-90.days))
+        #   @due_above_90_invoices = invoices.where("due_date <= ?", (Date.today-90.days))
+        #   if invoices.present?         
+        #     render pdf: "download_file", layout: 'pdf.html.erb'
+        #   else
+        #     flash[:error] = "There is no unpaid invoice for selected dates" 
+        #     redirect_to :back
+        #   end
+
+        else
+        flash[:error] = "Wrong option selected"
+        redirect_to :back  
         end
       end  
     end  

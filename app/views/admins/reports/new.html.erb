@@ -7,67 +7,76 @@
 </div>
 <!-- page head end-->
 <!--body wrapper start-->
-<div class="wrapper no-pad">
-  <% if flash[:error] %>
-    <div class="alert alert-danger fade in">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <%= flash[:error] %>
-    </div>
-  <%end%>
-  <div class="profile-desk" ng-app="reportsApp" ng-controller="reportsCtrl">
-    <aside class="p-aside">
-      <form id="report-form" method="post" novalidate>
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-        <div>
-          <div class="form-group">
-            <select class="form-control input-small" name="download[type]" id="invoice_bill_select" ng-model="reportFor">
-              <option disabled selected value> -- select an option -- </option>
-              <!-- <option value="invoices">Invoice List</option> -->
-              <option value="bills">Bill List</option>
-              <!-- <option value="unpaid_invoices">Unpaid Invoices</option> -->
-            </select>
-          </div>
-          <div class="form-group start_end_date" ng-hide="reportFor==null">
+<div class="wrapper">
+  <div class="panel">
+    <% if flash[:error] %>
+      <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <%= flash[:error] %>
+      </div>
+    <%end%>
+    <div class="profile-desk" ng-app="reportsApp" ng-controller="reportsCtrl">
+      <!-- <aside class="p-aside"> -->
+        <form id="report-form" method="post" novalidate>
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <div class="panel-body">
+            <div class="row toastr-row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <select class="form-control input-small" name="download[type]" id="invoice_bill_select" ng-model="reportFor">
+                    <option disabled selected value> -- select an option -- </option>
+                    <!-- <option value="invoices">Invoice List</option> -->
+                    <option value="bills">Bill List</option>
+                    <option value="payment">Payments</option>
+                    <!-- <option value="unpaid_invoices">Unpaid Invoices</option> -->
+                  </select>
+                </div>
+                <div class="form-group start_end_date" ng-hide="reportFor==null">
 
-            <div ng-show="reportFor!=null">
-              <select class="form-control input-small" name="download[period]" id="reportPeriod" ng-model="selectedPeriod">
-              <option disabled selected value> -- select period for report-- </option>
-              <option value="single_date">Single Date</option>
-              <option value="date_interval">Date Interval</option>
-              </select>
+                  <div ng-show="reportFor!=null">
+                    <select class="form-control input-small" name="download[period]" id="reportPeriod" ng-model="selectedPeriod">
+                    <option disabled selected value> -- select period for report-- </option>
+                    <option value="single_date">Single Date</option>
+                    <option value="date_interval">Date Interval</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group" ng-show="selectedPeriod=='date_interval'">
+                    <label>From:
+                      <input id="start_date" type="date" name="download[start_date]" class="form-control start-end-date" ng-model="startDate">
+                    </label>  
+                    <label>To:
+                      <input id="end_date" type="date" name="download[end_date]" class="form-control start-end-date" ng-model="endDate">
+                    </label>  
+                  </div> 
+
+                  <div class="form-group single-date" ng-show="selectedPeriod=='single_date'">
+                    <label>Date:
+                      <input id="single_date" type="date" name="download[single_date]" class="form-control" ng-model="singleDate">
+                    </label>  
+                  </div> 
+                </div>
+              </div>
             </div>
-
-            <div class="form-group" ng-show="selectedPeriod=='date_interval'">
-              <label>From:
-                <input id="start_date" type="date" name="download[start_date]" class="form-control start-end-date" ng-model="startDate">
-              </label>  
-              <label>To:
-                <input id="end_date" type="date" name="download[end_date]" class="form-control start-end-date" ng-model="endDate">
-              </label>  
-            </div> 
-
-            <div class="form-group single-date" ng-show="selectedPeriod=='single_date'">
-              <label>Date:
-                <input id="single_date" type="date" name="download[single_date]" class="form-control" ng-model="singleDate">
-              </label>  
-            </div> 
-
-          </div>
-
-          <div class="form-group">
-            <button id="download-csv" class="report btn btn-primary" ng-disabled=checkdate()>
-            Download CSV <i class="fa fa-cloud-download" ></i>
-            </button>
-            <button id="download-pdf" class="report btn btn-primary" ng-disabled=checkdate() >
-            Download PDF <i class="fa fa-cloud-download"></i>
-            </button>
-            <button id="download-json" class="report btn btn-primary" ng-disabled=checkdate()>
-            Download JSON <i class="fa fa-cloud-download"></i>
-            </button>
-          </div>
-        </div>
-      </form>
-    </aside>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <button id="download-csv" class="report btn btn-primary" ng-disabled=checkdate()>
+                  Download CSV <i class="fa fa-cloud-download" ></i>
+                  </button>
+                  <button id="download-pdf" class="report btn btn-primary" ng-disabled=checkdate() >
+                  Download PDF <i class="fa fa-cloud-download"></i>
+                  </button>
+                  <button id="download-json" class="report btn btn-primary" ng-disabled=checkdate()>
+                  Download JSON <i class="fa fa-cloud-download"></i>
+                  </button>
+                </div>
+              </div>            
+            </div>            
+          </div>            
+        </form>
+      <!-- </aside> -->
+    </div>
   </div>
 </div>
 <!--body wrapper end-->
@@ -79,8 +88,10 @@
         id = $(this).attr('id')
         if(id=="download-pdf") {
           $('#report-form').attr('action', '/admins/reports/download_file.pdf')
+          // $('#report-form').attr( 'target', '_blank')
         } else if(id=="download-csv") {
           $('#report-form').attr('action', '/admins/reports/download_file.csv')
+          // $('#report-form').attr( 'target', '')
         }
         $('#report-form').submit();
     });

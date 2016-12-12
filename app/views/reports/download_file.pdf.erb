@@ -68,6 +68,7 @@
     </tbody>
   </table>
 <%end%>
+
 <% if params[:download][:type] == "payment" %>
   <% content_for :header_title do %>
     <b>Payments</b>
@@ -103,6 +104,7 @@
     </tbody>
   </table>
 <%end%>
+
 <% if params[:download][:type] == "unpaid_invoices" %>
   <% content_for :header_title do %>
     <b>Unpaid Invoices</b>
@@ -285,6 +287,185 @@
             <td><%= invoice.payment_term.try(:name) %></td>
             <td><%= invoice.location.try(:name) %></td>
             <td><%= invoice.department.try(:name)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<%end%>
+
+<% if params[:download][:type] == "bills_aging" %>
+  <% content_for :header_title do %>
+    <b>Bills A/P Aging Report</b>
+  <% end %>
+  <div class="page-head">
+    <h3 >Bills Due Date Not Passed Yet</h3>
+  </div>
+  <div>
+    <table class="table colvis-data-table data-table">
+      <thead>
+        <tr>
+          <th>Vendor Name</th>
+          <th>Bill Number</th>
+          <th>Bill Date</th>
+          <th>Due Date</th>
+          <th>Due Amount</th>
+          <th>Payment Terms</th>
+          <th>Location</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @due_not_passed_bills.each do |bill|%>
+          <tr>
+            <td><%= bill.vendor.try(:name) %></td>
+            <td><%= bill.try(:bill_number) %></td>
+            <td><%= bill.try(:bill_date).strftime("%d %B %Y")%></td>
+            <td><%= bill.try(:due_date).strftime("%d %B %Y")%></td>
+            <td><%= bill.try(:due_amount)%></td>
+            <td><%= bill.payment_term.try(:name) %></td>
+            <td><%= bill.location.try(:name) %></td>
+            <td><%= bill.department.try(:name)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <br></br>
+  
+  <div class="page-head">
+    <h3>Bills under 30 days past due</h3>
+  </div>
+  <div>
+    <table class="table colvis-data-table data-table">
+      <thead>
+        <tr>
+          <th>Vendor Name</th>
+          <th>Bill Number</th>
+          <th>Bill Date</th>
+          <th>Due Date</th>
+          <th>Due Amount</th>
+          <th>Payment Terms</th>
+          <th>Location</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @due_passed_30_days_bills.each do |bill|%>
+          <tr>
+            <td><%= bill.vendor.try(:name) %></td>
+            <td><%= bill.try(:bill_number) %></td>
+            <td><%= bill.try(:bill_date).strftime("%d %B %Y")%></td>
+            <td><%= bill.try(:due_date).strftime("%d %B %Y")%></td>
+            <td><%= bill.try(:due_amount)%></td>
+            <td><%= bill.payment_term.try(:name) %></td>
+            <td><%= bill.location.try(:name) %></td>
+            <td><%= bill.department.try(:name)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <br></br>
+
+  <div class="page-head">
+    <h3>Bills due 30-60 days</h3>
+  </div>
+  <div>
+    <table class="table colvis-data-table data-table">
+      <thead>
+        <tr>
+          <th>Vendor Name</th>
+          <th>Bill Number</th>
+          <th>Bill Date</th>
+          <th>Due Date</th>
+          <th>Due Amount</th>
+          <th>Payment Terms</th>
+          <th>Location</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @due_30_to_60_days_bills.each do |bill|%>
+          <tr>
+            <td><%= bill.vendor.try(:name) %></td>
+            <td><%= bill.try(:bill_number) %></td>
+            <td><%= bill.try(:bill_date).strftime("%d %B %Y")%></td>
+            <td><%= bill.try(:due_date).strftime("%d %B %Y")%></td>
+            <td><%= bill.try(:due_amount)%></td>
+            <td><%= bill.payment_term.try(:name) %></td>
+            <td><%= bill.location.try(:name) %></td>
+            <td><%= bill.department.try(:name)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <br></br>
+
+  <div class="page-head">
+    <h3>Bills due 60-90 days</h3>
+  </div>
+  <div>
+    <table class="table colvis-data-table data-table">
+      <thead>
+        <tr>
+          <th>Vendor Name</th>
+          <th>Bill Number</th>
+          <th>Bill Date</th>
+          <th>Due Date</th>
+          <th>Due Amount</th>
+          <th>Payment Terms</th>
+          <th>Location</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @due_60_to_90_days_bills.each do |bill|%>
+          <tr>
+            <td><%= bill.vendor.try(:name) %></td>
+            <td><%= bill.try(:bill_number) %></td>
+            <td><%= bill.try(:bill_date).strftime("%d %B %Y")%></td>
+            <td><%= bill.try(:due_date).strftime("%d %B %Y")%></td>
+            <td><%= bill.try(:due_amount)%></td>
+            <td><%= bill.payment_term.try(:name) %></td>
+            <td><%= bill.location.try(:name) %></td>
+            <td><%= bill.department.try(:name)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <br></br>
+  
+  <div class="page-head">
+    <h3>Bills due 90+ days</h3>
+  </div>
+  <div>
+    <table class="table colvis-data-table data-table">
+      <thead>
+        <tr>
+          <th>Vendor Name</th>
+          <th>Bill Number</th>
+          <th>Bill Date</th>
+          <th>Due Date</th>
+          <th>Due Amount</th>
+          <th>Payment Terms</th>
+          <th>Location</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @due_above_90_bills.each do |bill|%>
+          <tr>
+            <td><%= bill.vendor.try(:name) %></td>
+            <td><%= bill.try(:bill_number) %></td>
+            <td><%= bill.try(:bill_date).strftime("%d %B %Y")%></td>
+            <td><%= bill.try(:due_date).strftime("%d %B %Y")%></td>
+            <td><%= bill.try(:due_amount)%></td>
+            <td><%= bill.payment_term.try(:name) %></td>
+            <td><%= bill.location.try(:name) %></td>
+            <td><%= bill.department.try(:name)%></td>
           </tr>
         <% end %>
       </tbody>

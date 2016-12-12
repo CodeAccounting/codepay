@@ -26,7 +26,7 @@ class AdminAbility
         cannot [:new, :create, :delete], Admins::NewsController
         # can [:show], Admins::AdminUsersController
         # cannot [:new, :create, :delete], Admins::AdminUsersController
-        debugger
+        # debugger
         cannot :index, Admins::AdminUsersController 
     end
   end
