@@ -1,0 +1,14 @@
+<form action="<%= integrations_path %>" method="post" enctype="multipart/form-data">
+      	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      	<div class="form-group">
+          <label class="control-label" for="vendor_name">Vendor</label>
+          <input name="integration[name]" type="text" class="form-control" >
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="vendor_email">Email</label>
+          <input name="integration[email]" type="text" class="form-control" placeholder="Enter the email address">
+        </div>
+        <div>
+        	<button type="Submit">Create Vendor</button>
+        </div>
+    </form>  

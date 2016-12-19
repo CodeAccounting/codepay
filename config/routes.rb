@@ -118,6 +118,13 @@ Rails.application.routes.draw do
   resources :credit_cards
   resources :electronic_payments
   
+  get "/integrations/authenticate", to: "integrations#authenticate", as: :authenticate
+  get "/integrations/oauth_callback", to: "integrations#oauth_callback", as: :oauth_callback
+  get "/integrations/disconnect", to: "integrations#disconnect", as: :disconnect
+  resources :integrations
+
+  
+  
   # resources :notes
   get "/notes/ajax_to_add_note", to: "notes#ajax_to_add_note", as: :ajax_to_add_note
   get "/notes/notes_list_by_ajax", to: "notes#notes_list_by_ajax", as: :notes_list_by_ajax
