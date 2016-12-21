@@ -1,6 +1,124 @@
 <!--body wrapper start-->
+<style>
+  .tour_item.active {
+      z-index: 9998;
+      position: relative;
+  }
+  #tour_mask {
+      background-color: #353333;
+      display: block;
+      height: 100%;
+      left: 0;
+      opacity: 0.7;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 20;
+  }
+  #tour_dialog {
+      background-color: #363636;
+      border: 1px solid #000000;
+      border-radius: 5px 5px 5px 5px;
+      box-shadow: 0 0 10px 2px #367ABB, 0 2px 0 0 rgba(255, 255, 255, 0.3) inset;
+      color: #FFFFFF;
+      display: none;
+      line-height: 20px;
+      padding: 15px;
+      position: absolute !important;
+      text-shadow: 0 1px 0 #000000;
+      z-index: 9999;
+      text-align: left;
+      max-width: 380px;
+      font-size: 14px
+  }
+  #tour_dialog:hover a {
+      opacity: 1;
+      transition: opacity 1s;
+      -moz-transition: opacity 1s;
+      -webkit-transition: opacity 1s;
+      -o-transition: opacity 1s;
+  }
+  #tour_dialog hr {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: medium none;
+      border-top: 1px solid #000;
+      height: 2px;
+      margin: 15px 0;
+  }
+  #tour_dialog .button {
+      border-radius: 4px;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border: 1px solid #000;
+      background: #3f9abc;
+      background: -moz-linear-gradient(top, #3f9abc 0%, #1f32b3 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #3f9abc), color-stop(100%, #1f32b3));
+      background: -webkit-linear-gradient(top, #3f9abc 0%, #1f32b3 100%);
+      background: -o-linear-gradient(top, #3f9abc 0%, #1f32b3 100%);
+      background: -ms-linear-gradient(top, #3f9abc 0%, #1f32b3 100%);
+      background: linear-gradient(top, #3f9abc 0%, #1f32b3 100%);
+      filter: progid:dximagetransform.microsoft.gradient(startColorstr='@start', endColorstr='@end', GradientType=0);
+      -moz-box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px 0 0 #99DBF8 inset;
+      -webkit-box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px 0 0 #99DBF8 inset;
+      box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px 0 0 #99DBF8 inset;
+      color: #eee;
+      display: inline-block;
+      font-size: 14px;
+      padding: 6px 14px;
+      position: relative;
+      text-decoration: none;
+      vertical-align: top;
+      text-shadow: 0 -1px 1px #000000;
+      cursor: pointer;
+      float: right;
+  }
+  #tour_dialog .button:hover {
+      background: -moz-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #44a4c7), color-stop(100%, #2136bf));
+      background: -webkit-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+      background: -o-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+      background: -ms-linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+      background: linear-gradient(top, #44a4c7 0%, #2136bf 100%);
+      filter: progid:dximagetransform.microsoft.gradient(startColorstr='44a4c7', endColorstr='2136bf', GradientType=0);
+      color: #fff !important;
+  }
+  #tour_dialog .arrow {
+      position: absolute;
+      width: 0;
+      height: 0;
+  }
+  #tour_dialog .arrow.top {
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid #363636;
+      bottom: -10px;
+      left: 48%;
+  }
+  #tour_dialog .arrow.bottom {
+      border-bottom: 10px solid #363636;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      left: 48%;
+      top: -8px;
+  }
+  #tour_dialog .arrow.right {
+      border-bottom: 10px solid transparent;
+      border-right: 10px solid #363636;
+      border-top: 10px solid transparent;
+      left: -10px;
+      top: 8px;
+  }
+  #tour_dialog .arrow.left {
+      border-bottom: 10px solid transparent;
+      border-left: 10px solid #363636;
+      border-top: 10px solid transparent;
+      right: -10px;
+      top: 8px;
+  }
+</style>
+
 <%if current_user.try(:subscription).try(:status).eql?("trialing")%>
-    <%= render "trial_notification"%>
+  <%= render "trial_notification"%>
 <%end%>
     
 <% if flash[:error] %>
@@ -16,16 +134,77 @@
 <% end %>
 
 <div class="wrapper">
+  <!-- <button type="button" ng-click='startOnboarding()'>test click</button> -->
   <%= render "overview" %>
   <div class="row">
     <div class="row">
-      <div class="col-md-6">
+      <div class="step5 col-md-6">
         <%= render "news" %>
       </div>
-      <div class="col-md-6" >
+      <div class="step6 col-md-6" >
         <%= render "todo_list" %>
       </div>
     </div>
   </div>
 </div>
 <!--body wrapper end-->
+<script src='http://code.jquery.com/jquery-1.9.1.min.js'></script>
+<script src='/assets/jquery.tour.js'></script>
+<script>
+    // Config tour steps
+   var a = <%= current_user.sign_in_count%> 
+  var tourSteps = [{
+      "msg": "Welcome to CodePayer Organization", // tour bubble / dialog text
+      "actionName": false, // name of Mixpanel event used for funnel analysis - spaces are fine, use friendly names. You'll need to setup MP yourself however and include the libs.
+      "selector": "body", // selector for highlighted feature. Comma seperated list = (dialog target, additional items to pop above mask). Don't forget your '.' or '#'
+      "position": "center", // dialog location in relation to target (selector). top, bottom, left, right, (or 'center' which centers to screen)
+      "btnMsg": "Start Tour &raquo", // if you'd like a button on the dialog simply add a message here
+      "nextSelector": "#tour_dialog_btn", // does the user need to do something specific to advance? For example, clicking the tour bubble ok button. Omit for any action click to advance.
+      "waitForTrigger": false // should we pause the tour here? while the user does something? Pass a seletor as the trigger to resume the tour from this point
+  }, {
+      "msg": "This Area Shows The Number OF Unpaid Bills",
+          "selector": ".step1",
+          "position": "right",
+          "btnMsg": "Next",
+          "nextSelector": "#tour_dialog_btn"
+  }, {
+      "msg": "This Area Shows The Number OF Unpaid Invoices",
+          "selector": ".step2",
+          "position": "right",
+          "btnMsg": "Next &raquo",
+          "nextSelector": "#tour_dialog_btn"
+  }, {
+      "msg": "This Area Shows The Number OF Approvals Pending",
+          "selector": ".step3",
+          "position": "left",
+          "btnMsg": "Next &raquo",
+          "nextSelector": "#tour_dialog_btn"
+  },{
+      "msg": "This Area Shows The Number OF Documents Uploaded",
+          "selector": ".step4",
+          "position": "left",
+          "btnMsg": "Next &raquo",
+          "nextSelector": "#tour_dialog_btn"
+  },{
+      "msg": "This Area Shows News",
+          "selector": ".step5",
+          "position": "right",
+          "btnMsg": "Next &raquo",
+          "nextSelector": "#tour_dialog_btn"
+  },{
+      "msg": "This Area Shows To Do Tasks",
+          "selector": ".step6",
+          "position": "left",
+          "btnMsg": "Next &raquo",
+          "nextSelector": "#tour_dialog_btn"
+  },{
+      "msg": "That's it. You've completed the tour!",
+          "selector": "body",
+          "position": "center",
+          "btnMsg": "Finish &raquo"
+  }];
+  // fire off the tour when ready
+  // if (a < 350){
+    $.tour(tourSteps);
+  // }
+</script>
