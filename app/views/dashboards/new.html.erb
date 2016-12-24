@@ -152,50 +152,57 @@
 <script src='/assets/jquery.tour.js'></script>
 <script>
     // Config tour steps
-   var a = <%= current_user.sign_in_count%> 
+  var a = <%= current_user.sign_in_count%> 
   var tourSteps = [{
       "msg": "Welcome to CodePayer Organization", // tour bubble / dialog text
       "actionName": false, // name of Mixpanel event used for funnel analysis - spaces are fine, use friendly names. You'll need to setup MP yourself however and include the libs.
       "selector": "body", // selector for highlighted feature. Comma seperated list = (dialog target, additional items to pop above mask). Don't forget your '.' or '#'
       "position": "center", // dialog location in relation to target (selector). top, bottom, left, right, (or 'center' which centers to screen)
       "btnMsg": "Start Tour &raquo", // if you'd like a button on the dialog simply add a message here
+      "btn1Msg": "Skip Tour", // if you want skip button to skip the tour simply add the message here.
       "nextSelector": "#tour_dialog_btn", // does the user need to do something specific to advance? For example, clicking the tour bubble ok button. Omit for any action click to advance.
       "waitForTrigger": false // should we pause the tour here? while the user does something? Pass a seletor as the trigger to resume the tour from this point
   }, {
       "msg": "This Area Shows The Number OF Unpaid Bills",
           "selector": ".step1",
           "position": "right",
-          "btnMsg": "Next",
+          "btnMsg": "Next &raquo",
+          "btn1Msg": "skip",
           "nextSelector": "#tour_dialog_btn"
   }, {
       "msg": "This Area Shows The Number OF Unpaid Invoices",
           "selector": ".step2",
           "position": "right",
           "btnMsg": "Next &raquo",
+          "btn1Msg": "Skip",
           "nextSelector": "#tour_dialog_btn"
   }, {
       "msg": "This Area Shows The Number OF Approvals Pending",
           "selector": ".step3",
           "position": "left",
           "btnMsg": "Next &raquo",
+          "btn1Msg": "Skip",
           "nextSelector": "#tour_dialog_btn"
   },{
       "msg": "This Area Shows The Number OF Documents Uploaded",
           "selector": ".step4",
           "position": "left",
           "btnMsg": "Next &raquo",
+          "btn1Msg": "Skip",
           "nextSelector": "#tour_dialog_btn"
   },{
       "msg": "This Area Shows News",
           "selector": ".step5",
           "position": "right",
           "btnMsg": "Next &raquo",
+          "btn1Msg": "Skip",
           "nextSelector": "#tour_dialog_btn"
   },{
       "msg": "This Area Shows To Do Tasks",
           "selector": ".step6",
           "position": "left",
           "btnMsg": "Next &raquo",
+          "btn1Msg": "Skip",
           "nextSelector": "#tour_dialog_btn"
   },{
       "msg": "That's it. You've completed the tour!",
@@ -204,7 +211,7 @@
           "btnMsg": "Finish &raquo"
   }];
   // fire off the tour when ready
-  // if (a < 350){
+  // if (a == 1){
     $.tour(tourSteps);
   // }
 </script>

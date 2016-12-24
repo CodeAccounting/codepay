@@ -21,7 +21,6 @@
                 $('body').prepend('<div id="tour_mask"></div><div id="tour_dialog"><div class="arrow top"></div><div class="msg"></div></div>');
                 this.showStep();
             },
-
             // increment steps or pause if we're waiting on a trigger to advance
             nextStep: function () {
                 var latent = TourSteps[this.startFrom].waitForTrigger; // should we proceed?
@@ -33,7 +32,6 @@
             showStep: function () {
                 var parent = this;
                 this.setupSelectorsLive();
-
                 $('.tour_item').removeClass('active');
                 this.getContent();
                 this.setDialogPos(TourSteps[this.startFrom].position);
@@ -88,11 +86,11 @@
             getContent: function () {
                 var message = TourSteps[this.startFrom].msg;
                 message += TourSteps[this.startFrom].btnMsg ? "<hr><div id='tour_dialog_btn' class='button'>" + TourSteps[this.startFrom].btnMsg + "</div>" : "";
+                message += TourSteps[this.startFrom].btn1Msg ? "<div id='tour_dialog_btn1' class='button'>" + TourSteps[this.startFrom].btn1Msg + "</div>" : "";
                 $('#tour_dialog .msg').html(message);
             },
 
             setDialogPos: function (position) {
-
                 // @todo - need to calculate arrow position in px instead of %
 
                 var selArray = TourSteps[this.startFrom].selector.split(",");
@@ -184,14 +182,20 @@
             // custom click handler when tour is active.
             // Check to see if the next action was clicked to advance the tour (nextSelector)
             tourClickHandler: function (e) {
-                var nextSel = TourSteps[e.data.stop].nextSelector;
-                if (nextSel) { // we only proceed when THIS selector is clicked i.e. #ok_button
-                    if ($(e.currentTarget).is(nextSel) || $(nextSel).find(e.currentTarget).length > 0) {
+                if (e.target.id == "tour_dialog_btn"){
+                    var nextSel = TourSteps[e.data.stop].nextSelector;
+                    if (nextSel) { // we only proceed when THIS selector is clicked i.e. #ok_button
+                        if ($(e.currentTarget).is(nextSel) || $(nextSel).find(e.currentTarget).length > 0) {
+                            Tour.stepComplete();
+                        }
+                    } else { // no next selector specified. Any click or action will continue the tour
                         Tour.stepComplete();
                     }
-                } else { // no next selector specified. Any click or action will continue the tour
-                    Tour.stepComplete();
                 }
+                else if(e.target.id == "tour_dialog_btn1"){ // skkip the tour
+                    Tour.startFrom = TourSteps.length;
+                    Tour.tourComplete();
+                }    
             }
         };
         Tour.init(); // kickoff our tour
