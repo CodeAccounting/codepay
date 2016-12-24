@@ -1,8 +1,8 @@
 <!--state overview start-->
 <div class="row state-overview">
-  <div class="step1 col-lg-3 col-sm-6">
+  <div class="col-lg-3 col-sm-6">
     <a href="<%=unpaid_bills_link%>">
-      <section class="panel purple">
+      <section class="step1 panel purple">
         <div class="symbol">
           <i class="fa fa-send"></i>
         </div>
@@ -13,10 +13,12 @@
           </h1>
           <p>Unpaid Bills</p>
         </div>
-      </section></a>
+      </section>
+    </a>
   </div>
-  <div class="step2 col-lg-3 col-sm-6">
-    <a href="<%#=outstanding_invoice_link%>"><section class="panel ">
+  <div class="col-lg-3 col-sm-6">
+    <a href="<%#=outstanding_invoice_link%>">
+      <section class="step2 panel ">
         <div class="symbol purple-color">
           <i class="fa fa-tags"></i>
         </div>
@@ -26,24 +28,28 @@
           </h1>
           <p>Outstanding Invoices</p>
         </div>
-      </section></a>
+      </section>
+    </a>
   </div>
-  <div class=" step3 col-lg-3 col-sm-6">
-      <a href="<%= approval_required_link %>"><section class="panel green">
-          <div class="symbol ">
-            <i class="fa fa-cloud-upload"></i>
-          </div>
-          <div class="value white">
-            <h1 class="timer" data-from="0" data-to="<%= current_user.approvals.where(:status=> "Pending").try(:count)%>"
-                                          data-speed="1000">
-            <!--432-->
-            </h1>
-            <p>Approval Required</p>
-          </div>
-        </section></a>
+  <div class="col-lg-3 col-sm-6">
+    <a href="<%= approval_required_link %>">
+      <section class=" step3 panel green">
+        <div class="symbol ">
+          <i class="fa fa-cloud-upload"></i>
+        </div>
+        <div class="value white">
+          <h1 class="timer" data-from="0" data-to="<%= current_user.approvals.where(:status=> "Pending").try(:count)%>"
+                                        data-speed="1000">
+          <!--432-->
+          </h1>
+          <p>Approval Required</p>
+        </div>
+      </section>
+    </a>
   </div>
-  <div class="step4 col-lg-3 col-sm-6">
-    <a href="<%=new_document_link%>"><section class="panel">
+  <div class="col-lg-3 col-sm-6">
+    <a href="<%=new_document_link%>">
+      <section class="step4 panel">
         <div class="symbol green-color">
           <i class="fa fa-bullseye"></i>
         </div>
@@ -54,7 +60,8 @@
           </h1>
           <p>New Documents</p>
         </div>
-      </section></a>
+      </section>
+    </a>
   </div>
 </div>
 <!--state overview end-->
