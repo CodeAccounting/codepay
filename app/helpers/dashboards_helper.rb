@@ -40,4 +40,16 @@ module DashboardsHelper
     end
       return days_left    
   end
+
+  def tour_display?
+    # if sign_in_count == 1
+       if session[:tour_displayed].present?
+          true
+       else
+          session[:tour_displayed] = true
+          false
+       end 
+    # end  
+  end
+  
 end

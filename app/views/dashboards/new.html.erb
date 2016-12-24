@@ -138,24 +138,23 @@
   <%= render "overview" %>
   <div class="row">
     <div class="row">
-      <div class="step5 col-md-6">
+      <div class="col-md-6">
         <%= render "news" %>
       </div>
-      <div class="step6 col-md-6" >
+      <div class="col-md-6" >
         <%= render "todo_list" %>
       </div>
     </div>
   </div>
 </div>
 <!--body wrapper end-->
+
 <script src='http://code.jquery.com/jquery-1.9.1.min.js'></script>
 <script src='/assets/jquery.tour.js'></script>
+
 <script>
-    // Config tour steps
-  var user_name = "<%= current_user.full_name%>";  
-  
-  var a = <%= current_user.sign_in_count%> 
-  
+    // Config tour steps 
+  var tour_displayed = <%= tour_display?%>
   var tourSteps = [{
       "msg": "Welcome to CodePayer Organization", // tour bubble / dialog text
       "actionName": false, // name of Mixpanel event used for funnel analysis - spaces are fine, use friendly names. You'll need to setup MP yourself however and include the libs.
@@ -214,46 +213,9 @@
           "btnMsg": "Finish &raquo"
   }];
 
-  function checkCookie() {
-    var user=getCookie("username");
-    if (user == user_name) {
-        return true
-    } else {
-       // user = prompt("Please enter your name:","");
-       if (user != user_name && user != null) {
-           setCookie("username", user_name, 30);
-       }
-       return false
-    }
-  }
-
-  function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-  }
-
-  function setCookie(cname,cvalue,exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires=" + d.toGMTString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-  }
-
   // fire off the tour when ready
-  // if (a == 1){
-    if (!checkCookie()){
-      $.tour(tourSteps);
-    }
+  if (!tour_displayed){
+     $.tour(tourSteps);
+  }
 
-  // }
 </script>
