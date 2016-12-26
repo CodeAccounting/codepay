@@ -72,7 +72,7 @@
     <!-- visible small devices end-->
     <!--sidebar nav start-->
     <ul class="nav nav-pills nav-stacked side-navigation">
-      <li class=""><a href="<%= new_dashboard_path %>"><i class="fa fa-home"></i>Home</a></li>
+      <li class="step8"><a href="<%= new_dashboard_path %>"><i class="fa fa-home"></i>Home</a></li>
       
       <!-- <li class="menu-list"> <a href="#"><i class="fa fa-money"></i>Money In</a>
         <ul class="child-list">
@@ -104,7 +104,7 @@
         </ul>
       </li> -->
       
-      <li class="">
+      <li class="step9">
         <%# if can? :index, Vendor %>
           <a href="<%= attachments_path%>">
             <i class="fa fa-envelope-o"></i>
@@ -113,7 +113,7 @@
         <%# end %>
       </li>
 
-      <li class="">
+      <li class="step10">
         <% if can? :index, Vendor %>
           <a href="<%= vendors_path%>">
             <i class="fa fa-users"></i>
@@ -123,14 +123,14 @@
       </li>
 
 
-      <li class="">
+      <li class="step11">
           <a href="<%= bills_path%>">
             <i class="fa fa-newspaper-o"></i>
             Bills
           </a>
       </li>
 
-      <li class="">
+      <li class="step12">
         <% if can? :create, Payment %>
           <a href="<%= new_payment_path%>">
             <i class="fa fa-usd"></i>
@@ -139,21 +139,21 @@
         <% end %>
       </li>
 
-      <li class="">
+      <li class="step13">
           <a href="<%= credits_path%>">
             <i class="fa fa-minus-square-o"></i>
             Credits
           </a>
       </li>
 
-      <li class="">
+      <li class="step14">
           <a href="<%=voids_path%>" >
             <i class="fa fa-square-o"></i>
             Voids
           </a>
       </li>
 
-      <li class="">
+      <li class="step15">
         <% if can? :create, Report %>
           <a href="/reports/new">
             <i class="fa fa-bar-chart-o"></i>

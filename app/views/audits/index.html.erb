@@ -1,7 +1,7 @@
 <!-- page head start-->
 <div class="page-head">
   <h3 class="m-b-less">
-  Audits
+    Audits
   </h3>
 </div>
 <!-- page head end-->
@@ -31,14 +31,14 @@
                         <% audit.audited_changes.each do |hash| %>
                           <tr>
                             <td><%= audit.created_at.strftime("%d %B %Y") %> </td>
-                            <% user_name= audit.user.full_name%>
+                              <% user_name= audit.user.full_name%>
                             <td><%= user_name %></td>
                             <td><%= audit.auditable_type %> </td>
                             <td><%= link_to audit.auditable_id, audit.auditable%></td>
                             <td><%= audit.action %></td>
-                                  <td><%= hash[0] %></td>
-                                  <td><%= hash[1][0] %></td>
-                                  <td><%= hash[1][1]%></td>
+                            <td><%= hash[0] %></td>
+                            <td><%= hash[1][0] %></td>
+                            <td><%= hash[1][1]%></td>
                           </tr>
                         <% end %>  
                     <% else %>
@@ -49,9 +49,9 @@
                             <td><%= audit.auditable_type %> </td>
                             <td><%= link_to audit.auditable_id, audit.auditable%></td>
                             <td><%= audit.action %></td>
-                                  <td><% "" %></td>
-                                  <td><% "" %></td>
-                                  <td><% ""%></td>
+                            <td><%= "" %></td>
+                            <td><%= "" %></td>
+                            <td><%= "" %></td>
                           </tr>
                     <% end %>      
                 <%end%>    

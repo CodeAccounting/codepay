@@ -2,7 +2,7 @@
 <div class="row state-overview">
   <div class="col-lg-3 col-sm-6">
     <a href="<%=unpaid_bills_link%>">
-      <section class="step1 panel purple">
+      <section class="step2 panel purple">
         <div class="symbol">
           <i class="fa fa-send"></i>
         </div>
@@ -18,7 +18,7 @@
   </div>
   <div class="col-lg-3 col-sm-6">
     <a href="<%#=outstanding_invoice_link%>">
-      <section class="step2 panel ">
+      <section class="step3 panel ">
         <div class="symbol purple-color">
           <i class="fa fa-tags"></i>
         </div>
@@ -26,14 +26,14 @@
           <h1 class="purple-color timer" data-from="0" data-to="0<%#= current_organization.invoices.try(:count) %>" data-speed="1000">
             <!--123-->
           </h1>
-          <p>Outstanding Invoices</p>
+          <p>Payment Issues</p>
         </div>
       </section>
     </a>
   </div>
   <div class="col-lg-3 col-sm-6">
     <a href="<%= approval_required_link %>">
-      <section class=" step3 panel green">
+      <section class=" step4 panel green">
         <div class="symbol ">
           <i class="fa fa-cloud-upload"></i>
         </div>
@@ -49,7 +49,7 @@
   </div>
   <div class="col-lg-3 col-sm-6">
     <a href="<%=new_document_link%>">
-      <section class="step4 panel">
+      <section class="step5 panel">
         <div class="symbol green-color">
           <i class="fa fa-bullseye"></i>
         </div>
