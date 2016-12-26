@@ -27,7 +27,7 @@
     </div>
     <!--left notification end-->
     <!--right notification start-->
-    <div class="right-notification">
+    <div class="step1 right-notification">
       <ul class="notification-menu">
         <li>
           <!-- <li class="dropdown">
@@ -59,11 +59,11 @@
           <ul class="dropdown-menu mega-dropdown-menu row pull-right">
             <h3 class="dropdown" style="margin:0; margin-bottom:-3%; min-width:30px">
               
-              <a href="javascript:;" style="margin-left:2%;" >
+              <a href="javascript:;" class="user-name" style="margin-left:2%;padding:0;float:left" >
               <%= current_user.full_name.capitalize %>
               </a>
 
-              <a class="org_hover" href="javascript:;" style="float:right; margin-right:3%;" ><span><%= current_organization.name %></span>
+              <a class="org_hover" href="javascript:;" style="float:right; padding :0; margin-right:2%;" ><span><%= current_organization.name %></span>
               </a>
 
               <!-- <ul class="dropdown-menu sub-menu pull-left">
@@ -81,7 +81,7 @@
                 </ul> -->
             </h3>
 
-            <li class="col-sm-3 pull-right" style="text-align: right;padding: 0; margin-right: 3%;">
+            <li class="col-sm-3 pull-right" style="text-align: right;padding: 0;width: 27%;">
               <ul>
                 <li class="dropdown-header">Organization</li>
                 <li>
@@ -126,7 +126,7 @@
                 </li>
               </ul>
             </li>
-            <li class="col-sm-3 pull-right" style="float:right;padding: 0;width: 25%;">
+            <li class="col-sm-3 pull-right" style="float:right;padding: 0;width: 26%;">
               <ul>
                 <li class="dropdown-header">Lists</li>
                 <!-- <li> -->
@@ -151,7 +151,7 @@
                 </li>
               </ul>
             </li>
-            <li class="col-sm-3 pull-right" style="float:right;width: 27%;padding: 0;">
+            <li class="col-sm-3 pull-right" style="float:right;width: 30%;padding: 0;">
               <ul>
                 <li class="dropdown-header">User</li>
                 <li>
@@ -310,7 +310,7 @@
 
 .mega-dropdown-menu {
   padding: 20px 0px;
-  width: 530%;
+  width: 500%;
   box-shadow: none;
   -webkit-box-shadow: none;
 }
@@ -398,6 +398,9 @@
 
 .right-notification .notification-menu li a i{
   position:inherit;
+}
+.user-name{
+
 }
 </style>
 
