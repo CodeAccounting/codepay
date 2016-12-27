@@ -65,7 +65,7 @@
               <div style="float:right; padding:0; margin-right:2%;">
                 <a class="org_hover" style="padding:0;" href="javascript:;" ><span><%= current_organization.name %></span>
                 </a>
-                <img src="<%= current_organization.attachment ? 'current_organization.attachment.attachment.url' : '' %>" height="40" width="55">
+                <img src="<%= current_organization.attachment.present? ? current_organization.attachment.attachment.url : '' %>" height="40" width="55">
               </div>
 
               <!-- <ul class="dropdown-menu sub-menu pull-left">
