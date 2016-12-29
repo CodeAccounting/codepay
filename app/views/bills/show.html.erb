@@ -203,37 +203,36 @@
                 <button type="button" class="btn btn-success" ng-click="add_note()" ng-disabled="note_text==''">Add Note</button>
               </div>
               
-                  <div class="notes" ng-repeat="note in notes">
-                    <!-- <div> -->
-                      <!-- <span id="note_edit" class="note_edit fa fa-pencil" style="margin-right:0px" ng-click="edit_note($index)"></span> -->
-                    <!-- </div> -->
-                    <div class="note_text">
-                      <p class="note_show" id="note_p" style="text-align:left; margin:3px">
-                        {{note.body}}
-                      </p>
-                      <!-- <textarea id="note_edit_a" rows="2" class="form-control" ng-model="note_$index=true" ng-hide="note_$index">{{note.body}}</textarea> -->
-                    </div>
-                    <div class="note_info"> 
-                      <label class="note_name" style="margin-bottom:0;">{{note.creator.first_name}} {{note.creator.last_name}}</label>
-                      <label class="note_date" style="margin-bottom:0;">{{note.created_at | date}}</label>
-                    </div> 
-                  </div>
-              
+              <div class="notes" ng-repeat="note in notes">
+                <!-- <div> -->
+                  <!-- <span id="note_edit" class="note_edit fa fa-pencil" style="margin-right:0px" ng-click="edit_note($index)"></span> -->
+                <!-- </div> -->
+                <div class="note_text">
+                  <p class="note_show" id="note_p" style="text-align:left; margin:3px">
+                    {{note.body}}
+                  </p>
+                  <!-- <textarea id="note_edit_a" rows="2" class="form-control" ng-model="note_$index=true" ng-hide="note_$index">{{note.body}}</textarea> -->
+                </div>
+                <div class="note_info"> 
+                  <label class="note_name" style="margin-bottom:0;">{{note.creator.first_name}} {{note.creator.last_name}}</label>
+                  <label class="note_date" style="margin-bottom:0;">{{note.created_at | date}}</label>
+                </div> 
+              </div>
             </div>  
           </div>  
         </div>
 
-      <div class="row">
-        <div class="col-md-12">
-          <%= link_to 'Back', :back, class: "btn btn-danger"%>
-          <a href="<%= edit_bill_path(@bill) %>" class="btn btn-success">Edit</a>
+        <div class="row">
+          <div class="col-md-12">
+            <%= link_to 'Back', :back, class: "btn btn-danger"%>
+            <a href="<%= edit_bill_path(@bill) %>" class="btn btn-success">Edit</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
- </div>
   
-<div class="row">
+  <div class="row">
     <div class="col-sm-12">
       <section class="panel">
         <header class="panel-heading head-border">
@@ -251,18 +250,18 @@
             </tr>
           </thead>
           <tbody>
-                <%if @bill.bill_items.present?%>
-                  <%@bill.bill_items.each do |bill_item|%>
-                    <tr>
-                      <td><%= bill_item.item.try(:name)%></td>
-                      <td><%= bill_item.try(:description)%></td>
-                      <td><%= bill_item.try(:quantity)%></td>
-                      <td><%= bill_item.try(:price)%></td>
-                      <td><%= bill_item.location.try(:name)%></td>
-                      <td>$<%= bill_item.try(:amount)%></td>
-                    </tr>
-                  <%end%>
-                <%end%>  
+            <%if @bill.bill_items.present?%>
+              <%@bill.bill_items.each do |bill_item|%>
+                <tr>
+                  <td><%= bill_item.item.try(:name)%></td>
+                  <td><%= bill_item.try(:description)%></td>
+                  <td><%= bill_item.try(:quantity)%></td>
+                  <td><%= bill_item.try(:price)%></td>
+                  <td><%= bill_item.location.try(:name)%></td>
+                  <td>$<%= bill_item.try(:amount)%></td>
+                </tr>
+              <%end%>
+            <%end%>  
           </tbody>
         </table>
       </section>
@@ -284,11 +283,11 @@
               </tr>
             </thead>
             <tbody>
-                <tr>
-                  <td><%= @bill_attachment.try(:attachment_file_name)%></td>
-                  <td><%= @bill_attachment.try(:attachment_content_type)%></td>
-                  <td><%= number_to_human_size(@bill_attachment.try(:attachment_file_size))%></td>
-                </tr>
+              <tr>
+                <td><%= @bill_attachment.try(:attachment_file_name)%></td>
+                <td><%= @bill_attachment.try(:attachment_content_type)%></td>
+                <td><%= number_to_human_size(@bill_attachment.try(:attachment_file_size))%></td>
+              </tr>
             </tbody>
           </table>
         </section>

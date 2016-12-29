@@ -1,0 +1,119 @@
+<!-- page head start-->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Showing Repeating Payment
+  </h3>
+  <div class="state-information">
+    <!-- <ol class="breadcrumb m-b-less bg-less">
+      <li><a href="#">Money out</a></li>
+      <li><%#= link_to "Bills", bills_path %></li>
+      <li class="active">Create Bill</li>
+    </ol> -->
+  </div>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+    <% if flash[:errors] %>
+      <div class="alert alert-danger">
+        <ul>
+          <% flash[:errors].each do |er| %>
+          <li><%= er %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <header class="panel-heading head-border">
+      Repeating Payment Detail
+    </header>
+    <div class="panel-body">
+      <div class="row toastr-row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label"><b>Schedule Information</b></label></br>
+            <label class="control-label" for="next_due_date" style="display:inline-block;">Next Due Date</label>
+            <input type="date" name="repeating_payment[next_due_date]" class="form-control" id="next_due_date" style="width:30%;display:inline-block;" value="<%= @repeating_payment.next_due_date.strftime("%Y-%m-%d") %>" readonly>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label" style="display:inline-block;margin-left:8%" for="next_due_date">Create</label>
+            <input type="number" id="days_in_advance" name="repeating_payment[days_in_advance]" class="form-control" min="0" max="365" step="1" style="width:12%;display:inline-block;" value="<%= @repeating_payment.days_in_advance %>" readonly>
+            <label class="control-label" style="display:inline-block;margin-left:1%;">days in advance(0-365)</label>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label"><b>Bill Template</b></label><br/>
+            <label class="control-label" for="repeating_payment_vendor" style="display:inline-block;margin-left:7%;" >Vendor</label>
+            <select class="form-control input-small vendor_selector" name="repeating_payment[vendor_id]" id="repeating_payment_vendor" style="width:30%;display:inline-block;" disabled="disabled">
+              <option value="<%= @repeating_payment.vendor_id %>" selected><%= @repeating_payment.vendor.name %></option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label" for="repeating_payement_description" style="display:inline-block;margin-left:3%;">Description</label>
+            <textarea id="repeating_payement_description" name="repeating_payment[description]" rows="3" class="form-control" placeholder="Enter a description..." style="width:80%;display:inline-block;" readonly><%= @repeating_payment.description %></textarea>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label" style="display:inline-block; margin-top:5%;margin-left:10%;">Frequeny</label>
+            <label class="control-label" for="frequency" style="display:inline-block; margin-top:5%; margin-left:1%">Every</label>
+            <input type="text" name="repeating_payment[frequency]" class="form-control" id="frequency" style="width:9%;display:inline-block;margin-top:5%;" value="<%= @repeating_payment.frequency %>" readonly>
+            <select class="form-control input-small" name="repeating_payment[frequency_type]" style="width:25%;display:inline-block;margin-left:2%;" disabled="disabled">
+              <option value="<%= @repeating_payment.frequency_type %>"><%= @repeating_payment.frequency_type %>
+              </option>  
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label" for="end_date" style="display:inline-block;margin-left:10%">Ends On</label>
+            <input type="date" name="repeating_payment[end_date]" class="form-control" id="end_date" style="width:28%;display:inline-block;margin-left:2%" value="<%= @repeating_payment.end_date.strftime("%Y-%m-%d") %>" disabled="disabled">
+            <input type="checkbox" name="end_date_checkbox" style="display:inline-block;" disabled="disabled">
+            <label class="control-label" for="end_date_checkbox" style="display:inline-block;">No End Date</label>
+          </div>  
+        </div>
+      </div>  
+      <div class="row">
+        <div class="col-md-12">
+          <a href="<%=repeating_payments_path%>" class="btn btn-danger">Back</a>
+          <a href="<%=edit_repeating_payment_path%>" class="btn btn-success">Edit</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading head-border">
+          Repeating Payment Items
+        </header>
+        <table class="table small-data-table data-table">
+          <thead>
+            <tr>
+              <th>Account</th>
+              <th>Amount</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%if @repeating_payment.repeating_payment_items.present?%>
+              <%@repeating_payment.repeating_payment_items.each do |repeating_payment_item|%>
+                <tr>
+                  <td><%= repeating_payment_item.try(:account)%></td>
+                  <td><%= repeating_payment_item.try(:amount)%></td>
+                  <td><%= repeating_payment_item.try(:description)%></td>
+                </tr>
+              <%end%>
+            <%end%>  
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+<!-- page end-->
+</div>
+<!--body wrapper end-->

@@ -60,7 +60,7 @@
                 <option value='-1' disabled selected>Select a vendor</option>
                 <option value="new">Create New vendor...</option>
                 <% current_organization.vendors.each do |vendor| %>
-                <option value="<%= vendor.id %>"><%= vendor.name %></option>
+                  <option value="<%= vendor.id %>"><%= vendor.name %></option>
                 <% end %>
               </select>
             </div>

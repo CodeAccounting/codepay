@@ -37,6 +37,7 @@ class Organization < ActiveRecord::Base
   has_many :credits
   has_many :bill_informations
   has_many :credit_cards
+  has_many :repeating_payments
 
   has_one  :attachment, as: :attachable
   accepts_nested_attributes_for :attachment, :reject_if => lambda { |t| t['attachment'].nil? }

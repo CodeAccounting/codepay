@@ -117,6 +117,10 @@ Rails.application.routes.draw do
   resources :news
   resources :credit_cards
   resources :electronic_payments
+
+  get "/repeating_payments/vendors_by_ajax", to: "repeating_payments#vendors_by_ajax", as: :vendors_by_ajax
+  resources :repeating_payments
+
   
   get "/integrations/authenticate", to: "integrations#authenticate", as: :authenticate
   get "/integrations/oauth_callback", to: "integrations#oauth_callback", as: :oauth_callback

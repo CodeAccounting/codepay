@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  SHOW_TOUR = true
   belongs_to :organization, class_name: 'Organization', foreign_key: :current_organization_id 
   audited associated_with: :organization
 
@@ -40,6 +41,7 @@ class User < ActiveRecord::Base
   has_many :created_notes, class_name: 'Note', foreign_key: :creator_id
   has_many :created_credits, class_name: 'Credit', foreign_key: :creator_id
   has_many :created_credit_cards, class_name: 'CreditCard', foreign_key: :creator_id
+  has_many :created_repeating_payments, class_name: 'RepeatingPayment', foreign_key: :creator_id
 
   has_one :profile_image
   has_one :background_image 
@@ -111,7 +113,7 @@ class User < ActiveRecord::Base
     return invoices
   end
 
-def all_under_bills
+  def all_under_bills
     user_ids = self.all_organization_users.map(&:id)
     bills = Bill.where(creator_id: user_ids)
     return bills
