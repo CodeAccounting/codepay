@@ -505,8 +505,8 @@
               <td><%= bill.payment_term.try(:name) %></td>
               <td><%= bill.location.try(:name) %></td>
               <td><%= bill.department.try(:name)%></td>
-              <td><%= bill.try(:due_amount).to_i%></td>
-              <% total_amount = total_amount + bill.try(:due_amount).to_i%>
+              <td><%= bill.try(:due_amount).to_f%></td>
+              <% total_amount = total_amount + bill.try(:due_amount).to_f%>
             </tr>
           <% end %>
             <tr>
