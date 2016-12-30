@@ -57,7 +57,7 @@ class ReportsController < ApplicationController
             csv_g = CsvGenerator.new(@bills) 
             send_data(csv_g.vendors_bills_to_csv, :filename => "vendors_balance.csv")
           else
-            flash[:error] = "There is no payment for seleted processed date" 
+            flash[:error] = "There is no unpaid bill having due date under selected date" 
             redirect_to :back
           end
 
@@ -129,7 +129,7 @@ class ReportsController < ApplicationController
           if @bills.present?         
             render pdf: "vendors_balance", layout: 'pdf.html.erb', disposition: :send_file
           else
-            flash[:error] = "There is no payment for seleted processed date" 
+            flash[:error] = "There is no unpaid bills for having due date under selected date" 
             redirect_to :back
           end
 

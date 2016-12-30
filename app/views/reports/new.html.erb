@@ -27,7 +27,8 @@
             <div class="row toastr-row">  
               <div class="col-md-4">
                 <div class="form-group">
-                  <select class="form-control input-small" name="download[type]" id="invoice_bill_select" ng-model="reportFor" ng-change="change_period()">
+                  <label class="control-label" for="report_select">Select Item To Generate Report For</label>
+                  <select class="form-control input-small" name="download[type]" id="report_select" ng-model="reportFor" ng-change="change_period()">
                     <option disabled selected value> -- select an option -- </option>
                     <!-- <option value="invoices">Invoice List</option> -->
                     <option value="bills">Bill List</option>
