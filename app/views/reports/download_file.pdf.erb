@@ -472,3 +472,54 @@
     </table>
   </div>
 <%end%>  
+
+<% if params[:download][:type] == "vendor_balance" %>
+  <% content_for :header_title do %>
+    <b>Vendors Balance Report</b>
+  <% end %>
+  <%@vendor_ids.each do |v_id| %>
+    <div class="page-head">
+      <h3>Vendor: <%= vendor_name(v_id)%></h3>
+    </div>
+    <div>
+      <table class="table colvis-data-table data-table">
+        <thead>
+          <tr>
+            <th>Bill Number</th>
+            <th>Bill Date</th>
+            <th>Due Date</th>
+            <th>Payment Terms</th>
+            <th>Location</th>
+            <th>Department</th>
+            <th>Due Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%#vendor_bills = vendors_bills(@bills,v_id)%>
+          <% total_amount = 0%>
+          <% vendors_bills(@bills,v_id).each do |bill|%>
+            <tr>
+              <td><%= bill.try(:bill_number) %></td>
+              <td><%= bill.try(:bill_date).strftime("%d %B %Y")%></td>
+              <td><%= bill.try(:due_date).strftime("%d %B %Y")%></td>
+              <td><%= bill.payment_term.try(:name) %></td>
+              <td><%= bill.location.try(:name) %></td>
+              <td><%= bill.department.try(:name)%></td>
+              <td><%= bill.try(:due_amount).to_i%></td>
+              <% total_amount = total_amount + bill.try(:due_amount).to_i%>
+            </tr>
+          <% end %>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>total_amount due:</td>
+              <td>$<%= total_amount %></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+  <%end%>  
+<%end%>  

@@ -13,14 +13,18 @@ class ReportsController < ApplicationController
   end
 
   def download_file
-    # debugger
-     if params[:download][:period]=="date_interval"
-        start_date = report_params[:start_date] + " 00:00:00"
-        end_date = report_params[:end_date] + " 11:59:59"
-    elsif params[:download][:period]=="single_date"
-          start_date = report_params[:single_date] + " 00:00:00"
-          end_date = report_params[:single_date] + " 11:59:59"
-    end
+    if params[:download][:period].present?
+      if params[:download][:period]=="date_interval"
+          start_date = report_params[:start_date] + " 00:00:00"
+          end_date = report_params[:end_date] + " 11:59:59"
+      elsif params[:download][:period]=="single_date"
+            start_date = report_params[:single_date] + " 00:00:00"
+            end_date = report_params[:single_date] + " 11:59:59"
+      end
+    else
+      particular_date = report_params[:particluar_date]  
+    end  
+
     type = report_params[:type]
     respond_to do |format|
     format.csv do
@@ -46,6 +50,17 @@ class ReportsController < ApplicationController
               redirect_to :back
             end
         
+        when "vendor_balance"
+          @bills = current_organization.bills.where("due_date <= ? AND paid = ?", particular_date, false)
+          @vendor_ids = @bills.map(&:vendor_id).uniq
+          if @bills.present?        
+            csv_g = CsvGenerator.new(@bills) 
+            send_data(csv_g.vendors_bills_to_csv, :filename => "vendors_balance.csv")
+          else
+            flash[:error] = "There is no payment for seleted processed date" 
+            redirect_to :back
+          end
+
         when "payment"         
              @payments = current_organization.bill_informations.where(processing_date: start_date..end_date)
             if @payments.present?
@@ -86,7 +101,7 @@ class ReportsController < ApplicationController
         case type
         
         when "bills"
-          @bills = current_user.created_bills.where(:created_at => start_date..end_date)
+          @bills = current_organization.bills.where(:created_at => start_date..end_date)
           if @bills.present?         
             render pdf: "bills", layout: 'pdf.html.erb', disposition: :send_file
           else
@@ -95,7 +110,7 @@ class ReportsController < ApplicationController
           end
 
         when "bills_aging"
-          bills = current_user.created_bills.where(:created_at => start_date..end_date, paid: false)
+          bills = current_organization.bills.where(:created_at => start_date..end_date, paid: false)
           @due_not_passed_bills = bills.where("due_date > ?", Date.today)
           @due_passed_30_days_bills = bills.where("due_date <= ? and due_date > ?", Date.today, (Date.today-30.days))
           @due_30_to_60_days_bills = bills.where("due_date <= ? and due_date > ?", (Date.today-30.days), (Date.today-60.days))
@@ -105,6 +120,16 @@ class ReportsController < ApplicationController
             render pdf: "bills_a/p_aging", layout: 'pdf.html.erb', disposition: :send_file
           else
             flash[:error] = "There is no unpaid bills for selected dates" 
+            redirect_to :back
+          end
+
+        when "vendor_balance"
+          @bills = current_organization.bills.where("due_date <= ? AND paid = ?", particular_date, false)
+          @vendor_ids = @bills.map(&:vendor_id).uniq
+          if @bills.present?         
+            render pdf: "vendors_balance", layout: 'pdf.html.erb', disposition: :send_file
+          else
+            flash[:error] = "There is no payment for seleted processed date" 
             redirect_to :back
           end
 
@@ -156,16 +181,22 @@ class ReportsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def report_params
-      if params[:download][:period]=="date_interval"
-          params.require(:download).permit(:type, 
-                    :start_date, 
-                    :end_date 
-                    )
-      elsif params[:download][:period]=="single_date"
-          params.require(:download).permit(:type, 
-                    :single_date  
-                    )
-      end    
+      if params[:download][:period].present?  
+        if params[:download][:period]=="date_interval"
+            params.require(:download).permit(:type, 
+                      :start_date, 
+                      :end_date 
+                      )
+        elsif params[:download][:period]=="single_date"
+            params.require(:download).permit(:type, 
+                      :single_date  
+                      )
+        end
+      else
+        params.require(:download).permit(:type, 
+                      :particluar_date  
+                      )  
+      end      
     end
 
 end

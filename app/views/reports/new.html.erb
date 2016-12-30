@@ -27,25 +27,32 @@
             <div class="row toastr-row">  
               <div class="col-md-4">
                 <div class="form-group">
-                  <select class="form-control input-small" name="download[type]" id="invoice_bill_select" ng-model="reportFor">
+                  <select class="form-control input-small" name="download[type]" id="invoice_bill_select" ng-model="reportFor" ng-change="change_period()">
                     <option disabled selected value> -- select an option -- </option>
                     <!-- <option value="invoices">Invoice List</option> -->
                     <option value="bills">Bill List</option>
                     <option value="bills_aging">Bill's A/P Aging</option>
                     <option value="payment">Payments</option>
+                    <option value="vendor_balance">Vendors Balance</option>
                     <!-- <option value="unpaid_invoices">Unpaid Invoices</option> -->
                   </select>
                 </div>
                 <div class="form-group start_end_date" ng-hide="reportFor==null">
 
-                  <div ng-show="reportFor!=null">
+                  <div ng-show="reportFor!=null && reportFor!='vendor_balance'">
                     <select class="form-control input-small" name="download[period]" id="reportPeriod" ng-model="selectedPeriod">
-                    <option disabled selected value> -- select period for report-- </option>
-                    <option value="single_date">Single Date</option>
-                    <option value="date_interval">Date Interval</option>
+                      <option disabled selected value> -- select period for report-- </option>
+                      <option value="single_date">Single Date</option>
+                      <option value="date_interval">Date Interval</option>
 
                     </select>
                   </div>
+
+                  <div class="form-group single-date" ng-show="reportFor=='vendor_balance'">
+                    <label>Date:
+                      <input id="particular_date" type="date" name="download[particluar_date]" class="form-control" ng-model="particularDate">
+                    </label>  
+                  </div>                  
 
                   <div class="form-group" ng-show="selectedPeriod=='date_interval'">
                     <label>From:
@@ -102,7 +109,10 @@
         $('#report-form').submit();
     });
     
-
+    // $('#invoice_bill_select').on('change', function(){
+    //   debugger
+    //   report_for_val = $(this).children('option:selected').val();
+    // });
     // $("#invoice_bill_select").live('change', function(){
     //   var value = $(this).children('option:selected').text();
     //   if(value == "Unpaid Invoices"){
@@ -117,6 +127,18 @@
 
   var app = angular.module('reportsApp', []);
    app.controller('reportsCtrl',['$scope',function($scope) {
+
+    $scope.change_period = function(){
+      if (this.reportFor == 'vendor_balance'){
+            this.selectedPeriod = undefined
+            this.singleDate = undefined
+            this.startDate = undefined
+            this.endDate = undefined
+      }
+      else if(this.reportFor != 'vendor_balance' && this.reportFor != undefined) 
+        this.particularDate = undefined
+    };
+
     $scope.checkdate = function(){
       if (this.selectedPeriod == "single_date") {
         if (this.singleDate != undefined){
@@ -126,6 +148,11 @@
       else if(this.selectedPeriod == "date_interval") {
         if (this.startDate != undefined && this.endDate != undefined){
              return false;
+        }
+      }
+      else if(this.selectedPeriod == undefined){
+        if (this.particularDate != undefined){
+            return false;
         }
       } 
       return true;

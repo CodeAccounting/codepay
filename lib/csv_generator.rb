@@ -504,4 +504,46 @@ class CsvGenerator
     end  
   end
 
+  def vendors_bills_to_csv(options = {})
+    vendor_ids = @data.map(&:vendor_id).uniq
+    CSV.generate(options) do |csv|
+      vendor_ids.each do |v_id|
+          csv << ["","","","","","","","",""
+                ]
+          csv << ["--","--","--","Vendor",ReportsHelper.vendor_name_csv(v_id),"--","--","--"
+                ]
+          csv << ["","","","","","","","",""
+                ]
+          csv << [
+            "bill_number",
+            "bill_date",
+            "due_date",
+            "payment_terms",
+            "location",
+            "department",
+            "po_number",
+            "sales_rep",
+            "due_amount"
+          ]
+          total_amount = 0
+        ReportsHelper.vendors_bills_csv(@data,v_id).each do |bill|
+          csv << [
+            bill.bill_number,
+            bill.bill_date,
+            bill.due_date.strftime("%d %B %Y"),
+            bill.payment_term.try(:name),
+            bill.location.try(:name),
+            bill.department.try(:name),
+            bill.po_number,
+            bill.sales_rep,
+            bill.due_amount
+          ]
+          total_amount = total_amount + bill.due_amount.to_f
+        end
+        csv << ["","","","","","","","total_due_amount:",total_amount
+                ]
+      end
+    end  
+  end
+
 end	
