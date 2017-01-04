@@ -2,6 +2,12 @@ class CreditsController < ApplicationController
 
 	def index
 		@credits = current_organization.credits
+		respond_to do |format|
+	      format.html { render :index }
+	      format.csv { send_data @credits.to_csv }
+	      format.xls { send_data @credits.to_csv(col_sep: "\t") }
+	      format.pdf {  render pdf: "credits", layout: 'pdf.html.erb' }
+    	end
 	end
 
 	def create 

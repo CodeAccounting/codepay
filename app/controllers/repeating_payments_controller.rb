@@ -3,6 +3,12 @@ class RepeatingPaymentsController < ApplicationController
 
 	def index
 		@repeating_payments = current_organization.repeating_payments
+		respond_to do |format|
+	      format.html { render :index }
+	      format.csv { send_data @repeating_payments.to_csv }
+	      format.xls { send_data @repeating_payments.to_csv(col_sep: "\t") }
+	      format.pdf {  render pdf: "repeating_payments", layout: 'pdf.html.erb' }
+    	end
 	end
 
 	def new 

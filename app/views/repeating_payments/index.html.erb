@@ -32,6 +32,17 @@
             <a class="t-close fa fa-times" href="javascript:;"></a>
           </span>
           <br/><br/>
+          <div class="DTTT btn-group">
+            <a class="btn btn-default DTTT_button_csv" tabindex="0" href="<%= repeating_payments_path(format: :csv) %>" aria-controls="DataTables_Table_0">
+              <span>CSV</span>
+            </a>
+            <a class="btn btn-default DTTT_button_xls" tabindex="0" href="<%= repeating_payments_path(format: :xls) %>" aria-controls="DataTables_Table_0">
+              <span>Excel</span>
+            </a>
+            <a target="_blank" class="btn btn-default DTTT_button_pdf" href="<%= repeating_payments_path(format: :pdf) %>" tabindex="0" aria-controls="DataTables_Table_0">
+              <span>PDF / PRINT</span>
+            </a>
+          </div>
         </header>
         <table class="table colvis-data-table data-table">
           <thead>

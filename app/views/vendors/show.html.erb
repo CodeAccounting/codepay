@@ -128,8 +128,6 @@
   <div class="panel">
     <header class="panel-heading head-border">
       Vendor Detail
-      <%= link_to 'Edit', edit_vendor_path(@vendor), class: 'btn btn-success btn-xs' %> |
-      <%= link_to 'Back', vendors_path, class: 'btn btn-success btn-xs' %>
     </header>
     <% if flash[:errors] %>
     <div class="alert alert-danger">
@@ -202,6 +200,10 @@
             </div>  
           </div>
         </div>
+        <div class="col-md-12">
+          <%= link_to 'Back', vendors_path, class: 'btn btn-danger btn' %> |
+          <%= link_to 'Edit', edit_vendor_path(@vendor), class: 'btn btn-success btn' %> 
+        </div>
       </div>
     </div>
   </div>
@@ -217,7 +219,7 @@
         <table class="table small-data-table data-table">
           <thead>
             <tr>
-              <th>Bill Id</th>
+              <th>Bill Number</th>
               <th>Attachment Name</th>
               <th>Attachment Type</th>
               <th>Attachment File Size </th>
@@ -229,7 +231,7 @@
               <% if bill.attachment.present? %>
                 <tr>
                   <td>
-                    <%= bill.id %>
+                    <%= bill.bill_number %>
                   </td>
                   <td>
                     <%= link_to bill.attachment.attachment_file_name,bill.attachment.attachment.url, target: '_new' %>

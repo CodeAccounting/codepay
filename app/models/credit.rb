@@ -9,7 +9,29 @@ class Credit < ActiveRecord::Base
 	belongs_to :vendor
 	belongs_to :bill
 
-
+	def self.to_csv(options = {})
+	    CSV.generate(options) do |csv|
+	      csv << [
+	        "Vendor Name",
+	        "Bill Number",
+	        "Credit Amount",
+	        "Message",
+	        "Credit Date",
+	        "Status"
+	      ]
+	      all.each do |credit|
+	        csv << [
+	        credit.vendor.name,
+	        credit.bill.bill_number,
+			credit.try(:credit_amount),
+			credit.try(:message),
+			credit.try(:credit_date).strftime("%d %B %Y"),
+			credit.try(:credit_status)
+	        ]
+	      end
+	    end
+  	end
+	
 	def credit_status
 		if self.status
 			"Applied" 
@@ -17,4 +39,5 @@ class Credit < ActiveRecord::Base
 			"Not Applied"
 		end	
 	end
+
 end

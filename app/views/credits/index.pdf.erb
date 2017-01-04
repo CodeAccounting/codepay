@@ -1,0 +1,28 @@
+<% content_for :header_title do %>
+  <b>Credits Information</b>
+<% end %>
+
+<table class="table colvis-data-table data-table">
+  <thead>
+    <tr>
+      <th>Vendor Name</th>
+      <th>Bill Number</th>
+      <th>Credit Amount</th>
+      <th>Message</th>
+      <th>Credit Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @credits.each do |credit| %>
+      <tr>
+        <td><%= credit.vendor.name %> </td>
+        <td><%= credit.bill.bill_number %></td>
+        <td><%= credit.try(:credit_amount) %> </td>
+        <td><%= credit.try(:message) %> </td>
+        <td><%= credit.try(:credit_date).strftime("%d %B %Y") %> </td>
+        <td><%= credit.try(:credit_status) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

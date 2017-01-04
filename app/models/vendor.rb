@@ -60,10 +60,10 @@ class Vendor < ActiveRecord::Base
       all.each do |vendor|
         csv << [
           vendor.id,
-          vendor.account_number,
+          vendor.try(:account_number),
           vendor.name,
-          vendor.primary_contact.email,
-          vendor.description,
+          vendor.try(:primary_contact).try(:email),
+          vendor.try(:description),
           vendor.created_at.strftime("%d %B %Y"),
           vendor.updated_at.strftime("%d %B %Y")
         ]
