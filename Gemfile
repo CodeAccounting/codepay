@@ -30,6 +30,11 @@ gem 'retina_tag'
 
 gem 'newrelic_rpm'
 
+gem 'quickbooks-ruby'
+
+gem 'oauth-plugin'
+
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -43,6 +48,10 @@ group :development, :test do
   gem 'letter_opener'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'capybara'
+  gem 'guard-rspec'
+  gem 'spring-commands-rspec'
+  gem 'vcr'
 
   gem 'capistrano','~> 3.4.0',          require: false
   gem 'capistrano-rvm','~> 0.1.2',      require: false
@@ -54,8 +63,7 @@ end
 
 group :test do
   gem 'faker'
-  gem 'capybara'
-  gem 'guard-rspec'
+  gem 'webmock'
 end
 
 gem 'puma','~> 2.15.3'

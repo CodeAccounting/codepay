@@ -60,7 +60,7 @@
                 <option value='-1' disabled selected>Select a vendor</option>
                 <option value="new">Create New vendor...</option>
                 <% current_organization.vendors.each do |vendor| %>
-                <option value="<%= vendor.id %>"><%= vendor.name %></option>
+                  <option value="<%= vendor.id %>"><%= vendor.name %></option>
                 <% end %>
               </select>
             </div>
@@ -134,7 +134,7 @@
                 <label>Approvars</label>
                 <select name="bill[assigned_to_ids][]" class="form-control input-small" id="approvars" multiple="multiple" data-placeholder="Select approvers...">
                     <% current_organization.all_organization_users.where.not(invitation_accepted_at: nil).each do |user| %>
-                      <% if user != current_user%> 
+                      <% if user != current_user && user.which_role?(current_organization) == "approver"%> 
                         <option value="<%= user.id %>"><%= user.full_name %></option>
                       <% end %>    
                     <% end %>
@@ -366,15 +366,25 @@
       tr = $(this).parent().parent().parent();
       qnty = tr.find('td.bill-item-quantity').children().children();
       prc = tr.find('td.bill-item-price').children().children();
+      tax_op = tr.find('td.bill-item-tax').children().children().children("option:selected")
+
       quantity = 0 + parseInt(qnty.val());
       price = prc.val();
+      tax = parseFloat(tax_op.text());
       if (isNaN(quantity)){
         quantity = 0;
       }
       if (price == ""){
         price = 0;
       }
-      amount = quantity * parseFloat(price);
+      if (isNaN(tax)){
+        amount = quantity * parseFloat(price);
+      }
+      else{
+        amount = quantity * parseFloat(price);
+        tax_amount = (amount * tax)/100;
+        amount = amount + tax_amount;
+      }
       amt = tr.find('td.bill-item-amount');
       if (!(isNaN(amount))){
         amt.html('$'+amount);
@@ -508,7 +518,7 @@
           $('#bill-form').attr('action', '/bills')
         } else if(id=="preview-bill") {
           $('#bill-form').attr('action', '/bills/bill_preview.pdf')
-          $('#bill-form').attr('target', "-blank")
+          $('#bill-form').attr('target', "_blank")
         }
         $('#bill-form').submit();
       });

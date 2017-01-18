@@ -1,0 +1,28 @@
+<% content_for :header_title do %>
+  <b>Repeating Payments</b>
+<% end %>
+
+<table class="table colvis-data-table data-table">
+  <thead>
+    <tr>
+      <th>Vendor Name</th>
+      <th>Next Due Date</th>
+      <th>Days In Advance</th>
+      <th>Frequency</th>
+      <th>End Date</th>
+      <th>Total Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @repeating_payments.each do |repeating_payment| %>
+      <tr>
+        <td><%= repeating_payment.vendor.name %></td>
+        <td><%= repeating_payment.try(:next_due_date).strftime("%d %B %Y") %></td>
+        <td><%= repeating_payment.try(:days_in_advance) %></td>
+        <td><%= repeating_payment.try(:frequency) %></td>
+        <td><%= repeating_payment.try(:end_date).strftime("%d %B %Y") %></td>
+        <td><%= repeating_payment.try(:total_amount) %></td>
+      </tr>  
+    <% end %>
+  </tbody>
+</table>

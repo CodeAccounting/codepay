@@ -1,4 +1,4 @@
-<section class="panel" style = "min-height: 278px; width: 563px;">
+<section class=" step9 panel" style = "min-height: 278px; width: 563px;">
   <header class="panel-heading">
     To Do List
     <span class="tools pull-right">
@@ -8,20 +8,32 @@
     </span>
   </header>
   <div class="panel-body">
-    <ul class="todo-list-item" id="todo-list">
-      <li class="clearfix">
-        <div class="chk-todo pull-left">
-          <input type="checkbox" value="0" />
-        </div>
-        <p class="todo-title">
-        Donec ullamcorper nulla non metus auctor fringilla.
-        </p>
-        <div class="action-todo pull-right clearfix">
-          <a href="#" class="todo-edit"><i class="icon-pencil"></i></a>
-          <a href="#" class="todo-remove"><i class="icon-close"></i></a>
-        </div>
-      </li>
-      <li class="clearfix">
+    <%if @bill_approvals.present?%>
+      <%@bill_approvals.each do |approval|%>
+        <ul class="todo-list-item" id="todo-list">
+          <li class="clearfix">
+            <div class="chk-todo pull-left">
+              <input type="checkbox" value="0" />
+            </div>
+            <p class="todo-title">
+              Bill approval for bill number "<%= approval.approvable.bill_number%>"  
+              has been <%=approval.status%>  
+            </p>
+            <%#= link_to "View", bill_path(approval.approvable_id), class: "btn btn-success btn-sm"%>
+            <div class="action-todo" style="margin-right: 15%;">
+              <a href="<%= bill_show_path(approval.approvable_id, approval_id: approval.id)%>" class="btn btn-success btn-xs" style="width: 130%;height: 100%;">View</a>
+            </div>
+            <div class="action-todo pull-right clearfix">
+              <a href="#" class="todo-edit"><i class="icon-pencil"></i></a>
+              <a href="#" class="todo-remove"><i class="icon-close"></i></a>
+            </div>
+          </li>
+        </ul>
+      <%end%>
+    <%else%> 
+      Nothing To Do 
+    <%end%>  
+      <!-- <li class="clearfix">
 
         <div class="chk-todo pull-left">
           <input type="checkbox" value="0" />
@@ -48,7 +60,6 @@
           <a href="#" class="todo-edit"><i class="icon-pencil"></i></a>
           <a href="#" class="todo-remove"><i class="icon-close"></i></a>
         </div>
-      </li>
-    </ul>
+      </li> -->
   </div>
 </section>

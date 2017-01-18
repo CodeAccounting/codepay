@@ -1,0 +1,53 @@
+<!-- page head start--> 
+<div class="page-head">
+  <h3 class="m-b-less">
+  Create News  
+  </h3>
+</div>
+<!-- page head end-->
+
+<!--body wrapper start-->
+<div class="wrapper">
+  <!-- page start-->
+  <div class="panel">
+
+    <% if flash[:errors].present? %>
+      <div class="alert alert-danger">
+        <ul>
+          <% flash[:errors].each do |er| %>
+          <li><%= er %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <header class="panel-heading head-border">
+      Add New News
+    </header>
+    <form id="news-form" action="<%= admins_news_index_path %>" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <div class="panel-body">
+        <div class="row toastr-row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label" for="news_subject">Subject</label>
+              <input id="news_subject" type="text" class="form-control"  placeholder="News Subject" name="news[subject]" >
+            </div class="form-group">
+            <div>
+              <label class="control-label" for="news_subject">Description</label>
+              <textarea id="news_description" style="max-width: 100%;" class="form-control" placeholder="News Description.." rows="8" name="news[description]"></textarea>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">    
+    			<div class="col-md-12">
+            <%= link_to 'Back', :back, class: "btn btn-danger"%>
+            <button type="submit" class="btn btn-success" id="save_news">Save</button>
+          </div>
+    	  </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- page end-->
+<!--body wrapper end-->

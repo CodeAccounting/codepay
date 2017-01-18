@@ -40,7 +40,10 @@ Rails.application.routes.draw do
 
   resources :bills
   get "/bills/copy_bill/:id", to: "bills#copy_bill"
+  get "/bills/bill_show/:id", to: "bills#bill_show", as: :bill_show
+  get "/bills/approval_request_again/:id", to: "bills#approval_request_again", as: :approval_request_again
   post "/bills/bill_preview", to: "bills#bill_preview", as: :bill_preview
+
   
   
   resources :payments 
@@ -99,18 +102,38 @@ Rails.application.routes.draw do
   get "/items/:id/remove_item", to: "items#remove_item", as: :remove_item
 
   resources :taxs
+  get "/approvals/bill_approver_list_by_ajax", to: "approvals#bill_approver_list_by_ajax", as: :bill_approver_list_by_ajax
+  get "/approvals/approvers_select2_ajax", to: "approvals#approvers_select2_ajax", as: :approvers_select2_ajax
   resources :approvals
+  post "approvals/approve_bills", to: "approvals#approve_bills", as: :approve_bills  
+  post "approvals/assign_request_to_other_user", to: "approvals#assign_request_to_other_user", as: :assign_request_to_other_user  
+    
+
   resources :chart_of_accounts
   resources :basic
   resources :support
   resources :voids
   resources :credits
+  resources :news
+  resources :credit_cards
+  resources :electronic_payments
 
+  get "/repeating_payments/vendors_by_ajax", to: "repeating_payments#vendors_by_ajax", as: :vendors_by_ajax
+  resources :repeating_payments
 
+  
+  get "/integrations/authenticate", to: "integrations#authenticate", as: :authenticate
+  get "/integrations/oauth_callback", to: "integrations#oauth_callback", as: :oauth_callback
+  get "/integrations/disconnect", to: "integrations#disconnect", as: :disconnect
+  resources :integrations
+
+  
+  
   # resources :notes
   get "/notes/ajax_to_add_note", to: "notes#ajax_to_add_note", as: :ajax_to_add_note
   get "/notes/notes_list_by_ajax", to: "notes#notes_list_by_ajax", as: :notes_list_by_ajax
   
+
   get "/admins" => redirect("/admins/dashboards")
 
   namespace "admins" do
@@ -130,7 +153,10 @@ Rails.application.routes.draw do
 
     resources :users
     resources :audits
+    resources :news
+    post "news/delete", to: "news#delete", as: :news_delete
 
+    resources :admin_users
   end  
   
 end

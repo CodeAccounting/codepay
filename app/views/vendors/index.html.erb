@@ -17,20 +17,15 @@
     <div class="col-sm-12">
       <section class="panel">
         <header class="panel-heading ">
-          Vender Data Table
+          <a class="btn btn-default btn-success btn-lg" href="<%= new_vendor_path %>">
+            <span>Create Vendor</span>
+          </a>
           <span class="tools pull-right">
             <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
             <a class="t-close fa fa-times" href="javascript:;"></a>
           </span>
-          <br/><br/>
-            <a class="btn btn-default btn-success btn-lg" href="<%= new_vendor_path %>">
-                <span>Create Vendor</span>
-            </a>
             <br/><br/>
           <div class="DTTT btn-group">
-            <!-- <a class="btn btn-default DTTT_button_copy" href="<%= new_vendor_path %>">
-              <span>Create</span>
-            </a> -->
             <a class="btn btn-default DTTT_button_csv" id="ToolTables_DataTables_Table_0_1" tabindex="0" href="<%= vendors_path(format: :csv) %>" aria-controls="DataTables_Table_0">
               <span>CSV</span>
             </a>

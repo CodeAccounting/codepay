@@ -32,13 +32,13 @@
           <%= vendor.name %>
         </td>
         <td>
-          <%= vendor.account_number %>
+          <%= vendor.try(:account_number) %>
         </td>
         <td>
-          <%= vendor.primary_contact.email %>
+          <%= vendor.try(:primary_contact).try(:email) %>
         </td>
         <td>
-          <%= vendor.description %>
+          <%= vendor.try(:description) %>
         </td>
         <td>
           <%= vendor.created_at.strftime("%d %B %Y") %>

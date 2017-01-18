@@ -37,8 +37,8 @@
               <input id="vendor_record_date" class="form-control" value="<%= @bill.id%>" readonly >
             </div>
             <div class="form-group">
-              <label class="control-label" for="payment_info_due_date">Processing Date</label>
-              <input type="date" id="vendor_due_date" name="payment_info[processing_date]" class="form-control" >
+              <label class="control-label" for="payment_info_invoice_date">Due Amount</label>
+              <input id="due_amount" class="form-control" name="payment_info[amount]" value="<%= @bill.due_amount%>" readonly >
             </div>
           </div>
           <div class="col-md-3">
@@ -46,19 +46,30 @@
   	            <label class="control-label" for="payment_info_name"> Due Date </label>
   	            <input data-customers id="vendor_name" type="text" class="form-control" name="payment_info[due_date]" value="<%= @bill.due_date.strftime("%d-%B-%Y") %>" readonly>
   	        </div>
-            	<div class="form-group">
-  	            <label class="control-label" for="payment_info_memo">Memo</label>
-  	            <input id="bill_memo" name="payment_info[memo]" type="textfield" class="form-control">
-            	</div>
-            	<div class="form-group">
-  	            <label class="control-label" for="payment_info_description">Description</label>
-  	            <input id="bill_description" name="payment_info[description]" type="textfield" class="form-control">
-            	</div>
-            	<div class="form-group">
-  	            <label class="control-label" for="payment_info_check_number">cheque Number</label>
-  	            <input id="bill_check_number" name="payment_info[check_number]" type="text" class="form-control" >
-            	</div>
+            <div class="form-group">
+              <label class="control-label" for="payment_info_due_date">Processing Date</label>
+              <input type="date" id="vendor_due_date" name="payment_info[processing_date]" class="form-control" >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="payment_info_check_number">Payment Method</label>
+              <input id="payment_method" name="payment_info[payment_method]" type="text" class="form-control" >
+            </div>
+          	<div class="form-group">
+	            <label class="control-label" for="payment_info_check_number">Cheque Number</label>
+	            <input id="bill_check_number" name="payment_info[check_number]" type="text" class="form-control" >
+          	</div>
       	  </div>
+          <div class="col-md-3">
+              <div class="form-group">
+                <label class="control-label" for="payment_info_memo">Memo</label>
+                <textarea id="bill_memo" name="payment_info[memo]" type="textfield" class="form-control"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="payment_info_description">Description</label>
+                <textarea id="bill_description" name="payment_info[description]" type="textfield" class="form-control"></textarea>
+              </div>
+          </div>
+
     			<div class="col-md-12">
         		<a href="<%= admins_bill_pay_request_path(params[:id]) %>" class="btn btn-danger">Back</a>
             <button type="submit" class="btn btn-success create_bill" id="save_bill">Mark Bill As Paid</button>

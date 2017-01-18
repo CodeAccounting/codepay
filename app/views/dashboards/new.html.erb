@@ -1,6 +1,7 @@
 <!--body wrapper start-->
+
 <%if current_user.try(:subscription).try(:status).eql?("trialing")%>
-    <%= render "trial_notification"%>
+  <%= render "trial_notification"%>
 <%end%>
     
 <% if flash[:error] %>
@@ -16,6 +17,7 @@
 <% end %>
 
 <div class="wrapper">
+  <!-- <button type="button" ng-click='startOnboarding()'>test click</button> -->
   <%= render "overview" %>
   <div class="row">
     <div class="row">
@@ -29,3 +31,5 @@
   </div>
 </div>
 <!--body wrapper end-->
+
+<script src='http://code.jquery.com/jquery-1.9.1.min.js'></script>

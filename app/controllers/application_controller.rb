@@ -45,7 +45,16 @@ class ApplicationController < ActionController::Base
   # def check_organization_user
   #     redirect_to "/admin" unless current_user.user_organizations.present?
   # end
+
+  private
   
+  def set_qb_service(type = 'Integration')
+    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, session[:token], session[:secret])
+    @service = "Quickbooks::Service::#{type}".constantize.new
+    @service.access_token = oauth_client
+    @service.realm_id = session[:realm_id]
+  end
+
   protected
 
   def configure_permitted_parameters

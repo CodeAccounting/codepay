@@ -1,0 +1,184 @@
+<!-- somewhere in your document include the Javascript -->
+<script type="text/javascript" src="https://appcenter.intuit.com/Content/IA/intuit.ipp.anywhere.js"></script>
+
+<!-- configure the Intuit object: 'grantUrl' is a URL in your application which kicks off the flow, see below -->
+<script>
+intuit.ipp.anywhere.setup({menuProxy: '/path/to/blue-dot', grantUrl: '<%= authenticate_url %>'});
+</script>
+
+<div class="page-head">
+  <h3 class="m-b-less">
+  	Integrations
+  </h3>
+  <!-- <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li class="active"><a href="#">All Active Venders</a></li>
+      <li><a href="#">Active and Archived</a></li>
+    </ol>
+  </div> -->
+</div>
+
+<% if flash[:error] %>
+  <div class="alert alert-danger fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <%= flash[:error] %>
+  </div>
+<% elsif flash[:notice] %>
+  <div class="alert alert-success fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+      	<%if !session[:token].present? %>
+	        <header class="panel-heading "> 
+	          <ipp:connectToIntuit></ipp:connectToIntuit>
+	          <span class="tools pull-right">
+	            <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+	            <a class="t-close fa fa-times" href="javascript:;"></a>
+	          </span>
+	            <!-- <a class="btn btn-default btn-success btn-lg" href="<%#= new_vendor_path %>">
+	                <span>Create Vendor</span>
+	            </a> -->
+	        </header>
+	    <% elsif session[:token].present? && !params[:fetch].present? %>
+	    	<header class="panel-heading "> 
+	          <span class="tools pull-right">
+	            <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+	            <a class="t-close fa fa-times" href="javascript:;"></a>
+	          </span>
+	          <br/><br/>
+	          <%= link_to 'Disconnect from QuickBooks', disconnect_path, class: "btn btn-success", data: { confirm: 'Are you sure you want to disconnect?'} %> 
+	          <!-- <br/><br/> -->
+	          <a href="<%= integrations_path(fetch: 'vendors')%>" class="btn btn-success">Fetch Vendors</a>
+	          <a href="<%= integrations_path(fetch: 'bills')%>" class="btn btn-success">Fetch Bills</a>
+
+	            <!-- <a class="btn btn-default btn-success btn-lg" href="<%#= new_vendor_path %>">
+	                <span>Create Vendor</span>
+	            </a> -->
+	        </header>    
+	    <% elsif session[:token].present? && params[:fetch] == "vendors" %>
+		    <header class="panel-heading ">
+	          QuickBook's Vendors 
+	          <span class="tools pull-right">
+	            <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+	            <a class="t-close fa fa-times" href="javascript:;"></a>
+	          </span>
+	          <br/><br/>
+	          <%= link_to 'Disconnect from QuickBooks', disconnect_path, class: "btn btn-success", data: { confirm: 'Are you sure you want to disconnect?'} %> 
+	          <!-- <br/><br/> -->
+	          <a href="<%= integrations_path(fetch: 'bills')%>" class="btn btn-success">Fetch Bills</a>
+	          <!-- <button type="button" name="vendors">Fetch Vendors</button> -->
+	            <!-- <a class="btn btn-default btn-success btn-lg" href="<%#= new_vendor_path %>">
+	                <span>Create Vendor</span>
+	            </a> -->
+	        </header>
+	        <table class="table colvis-data-table data-table">
+	          <thead>
+	            <tr>
+	              <th>
+	                Vendor Name
+	              </th>
+	              <th>
+	                Account Number
+	              </th>
+	              <th>
+	                Primary Contact
+	              </th>
+	              <th>
+	              	Email
+	              </th>
+	              <!-- <th>
+	                Description
+	              </th> -->
+	              <th>
+	                Created at
+	              </th>
+	              <th>
+	                Updated at
+	              </th>
+	            </tr>
+	          </thead>
+	          <tbody>
+		        <%if @vendors.present?%>
+		         <% @vendors.each do |vendor| %>
+		          <tr>
+		            <td>
+		              <%#= link_to vendor.name, vendor_path(vendor) %>
+		              <%= vendor.display_name %>
+		            </td>
+		            <td>
+		              <%= vendor.try(:account_number) %>
+		            </td>
+		            <td>
+		              <%= vendor.primary_phone.try(:free_form_number) %>
+		            </td>
+		            <td>
+		            	<%= vendor.primary_email_address.try(:address)%>
+		            </td>
+		            <!-- <td> -->
+		              <%#= vendor.try(:description) %>
+		            <!-- </td> -->
+		            <td>
+		              <%= vendor.meta_data.create_time.strftime("%d %B %Y") %>
+		            </td>
+		            <td>
+		              <%= vendor.meta_data.last_updated_time.strftime("%d %B %Y") %>
+		            </td>
+		          </tr>
+		         <% end %>
+		        <% end %>
+	          </tbody>
+	        </table>
+	    <% elsif session[:token].present? && params[:fetch] == "bills" %>
+		    <header class="panel-heading ">
+	          QuickBook's Bills 
+	          <span class="tools pull-right">
+	            <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+	            <a class="t-close fa fa-times" href="javascript:;"></a>
+	          </span>
+	          <br/><br/>
+	          <%= link_to 'Disconnect from QuickBooks', disconnect_path, class: "btn btn-success", data: { confirm: 'Are you sure you want to disconnect?'} %> 
+	          <!-- <br/><br/> -->
+	          <a href="<%= integrations_path(fetch: 'vendors')%>" class="btn btn-success">Fetch Vendors</a>
+	          <!-- <button type="button" name="vendors">Fetch Vendors</button> -->
+	            <!-- <a class="btn btn-default btn-success btn-lg" href="<%#= new_vendor_path %>">
+	                <span>Create Vendor</span>
+	            </a> -->
+	        </header>
+	      	<table class="table colvis-data-table data-table">
+	      	  <thead>
+	      	    <tr>
+	      	      <th>Vendor Name</th>
+	      	      <th>Doc Number</th>
+	      	      <th>Bill Date</th>
+	      	      <th>Due Date</th>
+	      	      <th>Due Amount</th>
+	      	      <th>Transaction Date</th>
+	      	      <th>Bill Email</th>
+	      	    </tr>
+	      	  </thead>
+	      	  <tbody>
+		        <% @bills.each do |bill| %>
+		          <tr>
+		            <td><%= bill.vendor_ref.try(:name) %> </td>
+		            <td><%= bill.try(:doc_number) %> </td>
+		            <td><%= bill.meta_data.try(:create_time).strftime("%d %B %Y") %> </td>
+		            <td><%= bill.due_date.strftime("%d %B %Y") %> </td>
+		            <td><%= bill.total %> </td>
+		            <td><%= bill.try(:txn_date).strftime("%d %B %Y") %> </td>
+		            <td><%= bill.try(:bill_email) %> </td>
+		          </tr>
+		        <% end %>
+		      </tbody>
+		    </table>
+	    <% end %>    
+      </section>
+    </div>
+  </div>
+</div>

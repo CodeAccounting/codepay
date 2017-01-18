@@ -41,7 +41,28 @@ class BillsController < ApplicationController
     render :new
   end
 
-  def edit
+  def edit  
+      if @bill.approvals.present? 
+      # @bill = current_organization.bills.find(params[:id])
+        if @bill.status_check != "Pending"
+          @locations = current_user.created_locations
+          @terms = current_user.created_terms
+          @departments = current_user.created_departments
+          @items = current_user.created_items.where(item_of: "Bill")
+          @taxs = current_user.created_taxs.where(tax_of: "Bill")
+          @chart_of_accounts = current_user.created_chart_of_accounts
+        else
+          flash[:errors] = ["You can't edit this bill yet, As bill has been sent for approval"]
+          redirect_to :back
+        end  
+      else
+        @locations = current_user.created_locations
+        @terms = current_user.created_terms
+        @departments = current_user.created_departments
+        @items = current_user.created_items.where(item_of: "Bill")
+        @taxs = current_user.created_taxs.where(tax_of: "Bill")
+        @chart_of_accounts = current_user.created_chart_of_accounts
+      end  
   end
 
   def create
@@ -69,12 +90,11 @@ class BillsController < ApplicationController
   end
 
   def update
-    if @bill.update(invoice_params)
-      redirect_to @bill
-    else
-      flash.now[:errors] = @bill.errors.full_messages
-      render :edit
-    end
+      if @bill.update_attributes(bill_params)
+         redirect_to bill_path(@bill) 
+      else
+       flash[:errors] = @bill.errors.full_messages
+      end  
   end
 
   def bill_preview
@@ -92,6 +112,25 @@ class BillsController < ApplicationController
       respond_to do |format|
       format.pdf { render pdf: "bill_preview", layout: 'pdf.html.erb'}
       end
+  end
+
+  def bill_show
+    @approval = Approval.find_by(id: params[:approval_id], approvable_id: params[:id])
+    if @approval.present? && @approval.status == "Cancelled"
+      @bill = current_organization.bills.find(params[:id])
+    else
+      redirect_to new_dashboard_path
+    end  
+  end
+
+  def approval_request_again
+      approval = Approval.find(params[:id])
+      if approval.status == "Cancelled" && approval.assigner == current_user
+         approval.update_attributes(status: "Pending")
+         redirect_to new_dashboard_path
+      else
+         redirect_to new_dashboard_path
+      end   
   end
 
   private
@@ -124,7 +163,8 @@ class BillsController < ApplicationController
                                   :price,
                                   :location_id,
                                   :tax_id,
-                                  :amount]
+                                  :amount,
+                                  :_destroy]
         )
     end
 end

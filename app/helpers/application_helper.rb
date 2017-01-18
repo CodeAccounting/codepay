@@ -8,5 +8,17 @@ module ApplicationHelper
 
   def title(page_title)
 	  content_for :title, page_title.to_s
-	end
+  end
+
+  def tour_display?
+    # if sign_in_count == 1
+       if session[:tour_displayed].present?
+          true
+       else
+          session[:tour_displayed] = true
+          false
+       end 
+    # end  
+  end
+  
 end

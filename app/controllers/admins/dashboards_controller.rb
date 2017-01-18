@@ -2,6 +2,7 @@ class Admins::DashboardsController < Admins::ApplicationController
 
   def index
   	@bills = Bill.where(paid: nil)
+    @news = News.all
   end
 
   def create

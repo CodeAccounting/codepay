@@ -4,6 +4,7 @@ class OrganizationsController < ApplicationController
   before_filter :get_organization, only: [:edit, :show, :update]
 
   def index
+    @organizations = current_user.all_organizations
   	@users = current_organization.all_organization_users
   end
 

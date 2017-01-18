@@ -27,10 +27,14 @@
         <form id="bill-form" action=" bill_reminders_path " method="post">
           <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
           <header class="panel-heading ">
-          <!--   <button id="reminder" type="submit" class="btn btn-default btn-success btn-lg">SEND REMINDERS</button> -->
+            <!--   <button id="reminder" type="submit" class="btn btn-default btn-success btn-lg">SEND REMINDERS</button> -->
             <a class="btn btn-default btn-success btn-lg" href="<%= new_bill_path %>">
                 <span>Create Bill</span>
             </a>
+            <a class="btn btn-default btn-success btn-lg" href="<%= repeating_payments_path %>">
+                <span>Repeating Payments</span>
+            </a>
+
             <span class="tools pull-right">
               <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
               <a class="t-close fa fa-times" href="javascript:;"></a>
@@ -39,9 +43,9 @@
             <br/><br/>
             <div class="DTTT btn-group">
               <% if current_user.created_bills or current_user.vendor %>
-              <button id="copy" type="submit" class="btn btn-default DTTT_button_copy">
-              <span>COPY</span>
-              </button>
+                <button id="copy" type="submit" class="btn btn-default DTTT_button_copy">
+                  <span>COPY</span>
+                </button>
               <% end %>
               <a class="btn btn-default DTTT_button_csv" tabindex="0" href="<%= bills_path(format: :csv) %>" aria-controls="DataTables_Table_0">
                 <span>CSV</span>

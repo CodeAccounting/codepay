@@ -1,5 +1,68 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<style type="text/css">
+  
+  .drop-box 
+  {
+    background: #F8F8F8;
+    background-color: #eeeeee;
+    border: 1px solid #dfdfdf;
+    padding-top: 5px;
+    margin-top: -5px;
+    /*height: 250px;*/
+    height: 315px;
+    overflow-y: scroll;
+    min-height: 100px;
+    max-height: 315px;
+    max-width: 275px;  
+  }
+
+  #style-2::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #c3bebe;
+}
+
+.notes
+  {
+    float: left;
+    border: 1px solid #beb9b9;
+    width: 95%;
+    margin-left: 7px;
+    background-color: white;
+    /*margin-left:70px;*/
+    margin-bottom: 3px;
+    height:auto; 
+    word-wrap:break-word; // Text justification
+    overflow:hidden;
+    padding:5px;
+    display:block;
+    font-family:'Georgia', Times New Roman, Times, serif
+  }
+.add_more_p{
+  margin-bottom:6px;
+  color: #1b84cd; 
+  cursor: pointer;
+}
+
+
+</style>
+
 <!-- page head start-->
-<%if params[:format] == "Bill"%>
+<%if @approval.approvable_type == "Bill"%>
   <div class="page-head">
     <h3 class="m-b-less">
     Bill Information
@@ -17,17 +80,17 @@
         </div>
       <% end %>
       <header class="panel-heading head-border">
-        Showing A Vendor Bill
+        Showing Bill Detail
       </header>
       <div class="panel-body">
         <div class="row toastr-row">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="form-group">
               <label class="control-label" for="bill_vendor_name">Vendor Name </label>
               <input data-vendors id="vendor_name" type="text" class="form-control"  placeholder="Vendor Name" value="<%= @bill_info.vendor.name %>" readonly>
             </div>
             <div class="form-group">
-              <label class="control-label" for="bill_number">Bill #</label>
+              <label class="control-label" for="bill_number">Bill Number</label>
               <input id="bill_number" name="bill[bill_number]" type="text" class="form-control" value="<%= @bill_info.bill_number %>" readonly >
             </div>
             <div class="form-group">
@@ -43,7 +106,7 @@
               <input id="bill_amount_due" name="bill[due_amount]" type="number" class="form-control" placeholder="1000" value="<%= @bill_info.due_amount %>" readonly >
             </div>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-3">
             <div class="form-group" id="toastTypeGroup">
               <label>Location</label>
               <select class="form-control input-small addressRef" disabled>
@@ -62,17 +125,41 @@
                 <option><%= @bill_info.department.try(:name) %></option>
               </select>
             </div>
-          </div>
-          <div class="col-md-3">
             <div class="form-group">
-              <label class="control-label" for="bill_message">Vendor Message</label>
+              <label class="control-label" for="bill_message">Message</label>
               <textarea id="bill_message" name="bill[message]" rows="3" class="form-control" readonly ><%= @bill_info.message %></textarea>
             </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group" ng-app="approverApp" ng-controller="approverCtrl">
+              <label class="control-label" for="Approvers">Approvers</label>
+              <div class="drop-box" id="style-2" >
+                <div class="notes">
+
+                  <p id="add_more" class="add_more_p" ng-click="toggle()" ng-style="textcolor" ng-mouseenter="changeColor(true)" ng-mouseleave="changeColor(false)"> +Add More.</p>
+                  <div ng-hide="hidden">
+                    <div>
+                      <select name="assigned_to_ids[]" class="form-control input-small" id="approvars" multiple="multiple" data-placeholder="Select approvers...">
+                      </select>
+                    </div>
+                    <button id="assign_approver_btn" type="button" class="btn btn-success" ng-click="done_btn_click()"  style="margin-top:6px" disabled>Assign Approval</button>
+                  </div>
+                </div>
+                <div class="notes" ng-repeat="approval in approvals">
+                  <label style="width:10%;float:left; margin-bottom:0;">{{$index + 1}}</label>
+                
+                  <label style="width:55%;float:left;margin-bottom:0;">{{approval.assignee.first_name + " " + approval.assignee.last_name }}</label>
+
+                  <label style="width:35%;float:right;margin-bottom:0;text-align:right">{{approval.status}}</label>
+                  <label style="float:right;margin-bottom:0;">{{approval.created_at | date:"MM/dd/yyyy h:mma"}}</label>
+                </div>
+              </div>
+            </div>  
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <%= link_to 'Back', approvals_path, class: 'btn btn-success' %>
+            <%= link_to 'Back', approvals_path, class: 'btn btn-danger' %>
             <%= link_to 'Approve', approval_path(@approval, :apparoval => "Approved"), :method=> :patch, class: 'btn btn-success'  %>
             <%= link_to 'Cancel', approval_path(@approval, :apparoval => "Cancelled"), :method=> :patch, class: 'btn btn-success'  %>
           </div>
@@ -84,7 +171,7 @@
 <!--body wrapper end-->
 <%end%>
 
-<%if params[:format] == "Invoice"%>
+<%if @approval.approvable_type == "Invoice"%>
   <!-- page head start-->
 <div class="page-head">
   <h3 class="m-b-less">
@@ -108,19 +195,19 @@
           <div class="col-md-4">
             <div class="form-group">
               <label class="control-label" for="invoice_customer_name">Customer Name </label>
-              <input data-customers id="customer_name" type="text" class="form-control"  placeholder="Customer Name" value="<%= @invoice.customer.name %>" readonly>
+              <input data-customers id="customer_name" type="text" class="form-control"  placeholder="Customer Name" value="<%#= @invoice.customer.name %>" readonly>
             </div>
             <div class="form-group">
-              <label class="control-label" for="invoice_number">Invoice #</label>
-              <input id="invoice_number" name="invoice[invoice_number]" type="text" class="form-control" value="<%= @invoice.invoice_number %>" readonly >
+              <label class="control-label" for="invoice_number">Invoice Number</label>
+              <input id="invoice_number" name="invoice[invoice_number]" type="text" class="form-control" value="<%#= @invoice.invoice_number %>" readonly >
             </div>
             <div class="form-group">
               <label class="control-label" for="invoice_invoice_date">Record Date</label>
-              <input id="invoice_record_date" name="invoice[invoice_date]" class="form-control" value="<%= @invoice.invoice_date.strftime("%d-%B-%Y") %>" readonly >
+              <input id="invoice_record_date" name="invoice[invoice_date]" class="form-control" value="<%#= @invoice.invoice_date.strftime("%d-%B-%Y") %>" readonly >
             </div>
             <div class="form-group">
               <label class="control-label" for="invoice_due_date">Due Date</label>
-              <input id="invoice_due_date" name="invoice[due_date]" class="form-control" value="<%= @invoice.due_date.strftime("%d-%B-%Y") %>" readonly >
+              <input id="invoice_due_date" name="invoice[due_date]" class="form-control" value="<%#= @invoice.due_date.strftime("%d-%B-%Y") %>" readonly >
             </div>
             <div class="form-group">
               <label class="control-label" for="invoice_amount_due">Total Amount Due</label>
@@ -131,42 +218,42 @@
             <div class="form-group" id="toastTypeGroup">
               <label>Location</label>
               <select class="form-control input-small addressRef" disabled>
-                <option><%= @invoice.location.try(:name)  %></option>
+                <option><%#= @invoice.location.try(:name)  %></option>
               </select>
             </div>
             <div class="form-group">
               <label class="control-label" for="hideEasing">Terms</label>
               <select class="form-control input-small addressRef" disabled>
-                <option><%= @invoice.payment_term.try(:name) %></option>
+                <option><%#= @invoice.payment_term.try(:name) %></option>
               </select>
             </div>
             <div class="form-group" id="positionGroup">
               <label>Department</label>
               <select class="form-control input-small addressRef" disabled>
-                <option><%= @invoice.department.try(:name) %></option>
+                <option><%#= @invoice.department.try(:name) %></option>
               </select>
             </div>
             <div class="form-group" id="positionGroup">
               <label>Status</label>
-              <%if @invoice.received == false %>
+              <%#if @invoice.received == false %>
                 <input id="invoice_amount_due" name="invoice[status]" type="text" class="form-control" value="UNPAID" readonly >
-              <%else%>
+              <%#else%>
                 <input id="invoice_amount_due" name="invoice[status]" type="text" class="form-control" value="PAID" readonly >
-              <%end%>    
+              <%#end%>    
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label class="control-label" for="invoice_message">Customer Message</label>
-              <textarea id="invoice_message" name="invoice[message]" rows="3" class="form-control" readonly ><%= @invoice.try(:message) %></textarea>
+              <textarea id="invoice_message" name="invoice[message]" rows="3" class="form-control" readonly ><%#= @invoice.try(:message) %></textarea>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <%= link_to 'Back', approvals_path, class: 'btn btn-success' %>
-            <%= link_to 'Approve', approval_path(@approval, :apparoval => "Approved"), :method=> :patch, class: 'btn btn-success'  %>
-            <%= link_to 'Cancel', approval_path(@approval, :apparoval => "Cancelled"), :method=> :patch, class: 'btn btn-success'  %>
+            <%#= link_to 'Back', approvals_path, class: 'btn btn-danger' %>
+            <%#= link_to 'Approve', approval_path(@approval, :apparoval => "Approved"), :method=> :patch, class: 'btn btn-success'  %>
+            <%#= link_to 'Cancel', approval_path(@approval, :apparoval => "Cancelled"), :method=> :patch, class: 'btn btn-success'  %>
           </div>
         </div>
       </div>
@@ -174,4 +261,164 @@
   </div>    
   <!-- page end-->
 <!--body wrapper end-->
+<%end%>
+<%content_for :angular_scripts do %>
+  <script type="text/javascript">
+    
+    var app = angular.module('approverApp', []);
+
+    app.factory('approvals', function($http){
+        return {
+          list: function(callback){
+            $http.get('/approvals/bill_approver_list_by_ajax?id=<%=@approval.approvable_id%>&type=<%=@approval.approvable_type%>').success(callback);
+          }
+        };
+      });
+
+    app.controller('approverCtrl', function($scope,$http,approvals) {
+
+      // $scope.note_text = "";
+      // $scope.my_var = true;
+      $scope.hidden = true;
+      // $scope.disabled = true;
+      approvals.list(function(approvals) {
+          $scope.approvals = approvals;
+      });
+
+      // $scope.disable_btn = function(){
+        // $('#approvars').on("change", function(e) { 
+        //   debugger;
+        //    if ($('#approvars').select2('val') != null){
+        //     $scope.disabled = !$scope.disabled;
+        //     debugger;
+        //    }
+        //    else {
+        //     $scope.disabled = !$scope.disabled;
+        //    }
+        // });
+      // }
+      $('#approvars').on("change", function(e) { 
+         btn = $('#assign_approver_btn');
+           if ($('#approvars').select2('val') != null){
+            // $scope.disabled = !$scope.disabled; 
+            if (btn.attr('disabled') != undefined ){
+                btn.prop('disabled', false);
+              }
+          }
+           else {
+              if (btn.attr('disabled') == undefined ){
+                btn.prop('disabled', true);
+              }
+            // $scope.disabled = !$scope.disabled;
+           }
+        });
+
+      $scope.toggle = function() {
+        $scope.hidden = !$scope.hidden;
+      };
+
+      $scope.changeColor = function(bool) {
+        if(bool === true) {
+        $scope.textcolor = {color: '#15c924'};
+        } else if (bool === false) {
+        $scope.textcolor = {color: '#1b84cd'}; //or, whatever the original color is
+        }
+      };
+
+      $scope.done_btn_click = function() {
+        var approvar_ids = $('#approvars').select2("val")
+          if (approvar_ids.length > 0){
+            $http({
+                  url: "/approvals/approvers_select2_ajax.json",
+                  method: 'get',
+                  params: {
+                        "approver_ids[]" : approvar_ids,
+                        approvable_id : <%=@approval.approvable_id%>,
+                        approvable_type : "<%=@approval.approvable_type%>"
+                  }
+              }).then(function(response) {
+                  angular.forEach(response.data, function(object) {
+                     $scope.approvals.push(object);
+                  });
+                  $("#approvars").find('option').remove();
+                  if ($("#assign_approver_btn").attr('disabled') == undefined){
+                      $("#assign_approver_btn").prop('disabled', true);
+                  }
+                  else{
+                      $("#assign_approver_btn").prop('disabled', false); 
+                  }
+                  $scope.hidden = !$scope.hidden;
+              }, function(response) {
+                  console.log("Error message");   
+              });
+          }
+      };
+
+      // $('#approvars').select2();
+
+      $('#approvars').select2({
+          multiple:true,
+          ajax: {
+              type: "GET",
+              url: "/approvals/approvers_select2_ajax.json",
+              dataType: 'json',
+              contentType: "application/json",
+              delay: 250,
+              data: function (params) {
+                  return{
+                      term: params.term,
+                      id: <%=@approval.approvable_id%>,
+                      type: "<%=@approval.approvable_type%>"
+                    };
+              },
+              processResults: function (data) {
+                  return {
+                    results: $.map(data, function (item, i) {
+                      return {
+                          text: item.first_name + item.last_name,
+                          id: item.id
+                      }
+                    })
+                  };
+              }
+          },
+      });
+    });
+  </script>
+<%end%>
+
+<% content_for :scripts do %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+  <script type="text/javascript">
+    
+    // $('#approvars').select2();
+
+    // $(".associate_orders").select2({
+    //     minimumInputLength: 1,
+    //     multiple:true,
+    //     ajax: {
+    //         type: "GET",
+    //         url: "/orders/associate_orders_with_ajax.json",
+    //         dataType: 'json',
+    //         contentType: "application/json",
+    //         delay: 250,
+    //         data: function (params) {
+    //             return{
+    //                 term: params.term,
+    //                 prcsr_id:get_purchaser_id()
+    //               };
+    //         },
+    //         processResults: function (data) {
+    //             return {
+    //                 results: $.map(data, function (item, i) {
+    //                     return {
+    //                         text: item.number,
+    //                         id: item.id
+    //                     }
+    //                 })
+    //             };
+    //         }
+    //     },
+    // });
+  </script>
 <%end%>

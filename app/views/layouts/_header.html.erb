@@ -1,5 +1,5 @@
-<!-- header section start-->
-<div class="header-section">
+<!-- header section start  -->
+<div class="header-section" style="z-index:99;">
   <!--logo and logo icon start-->
   <div class="logo dark-logo-bg hidden-xs hidden-sm">
     <%= image_tag("landing/logo.png") %>
@@ -12,22 +12,22 @@
   </div>
   <!--logo and logo icon end-->
   <!--toggle button start-->
-  <a class="toggle-btn"><i class="fa fa-outdent"></i></a>
+  <a class=" step3 toggle-btn"><i class="fa fa-outdent"></i></a>
   <!--toggle button end-->
   <div class="notification-wrap">
     <!--left notification start-->
     <div class="left-notification">
       <ul class="notification-menu">
         <li>
-          <form class="search-content" action="<%= search_path %>" method="get">
-            <input type="text" class="form-control" name="keywords" placeholder="Search..." value="<%= params[:keywords] %>">
+          <form class=" search-content" action="<%= search_path %>" method="get">
+            <input type="text" class=" step2 form-control" name="keywords" placeholder="Search..." value="<%= params[:keywords] %>">
           </form>
         </li>
       </ul>
     </div>
     <!--left notification end-->
     <!--right notification start-->
-    <div class="right-notification">
+    <div class="step1 right-notification">
       <ul class="notification-menu">
         <li>
           <!-- <li class="dropdown">
@@ -59,109 +59,116 @@
           <ul class="dropdown-menu mega-dropdown-menu row pull-right">
             <h3 class="dropdown" style="margin:0; margin-bottom:-3%; min-width:30px">
               
-              <a href="javascript:;" style="margin-left:1%;" >
+              <a href="javascript:;" class="user-name" style="margin-left:2%;padding:0;float:left" >
               <%= current_user.full_name.capitalize %>
               </a>
-
-              <a class="org_hover" href="javascript:;" style="float:right; margin-right:7%;" ><span><%= current_organization.name %></span>
-              </a>
+              <div style="float:right; padding:0; margin-right:2%;">
+                <a class="org_hover" style="padding:0;" href="javascript:;" ><span><%= current_organization.name %></span>
+                </a>
+                <img src="<%= current_organization.attachment.present? ? current_organization.attachment.attachment.url : '' %>" height="40" width="55">
+              </div>
 
               <!-- <ul class="dropdown-menu sub-menu pull-left">
-                  <% current_user.all_organizations.where("organizations.id is not ?",nil).uniq.each do |org| %>
+                  <%# current_user.all_organizations.where("organizations.id is not ?",nil).uniq.each do |org| %>
                     <li>
-                      <a href="/users/<%= org.id %>/change_user_organization" >
-                      <a href="<%= change_organization_path(org) %>" >
-                        <% if current_user.current_organization_id == org.id %>
+                      <a href="/users/<%#= org.id %>/change_user_organization" >
+                      <a href="<%#= change_organization_path(org) %>" >
+                        <%# if current_user.current_organization_id == org.id %>
                           <i class="fa fa-check pull-right"></i>
-                        <% end %>
-                        <%= org.name %>
+                        <%# end %>
+                        <%#= org.name %>
                       </a>
                       </li>
-                  <% end %>
+                  <%# end %>
                 </ul> -->
             </h3>
 
-            <li class="col-sm-3 pull-right" >
+            <li class="col-sm-3 pull-right" style="text-align: right;padding: 0;width: 27%;">
               <ul>
                 <li class="dropdown-header">Organization</li>
                 <li>
-                  <a href="<%= new_organization_path %>" >
-                  <span>Add New</span>
+                  <a href="<%= bank_accounts_path %>" >
+                    <span>Payment Accounts</span>
                   </a>
                 </li>
                 <li>
                   <a id="org_change" href="javascript:;" >
-                  <span>Change Organization</span>
+                    <span>Change Organization</span>
                   </a>
                 </li>
                 <li>
-                  <a href="<%= organizations_path %>" >
-                  <span>Manage Organization</span>
+                  <a href="<%= organization_path(current_organization) %>" >
+                    <span>Manage Organization</span>
                   </a>
                 </li>
-                <li style="display: block; margin-top:10px;">
+                <li style="margin-bottom:2%;">
                   <a data-logout href="#">
-                  <i class="fa fa-sign-out"></i> Log Out
+                    <i class="fa fa-sign-out"></i> Log Out
                   </a>
                 </li>
               </ul>
             </li>
-            <li class="col-sm-3 pull-right">
+            <li class="col-sm-3 pull-right" style="padding: 0;width: 17%;">
               <ul>
                 <li class="dropdown-header">Tools</li>
                 <li>
                   <a href="<%= support_index_path%>">
-                  <span>Help</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="<%= audits_path%>">
-                  <span>Audit Logs</span>
+                    <span>Help</span>
                   </a>
                 </li>
                 <li>
                   <a href="javascript:;" onclick="show_hide_calc();">
-                  <span>Calculator</span>
+                    <span>Calculator</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="<%= integrations_path%>">
+                    <span>Integrations</span>
                   </a>
                 </li>
               </ul>
             </li>
-            <li class="col-sm-3 pull-right" style="float:right;">
+            <li class="col-sm-3 pull-right" style="float:right;padding: 0;width: 26%;">
               <ul>
                 <li class="dropdown-header">Lists</li>
+                <!-- <li> -->
+                  <!-- <a href="<%#= attachments_path %>" > -->
+                    <!-- <span>Attachments</span>
+                  </a> -->
+                <!-- </li> -->
                 <li>
-                  <a href="<%= attachments_path %>" >
-                  <span>Attachments</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="<%= chart_of_accounts_path %>" >
-                  <span>Chart Of Accounts</span>
+                  <a href="<%= audits_path%>">
+                    <span>History</span>
                   </a>
                 </li>
                 <li>
                   <a href="<%= items_path %>" >
-                  <span>Bill Items</span>
+                    <span>Bill Items</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="<%= chart_of_accounts_path %>" >
+                    <span>Chart Of Accounts</span>
                   </a>
                 </li>
               </ul>
             </li>
-            <li class="col-sm-3 pull-right" style="float:right;">
+            <li class="col-sm-3 pull-right" style="float:right;width: 30%;padding: 0;">
               <ul>
                 <li class="dropdown-header">User</li>
                 <li>
                   <a href="<%= edit_profile_path(current_user) %>" >
-                  <span>Profile</span>
+                    <span>Profile</span>
                   </a>
                 </li>
                 <li>
                   <a href="<%= organization_users_path %>" >
-                  <span>Organization Users</span>
+                    <span>Organization Users</span>
                   </a>
                 </li>
                 <li>
                   <a href="<%= new_subscription_path %>" >
-                  <span>Billing and Subscription</span>
+                    <span>Billing and Subscription</span>
                   </a>
                 </li>
               </ul>
@@ -172,79 +179,79 @@
               <li class="dropdown dropdown-submenu">
                 <a href="javascript:;">
                   <i class="fa fa-certificate pull-right"></i>
-                  <%= current_organization.name %>
+                  <%#= current_organization.name %>
                 </a> -->
 
                 <!-- <ul class="dropdown-menu sub-menu pull-left">
-                  <% current_user.all_organizations.where("organizations.id is not ?",nil).uniq.each do |org| %>
+                  <%# current_user.all_organizations.where("organizations.id is not ?",nil).uniq.each do |org| %>
                     <li> -->
-                      <!-- <a href="/users/<%= org.id %>/change_user_organization" > -->
-            <!--           <a href="<%= change_organization_path(org) %>" >
-                        <% if current_user.current_organization_id == org.id %>
+                      <!-- <a href="/users/<%#= org.id %>/change_user_organization" > -->
+            <!--           <a href="<%#= change_organization_path(org) %>" >
+                        <%# if current_user.current_organization_id == org.id %>
                           <i class="fa fa-check pull-right"></i>
-                        <% end %>
-                        <%= org.name %>
+                        <%# end %>
+                        <%#= org.name %>
                       </a>
                       </li>
-                  <% end %>
+                  <%# end %>
                 </ul>
               </li>
           
             <li>
-              <%= link_to user_path(current_user) do %>
+              <%#= link_to user_path(current_user) do %>
                 <i class="fa fa-user pull-right"></i> Profile
-              <% end %>
+              <%# end %>
             <li class="dropdown dropdown-submenu">
-              <a href="<%= edit_profile_path(current_user) %>">
+              <a href="<%#= edit_profile_path(current_user) %>">
                 <i class="fa fa-wrench pull-right"></i>
                 <span>Settings</span>
               </a>
 
                 <ul class="dropdown-menu sub-menu pull-left">
                     <li>
-                      <a href="<%= edit_profile_path(current_user) %>" >
+                      <a href="<%#= edit_profile_path(current_user) %>" >
                       <span>User Profile</span>
                       </a>
                     </li>
                     <li>
-                      <a href="<%= new_organization_path %>" >
+                      <a href="<%#= new_organization_path %>" >
                       <span>Create New Organization</span>
                       </a>
                     </li>
                     <li>
-                      <a href="<%= organization_users_path %>" >
+                      <a href="<%#= organization_users_path %>" >
                       <span>Manage Organization Users</span>
                       </a>
                     </li>
                     <li>
-                      <a href="<%= organizations_path %>" >
+                      <a href="<%#= organizations_path %>" >
                       <span>Manage Organization</span>
                       </a>
                     </li>
                     <li>
-                      <a href="<%= chart_of_accounts_path %>" >
+                      <a href="<%#= chart_of_accounts_path %>" >
                       <span>Chart Of Accounts</span>
                       </a>
                     </li>
                     <li>
-                      <a href="<%= items_path %>" >
+                      <a href="<%#= items_path %>" >
                       <span>Invoice & Bill Items</span>
                       </a>
                     </li>
                     <li>
-                      <a href="<%= attachments_path %>" >
+                      <a href="<%#= attachments_path %>" >
                       <span>Attachments</span>
                       </a>
                     </li
                     <li>
-                      <a href="<%= new_subscription_path %>" >
+                      <a href="<%#= new_subscription_path %>" >
                       <span>Billing and Subscription</span>
                       </a>
                     </li>
                 </ul>
             </li>
             <li>
-              <a href="<%= support_index_path%>">
+              <a href="<%#= support_index_path%>">
                 <span class="fa fa-life-ring pull-right"></span>
                 Help
               </a>
@@ -305,7 +312,7 @@
 
 .mega-dropdown-menu {
   padding: 20px 0px;
-  width: 700%;
+  width: 500%;
   box-shadow: none;
   -webkit-box-shadow: none;
 }
@@ -335,6 +342,12 @@
 .mega-dropdown-menu > li > ul {
   padding: 0;
   margin: 0;
+}
+
+.mega-dropdown-menu > h3 {
+  float:right;
+  margin: 0;
+  width: 100%;
 }
 
 .mega-dropdown-menu > li {
@@ -388,6 +401,9 @@
 .right-notification .notification-menu li a i{
   position:inherit;
 }
+.user-name{
+
+}
 </style>
 
 <!-- <script type="text/javascript">
@@ -399,4 +415,4 @@
   function hide_org_submenu(){
     $(".sub-menu").css("visibility","hidden");
   }
-</script> -->
+</script>

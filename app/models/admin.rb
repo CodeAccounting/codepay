@@ -8,5 +8,9 @@ class Admin < ActiveRecord::Base
     def has_current_role?(admin_role)
     	role == admin_role.to_s
          # Admin.find_by(id: id, role: role.to_s).present?
+    end
+
+    def full_name
+       self.first_name + " " + self.last_name  	
     end      
 end

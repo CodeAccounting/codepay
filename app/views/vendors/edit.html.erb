@@ -9,7 +9,7 @@
 <div class="wrapper">
   <!-- page start-->
   <div class="panel">
-    <!-- <a target="_blank" href= "<%= invoice_path(format: :pdf) %>"" class ="btn btn-default btn-success btn-lg"> DOWNLOAD PDF</a> -->
+    <!-- <a target="_blank" href= "<%#= invoice_path(format: :pdf) %>"" class ="btn btn-default btn-success btn-lg"> DOWNLOAD PDF</a> -->
      
     <% if flash[:errors] %>
     <div class="alert alert-danger">
@@ -109,6 +109,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
+            <%= link_to 'Back', :back, class: 'btn btn-danger btn' %>
             <button type="submit" class="btn btn-success">Save</button>
             <button type="button" class="btn btn-danger">Clear Entries</button>
           </div>

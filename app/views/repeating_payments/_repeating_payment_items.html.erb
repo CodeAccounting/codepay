@@ -1,0 +1,89 @@
+<table class="table" style="margin: 2%">
+  <thead>
+    <tr>
+      <th style="width:25%;">Account</th>
+      <th style="width:25%;">Amount</th>
+      <th style="width:30%">Description</th>
+      <th style="width:10%"></th>
+      <th style="width:10%"></th>
+    </tr>
+  </thead>
+  <tbody id="mytbody">
+  <%if @repeating_payment.repeating_payment_items.present?%>
+    <% index = 0%>
+    <% @repeating_payment.repeating_payment_items.each do |repeating_payment_item|%>
+      <tr class="tr_clone">
+        <td style="width: 15%">
+          <div class="form-group">
+            <input type="hidden" id="hidden_repeating_payment_item_id" class="hidden_r_item_id" name="repeating_payment[repeating_payment_items_attributes[<%=index%>][id]]" value="<%= repeating_payment_item.id%>">
+            <select id="repeating_payment_account_<%=index%>" name="repeating_payment[repeating_payment_items_attributes[<%=index%>][account]]" class="item_selection form-control input-small" style="width:60%">
+              <option value="<%= repeating_payment_item.account %>" selected="selected"><%= repeating_payment_item.try(:account) %></option>
+              <!-- <option value="NEW">Add New...</option> -->
+              <%# @items.each do |item| %>
+                <!-- <option value="<%#= item.id%>"><%#= item.name%></option> -->
+              <%#end%>
+            </select>
+          </div>
+        </td>
+        <td style="width: 15%">
+          <input id="repeating_payment_amount_<%=index%>" class="repeating_payment_amount form-control input-small" style="width:40%" type="number" min="0.01" step="0.01" value="<%= repeating_payment_item.try(:amount) %>"></input>
+          <input type="hidden" id="hiden_item_amount_<%=index%>" class="hidden_item_amount" name="repeating_payment[repeating_payment_items_attributes[<%=index%>][amount]]" value="<%= repeating_payment_item.try(:amount) %>">
+        </td>
+        <td class="bill-item-quantity" style="width: 20%">
+          <div class="form-group" id="positionGroup">
+            <input id="repeating_payment_description_<%=index%>" name="repeating_payment[repeating_payment_items_attributes[<%=index%>][description]]" class="form-control input-small" type="text" style="width:80%;" value="<%= repeating_payment_item.try(:description) %>"></div>
+          </div>
+        </td>
+        <td></td>
+        <td> <button type='button' class='btn btn-primary tr_clone_remove'><span class='glyphicon glyphicon-trash'></span></button></td>
+        <input id="hidden_rp_item_destroy_<%=index%>" class="hidden-destroy" type="hidden" name="repeating_payment[repeating_payment_items_attributes[<%=index%>][_destroy]]" value="false"/>
+      </tr>
+      <% if index == 0%>
+        <% index = Time.now.to_i%>
+      <%else%>
+        <% index = index+1 %>
+      <%end%>
+    <%end%>    
+  <%else%>
+    <tr class="tr_clone">
+      <td style="width: 15%">
+        <div class="form-group">
+          <select id="repeating_payment_account_0" name="repeating_payment[repeating_payment_items_attributes[0][account]]" class="item_selection form-control input-small" style="width:60%">
+            <option></option>
+            <!-- <option value="NEW">Add New...</option> -->
+            <%# @items.each do |item| %>
+              <!-- <option value="<%#= item.id%>"><%#= item.name%></option> -->
+            <%#end%>
+          </select>
+        </div>
+      </td>
+      <td style="width: 15%">
+        <input id="repeating_payment_amount_0" class="repeating_payment_amount form-control input-small" style="width:40%" type="number" min="0.01" step="0.01"></input>
+        <input type="hidden" id="hiden_item_amount_0" class="hidden_item_amount" name="repeating_payment[repeating_payment_items_attributes[0][amount]]">
+      </td>
+      <td class="bill-item-quantity" style="width: 20%">
+        <div class="form-group" id="positionGroup">
+          <input id="repeating_payment_description_0" name="repeating_payment[repeating_payment_items_attributes[0][description]]" class="form-control input-small" type="text" style="width:80%;"></div>
+        </div>
+      </td>
+      <td></td>
+    </tr>
+  <%end%>
+
+    <div class="cloned_area"> </div>
+    <tr id="insertRowBefore">
+      <td><button type="button" class="btn btn-primary" id="tr_clone_add"><span class="glyphicon glyphicon-plus"></span> Add more items</button> </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td style="text-align:right;">Subtotal:</td>
+      <td> 
+          <b id='subtotal'>$0.0</b> 
+          <input type="hidden" id="hiden_subtotal" name="repeating_payment[total_amount]">
+      </td>
+      <td>
+      </td>
+    </tr>
+  </tbody>
+</table>

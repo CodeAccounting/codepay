@@ -13,6 +13,83 @@
     </tr>
   </thead>
   <tbody id="mytbody">
+  <% if @bill.bill_items.present?%> 
+    <%index = 0%>
+    <% @bill.bill_items.each do |bill_item|%>
+      <tr class="tr_clone">
+        <td style="width: 15%">
+          <div class="form-group">
+            <input id="bill-input-hidden_<%=index%>" type="hidden" class="hidden_bill_id" name="bill[bill_items_attributes[<%=index%>][id]]" value="<%= bill_item.id %>"></input>
+            <select id="bill-item-name_<%=index%>" name="bill[bill_items_attributes[<%=index%>][item_id]]" class="item_selection form-control input-small">
+
+              <option></option>
+              <option value="NEW">Add New...</option>
+              <% @items.each do |item| %>
+                <option value="<%= item.id%>" <%= item.name == bill_item.try(:item).try(:name) ? "selected": "" %>><%= item.name%></option>
+              <%end%>
+            </select>
+          </div>
+        </td>
+        <td style="width: 15%">
+          <input id="bill-item-description_<%=index%>" name="bill[bill_items_attributes[<%=index%>][description]]" class="form-control input-small" value="<%= bill_item.description%>"></input>
+        </td>
+        <td style="width: 15%">
+          <div class="form-group">
+            <select id="bill-item-categorization_<%=index%>" name="bill[bill_items_attributes[<%=index%>][categorization_id]]" class="form-control input-small">
+              <option></option>
+              <% @chart_of_accounts.each do |chart_of_account|%>
+                <option value="<%= chart_of_account.id%>"><%= chart_of_account.name%></option>
+              <%end%>
+            </select>
+          </div>
+        </td>
+        <td class="bill-item-quantity" style="width: 10%">
+          <div class="form-group" id="positionGroup">
+           <input id="bill-item-quantity_<%=index%>" name="bill[bill_items_attributes[<%=index%>][quantity]]" class="bill-item-qp form-control input-small" type="number" min="1" value="<%= bill_item.quantity%>"></div>
+          </div>
+        </td>
+        <td class="bill-item-price" style="width: 10%">
+          <div class="form-group" id="positionGroup">
+           <input id="bill-item-price_<%=index%>" name="bill[bill_items_attributes[<%=index%>][price]]" class="bill-item-qp form-control input-small" type="number" min="0.01" step="0.01" value="<%= bill_item.price%>"></div>
+          </div>
+        </td>
+        <td style="width: 15%">
+          <div class="form-group">
+            <select id="bill-item-location_<%=index%>" name="bill[bill_items_attributes[<%=index%>][location_id]]" class="form-control input-small">
+              <option></option>
+              <% @locations.each do |location| %>
+                <option value="<%= location.id %>" <%= location.name == bill_item.try(:location).try(:name) ? "selected": "" %>><%= location.name %></option>
+              <% end %>
+            </select>
+          </div>
+        </td>
+        <td class="bill-item-tax" style="width: 8%">
+        <div>
+          <select name="bill[bill_items_attributes[<%=index%>][tax_id]]" class="item-tax form-control input-small">
+            <option></option>
+            <option value="NEW">Add New...</option>
+                <% @taxs.each do |tax|%>
+                  <option value="<%= tax.id %>" <%= tax.tax == bill_item.try(:tax).try(:tax) ? "selected": "" %>><%= tax.tax %></option>
+                <%end%>
+          </select>
+        </div>
+        </td>
+        <td class="bill-item-amount" style="width: 5%">
+          $ <%=bill_item.amount%>
+        </td>
+        <td>
+          <button type='button' class='btn btn-primary tr_clone_remove'><span class='glyphicon glyphicon-trash'></span></button>
+        </td>
+        <input id="bill-item-amount_<%=index%>" class="hidden-amount" type="hidden" name="bill[bill_items_attributes[<%=index%>][amount]]" value="<%=bill_item.amount%>"/>
+        <input id="bill-item-destroy_<%=index%>" class="hidden-destroy" type="hidden" name="bill[bill_items_attributes[<%=index%>][_destroy]]" value="false"/>
+      </tr>
+      <% if index == 0%>
+        <% index = Time.now.to_i%>
+      <%else%>
+        <% index = index+1 %>
+      <%end%>  
+    <%end%>
+  <%else%>
     <tr class="tr_clone">
       <td style="width: 15%">
         <div class="form-group">
@@ -70,11 +147,13 @@
         </select>
       </div>
       </td>
-      <td class="bill-item-amount" style="width: 10%">
+      <td class="bill-item-amount" style="width: 5%">
         $ 0.0
       </td>
       <input id="bill-item-amount_0" class="hidden-amount" type="hidden" name="bill[bill_items_attributes[0][amount]]" value=""/>
     </tr>
+  <%end%>
+
     <div class="cloned_area"> </div>
     <tr id="insertRowBefore">
       <td><button type="button" class="btn btn-primary" id="tr_clone_add"><span class="glyphicon glyphicon-plus"></span> Add more items</button> </td>
@@ -86,9 +165,9 @@
       <td></td>
       <td></td>
       <td></td>
-      <td></td>
+      <td style="text-align:right;">Subtotal:</td>
       <td>
-        Subtotal: <b id='subtotal'>$0.0</b>
+         <b id='subtotal'>$0.0</b>
       </td>
     </tr>
   </tbody>

@@ -20,7 +20,7 @@
     </header>
     <div class="panel-body">
       <div class="row toastr-row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
           
             <label class="control-label" for="bill_info_name"> Vendor name </label>
@@ -35,32 +35,46 @@
             <input id="vendor_record_date" name="billinfo[bill_id]" class="form-control" value="<%= @bill_info.try(:bill_id) %>" readonly >
           </div>
           <div class="form-group">
-            <label class="control-label" for="bill_info_due_date">Processing Date</label>
-            <input id="vendor_due_date" name="billinfo[Processing Date]" class="form-control" value="<%= @bill_info.try(:processing_date).try(:strftime,"%d-%B-%Y") %>" readonly >
+            <label class="control-label" for="bill_info_amount">Amount</label>
+            <input id="vendor_record_date" name="billinfo[amount]" class="form-control" value="<%= @bill_info.try(:amount) %>" readonly >
           </div>
         </div>
         <div class="col-md-3">
-       		<div class="form-group">
-	            <label class="control-label" for="bill_info_name"> Due Date </label>
-	            <input data-customers id="vendor_name" type="text" class="form-control"
+         		<div class="form-group">
+              <label class="control-label" for="bill_info_name"> Due Date </label>
+              <input data-customers id="vendor_name" type="text" class="form-control"
 	            value="<%=@bill_info.try(:due_date).try(:strftime,"%d-%B-%Y")%>" readonly>
-	        </div>
-          	<div class="form-group">
-	            <label class="control-label" for="bill_info_memo">Memo</label>
-	            <input id="bill_memo" name="billinfo[bill_memo]" type="textfield" class="form-control" value="<%= @bill_info.try(:memo) %>" readonly>
-          	</div>
-          	<div class="form-group">
-	            <label class="control-label" for="bill_info_description">Description</label>
-	            <input id="bill_description" name="billinfo[bill_description]" type="textfield" class="form-control" value="<%= @bill_info.try(:description)%>" readonly>
-          	</div>
-          	<div class="form-group">
-	            <label class="control-label" for="bill_info_check_number">Check Number</label>
-	            <input id="bill_check_number" name="billinfo[bill_number]" type="text" class="form-control" value="<%= @bill_info.try(:check_number) %>" readonly>
-          	</div>
-    	</div>
+  	        </div>
+            <div class="form-group">
+              <label class="control-label" for="bill_info_due_date">Processed Date</label>
+              <input id="vendor_due_date" name="billinfo[Processing Date]" class="form-control" value="<%= @bill_info.try(:processing_date).try(:strftime,"%d-%B-%Y") %>" readonly >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="bill_info_due_date">Delivery Date</label>
+              <input id="vendor_due_date" name="billinfo[Processing Date]" class="form-control" value="<%= @bill_info.try(:delivery_date).try(:strftime,"%d-%B-%Y") %>" readonly >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="bill_info_check_number">Payment Method</label>
+              <input id="bill_check_number" name="billinfo[Payment Method]" type="text" class="form-control" value="<%= @bill_info.try(:payment_method) %>" readonly>
+            </div>
+    	  </div>
+        <div class="col-md-3">
+          <div class="form-group">
+              <label class="control-label" for="bill_info_check_number">Check Number</label>
+              <input id="bill_check_number" name="billinfo[bill_number]" type="text" class="form-control" value="<%= @bill_info.try(:check_number) %>" readonly>
+            </div>
+          <div class="form-group">
+            <label class="control-label" for="bill_info_memo">Memo</label>
+            <textarea id="bill_memo" type="textfield" name="billinfo[bill_memo]" class="form-control" readonly><%= @bill_info.try(:memo) %></textarea>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="bill_info_description">Description</label>
+            <textarea id="bill_description" type="textfield" name="billinfo[bill_description]" class="form-control" readonly><%= @bill_info.try(:description)%></textarea>
+          </div>
+        </div>
   			<div class="col-md-12">
           		<a href="<%= new_payment_path %>" class="btn btn-success">Back</a>
-              <a href="<%= edit_bill_information_path(@bill_info.bill_id) %>" class="btn btn-success">Edit</a>
+              <a href="<%#= edit_bill_information_path(@bill_info.bill_id) %>" class="btn btn-success">Edit</a>
         	</div>
   	</div>
   </div>

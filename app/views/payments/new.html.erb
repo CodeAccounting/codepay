@@ -79,6 +79,10 @@
                                <th>
                                    Bill Number
                                </th>
+
+                               <th>
+                                   Amount 
+                               </th>
                                
                                <th>
                                    Bill Date
@@ -123,7 +127,8 @@
                                  </label>
                               </td>
                               <td><%= bill.vendor.name.try(:capitalize) %></td>
-                              <td><%= bill.bill_number%></td>
+                              <td><%= bill.bill_number%>(<%= link_to "SHOW", bill_path(bill) %>)</td>
+                              <td><%= bill.due_amount%></td>
                               <td><%= bill.bill_date.strftime("%d %B %Y") %></td>
                               <td><%= bill.due_date.strftime("%d %B %Y") %> </td>
                               <td><% if bill.approvals.present? %>

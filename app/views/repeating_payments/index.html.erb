@@ -1,0 +1,75 @@
+ <!-- page head start -->
+<div class="page-head">
+  <h3 class="m-b-less">
+  Repeating Payments
+  </h3>
+  <div class="state-information">
+    <ol class="breadcrumb m-b-less bg-less">
+      <li class="active"><a href="#">All Active bills</a></li>
+      <li><a href="#">Active and Archived</a></li>
+    </ol>
+  </div>
+</div>
+<!-- page head end-->
+<!--body wrapper start-->
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <% if flash[:notice] or flash[:error] %>
+          <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <%= flash[:notice] %>
+            <%= flash[:error] %>
+          </div>
+        <% end %>
+        <header class="panel-heading ">
+          <a class="btn btn-default btn-success btn-lg" href="<%= new_repeating_payment_path %>">
+              <span>Add New</span>
+          </a>
+          <span class="tools pull-right">
+            <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+            <a class="t-close fa fa-times" href="javascript:;"></a>
+          </span>
+          <br/><br/>
+          <div class="DTTT btn-group">
+            <a class="btn btn-default DTTT_button_csv" tabindex="0" href="<%= repeating_payments_path(format: :csv) %>" aria-controls="DataTables_Table_0">
+              <span>CSV</span>
+            </a>
+            <a class="btn btn-default DTTT_button_xls" tabindex="0" href="<%= repeating_payments_path(format: :xls) %>" aria-controls="DataTables_Table_0">
+              <span>Excel</span>
+            </a>
+            <a target="_blank" class="btn btn-default DTTT_button_pdf" href="<%= repeating_payments_path(format: :pdf) %>" tabindex="0" aria-controls="DataTables_Table_0">
+              <span>PDF / PRINT</span>
+            </a>
+          </div>
+        </header>
+        <table class="table colvis-data-table data-table">
+          <thead>
+            <tr>
+              <th>Vendor Name</th>
+              <th>Next Due Date</th>
+              <th>Days In Advance</th>
+              <th>Frequency</th>
+              <th>End Date</th>
+              <th>Total Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @repeating_payments.each do |repeating_payment|%>
+              <tr>
+                <td><%= repeating_payment.vendor.name %>(<%= link_to 'show', repeating_payment_path(repeating_payment)%>)</td>
+                <td><%= repeating_payment.try(:next_due_date).strftime("%d %B %Y") %></td>
+                <td><%= repeating_payment.try(:days_in_advance) %></td>
+                <td><%= repeating_payment.try(:frequency) %></td>
+                <td><%= repeating_payment.try(:end_date).strftime("%d %B %Y") %></td>
+                <td><%= repeating_payment.try(:total_amount) %></td>
+              </tr>
+            <%end%>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>
+<!-- body wrapper end -->

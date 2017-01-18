@@ -1,17 +1,31 @@
-<section class="panel" style="width: 563px;
+<section class=" step8 panel" style="width: 563px;
     margin-left: 15px;">
   <div class="slick-carousal">
     <div class="overlay-c-bg"></div>
     <div id="news-feed" class="owl-carousel owl-theme">
-      <div class="item">
-        <h3 class="text-success">News</h3>
-        <span class="date">12 March 2015</span>
-        <h1>If today were the last day of your life, would you want to do what your are about to do today</h1>
-        <div class="text-center">
-          <a href="javascript:;" class="view-all">View All</a>
-        </div>
-      </div>
-      <div class="item">
+      <%if @news.present?%>
+        <% @news.each do |news|%>
+          <div class="item">
+            <label class="date" style="margin-left:78%; font-size:12px;"><%= news.created_at.strftime("%d %B %Y")%></label>
+            <h3 class="text-success">News</h3>
+            <span class="date"><%= news.subject%></span>
+            <h1><%= news.description%></h1>
+            <div class="text-center">
+              <a href="<%= news_index_path%>" class="view-all">View All</a>
+            </div>
+          </div>
+        <%end%>  
+      <%else%>
+        <div class="item">
+          <h3 class="text-success">News</h3>
+          <span class="date"></span>
+          <h1>No News To Show</h1>
+            <!-- <div class="text-center">
+              <a href="javascript:;" class="view-all">View All</a>
+            </div> -->
+          </div>
+      <%end%>
+      <!-- <div class="item">
         <h3 class="text-success">News</h3>
         <span class="date">11 February 2015</span>
         <h1>SlickLab build with Boostrap latest version 3+. Its very easy to customize. Hope you enjoy it..</h1>
@@ -26,7 +40,7 @@
         <div class="text-center">
           <a href="javascript:;" class="view-all">View All</a>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </section>

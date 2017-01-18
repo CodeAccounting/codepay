@@ -34,7 +34,7 @@ class Bill < ActiveRecord::Base
   has_many   :approvals, as: :approvable
   has_many   :notes, as: :noteable
 
-  accepts_nested_attributes_for :bill_items
+  accepts_nested_attributes_for :bill_items, :allow_destroy => true,  reject_if: proc { |attributes| (attributes['item_id'].blank? || attributes['quantity'].blank? || attributes['price'].blank?) }
   
 
 	def self.to_csv(options = {})

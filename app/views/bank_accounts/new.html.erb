@@ -1,18 +1,15 @@
 <!-- page head start-->
-<!-- <div class="page-head">
+<div class="page-head">
   <h3 class="m-b-less">
   Create Bank Account
   </h3>
-</div> -->
+</div>
 <!-- page head end-->
 
 <!--body wrapper start-->
 <div class="wrapper">
   <!-- page start-->
   <div class="panel">
-    <header class="panel-heading head-border">
-      Create A Bank Account
-    </header>
     <% if flash[:errors] %>
     <div class="alert alert-danger">
       <ul>
@@ -22,13 +19,28 @@
       </ul>
     </div>
     <% end %>
+    <header class="panel-heading head-border">
+      Payment Accounts
+    </header>
+    <section class="panel">
+      <div class="panel-body">
+        <div class="btn-group btn-group-justified">
+           <a class="btn btn-warning" href="<%= bank_accounts_path %>">Bank Accounts</a>
+           <a class="btn btn-primary" href="<%= credit_cards_path %>">Credit Cards</a>
+           <a class="btn btn-info" href="<%#= %>">Electronic Payments</a>
+        </div>
+      </div>
+    </section>
+    <header class="panel-heading head-border">
+      Create A Bank Account
+    </header>
     <form id="account-form" action="<%= bank_accounts_path %>" method="post">
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
       <div class="panel-body">
         <div class="row toastr-row">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="form-group">
-              <label class="control-label" for="account_name">Account Number </label>
+              <label class="control-label" for="account_name">International Bank Account Number </label>
               <input id="account_number" name="account[account_number]" type="text" class="form-control"  >
             </div>
 
@@ -37,40 +49,45 @@
               <input id="bank_name" name="account[bank_name]" type="text" class="form-control"  >
             </div>
             <div class="form-group">
-              <label class="control-label" for="available for payable">Available For Payable</label>
-              <input id="payable" name="account[payable]" type="text" class="form-control">
+              <label class="control-label" for="domestic_routing">Domestic Routing</label>
+              <input id="payable" name="account[domestic_routing]" type="text" class="form-control">
             </div>
             <div class="form-group">
-              <label class="control-label" for="default for payable">Default For Payable</label>
-              <input id="default" name="account[default]" type="text" class="form-control">
+              <label class="control-label" for="domestic_account">Domestic Account</label>
+              <input id="default" name="account[domestic_account]" type="text" class="form-control">
             </div>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-3">
             <div class="form-group">
-              <label class="control-label" for="varification for receivable">Verification For Receivable</label>
-              <input id="verify" name="account[receivable]" type="text" class="form-control">
+              <label class="control-label" for="swift_code">Swift Code</label>
+              <input id="swift_code" name="account[swift_code]" type="text" class="form-control">
             </div>
 
             <div class="form-group">
-              <label class="control-label" for="status">Status</label>
-              <input id="status" name="account[status]" type="text" class="form-control">
+              <label class="control-label" for="bank_address1">Bank Address 1</label>
+              <input id="address2" name="account[bank_address1]" type="text" class="form-control">
             </div>
 
             <div class="form-group">
-              <label class="control-label" for="active">Active?</label>
-              <input id="active" name="account[active]" type="text" class="form-control">
+              <label class="control-label" for="bank_address2">Bank Address 2</label>
+              <input id="address1" name="account[bank_address2]" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="city">City</label>
+              <input id="city" name="account[city]" type="text" class="form-control">
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <button type="submit" class="btn btn-success" id="cleartacct">Save Detail</button>
-          <button type="button" class="btn btn-danger" onclick="clearEnteries('account-form')" >Clear Entries</button>
+        <div class="row">
+          <div class="col-md-12">
+            <%= link_to 'Back', :back, class: "btn btn-danger" %>
+            <button type="submit" class="btn btn-success" id="cleartacct">Save Detail</button>
+            <button type="button" class="btn btn-danger" onclick="clearEnteries('account-form')" >Clear Entries</button>
+          </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
 <!-- page end-->
 

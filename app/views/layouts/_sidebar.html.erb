@@ -63,7 +63,7 @@
     padding:1px;
 }
 </style>
-<div class="sidebar-left sticky-sidebar">
+<div class="sidebar-left sticky-sidebar" style="z-index:99;">
   <!--responsive view logo start-->
   <!--responsive view logo end-->
   <div class="sidebar-left-info">
@@ -72,7 +72,10 @@
     <!-- visible small devices end-->
     <!--sidebar nav start-->
     <ul class="nav nav-pills nav-stacked side-navigation">
-      <li class=""><a href="<%= new_dashboard_path %>"><i class="fa fa-home"></i>Dashboard</a></li>
+      <li class="step10">
+          <a href="<%= new_dashboard_path %>">
+          <i class="fa fa-home"></i>Home</a>
+      </li>
       
       <!-- <li class="menu-list"> <a href="#"><i class="fa fa-money"></i>Money In</a>
         <ul class="child-list">
@@ -104,7 +107,7 @@
         </ul>
       </li> -->
       
-      <li class="">
+      <li class="step11">
         <%# if can? :index, Vendor %>
           <a href="<%= attachments_path%>">
             <i class="fa fa-envelope-o"></i>
@@ -113,7 +116,7 @@
         <%# end %>
       </li>
 
-      <li class="">
+      <li class="step12">
         <% if can? :index, Vendor %>
           <a href="<%= vendors_path%>">
             <i class="fa fa-users"></i>
@@ -123,37 +126,37 @@
       </li>
 
 
-      <li class="">
+      <li class="step13">
           <a href="<%= bills_path%>">
             <i class="fa fa-newspaper-o"></i>
             Bills
           </a>
       </li>
 
-      <li class="">
+      <li class="step14">
         <% if can? :create, Payment %>
           <a href="<%= new_payment_path%>">
-            <i class="fa fa-credit-card"></i>
-            Payments
+            <i class="fa fa-usd"></i>
+            Pay Now
           </a>
         <% end %>
       </li>
 
-      <li class="">
+      <li class="step15">
           <a href="<%= credits_path%>">
             <i class="fa fa-minus-square-o"></i>
             Credits
           </a>
       </li>
 
-      <li class="">
+      <li class="step16">
           <a href="<%=voids_path%>" >
             <i class="fa fa-square-o"></i>
             Voids
           </a>
       </li>
 
-      <li class="">
+      <li class="step17">
         <% if can? :create, Report %>
           <a href="/reports/new">
             <i class="fa fa-bar-chart-o"></i>
@@ -162,14 +165,24 @@
         <% end %>
       </li>
 
+      <li class="">
+        <% if current_user.which_role?(current_organization) == "approver" %>
+          <a href="<%= approvals_path %>">
+            <i class="fa fa-check"></i>
+            Approve
+          </a>
+        <% end %>
+      </li>
+
+
       <!-- <li class="">
-        <a href="<%= edit_profile_path(current_user) %>">
+        <a href="<%#= edit_profile_path(current_user) %>">
           <i class="fa fa-cogs"></i>
           Settings
         </a>
       </li> -->
       <% if current_user.has_current_role? :admin %>
-        <!-- <li> <a href="<%= audits_path%>">
+        <!-- <li> <a href="<%#= audits_path%>">
              <i class="fa fa-eye"></i>
              Audit Log
              </a>
@@ -177,13 +190,13 @@
         <!-- <li class="menu-list"> <a href="#"><i class="fa fa-cogs"></i>Settings</a> -->
           <!-- <ul class="child-list"> -->
 
-            <!-- <li><%= link_to "User Profile", edit_profile_path(current_user) %></li>      -->
-            <!-- <li><%= link_to "Create New Organization", new_organization_path %></li>
-            <li><%= link_to "Manage Organization Users", organization_users_path %></li>
-            <li><%= link_to "Manage Organization", organizations_path %></li> -->
-            <!-- <li><%= link_to "Billing and Subscription", new_subscription_path %></li> -->
-            <!-- <li><%= link_to "Invoice & Bill Items", items_path %></li> -->
-            <!-- <li><%= link_to "COA", chart_of_accounts_path %></li> -->
+            <!-- <li><%#= link_to "User Profile", edit_profile_path(current_user) %></li>      -->
+            <!-- <li><%#= link_to "Create New Organization", new_organization_path %></li>
+            <li><%#= link_to "Manage Organization Users", organization_users_path %></li>
+            <li><%#= link_to "Manage Organization", organizations_path %></li> -->
+            <!-- <li><%#= link_to "Billing and Subscription", new_subscription_path %></li> -->
+            <!-- <li><%#= link_to "Invoice & Bill Items", items_path %></li> -->
+            <!-- <li><%#= link_to "COA", chart_of_accounts_path %></li> -->
           <!-- </ul> -->
         <!-- </li> -->
       <%end%> 
@@ -451,15 +464,15 @@ function key_detect_calc(id,evt)
 function show_hide_calc(){
   var cal_elemnt = document.getElementById('cal_id');
   if (cal_elemnt.style.display=='none')
-  {
-    cal_elemnt.style.display='';
-    return false;
-  }
+    {
+        cal_elemnt.style.display='';
+        return false;
+    }
   else
-  {
-   cal_elemnt.style.display='none';
-   return false; 
-  }  
+    {
+    cal_elemnt.style.display='none';
+    return false; 
+    }  
   // document.getElementById('body').style.display = "none";
 }
 
@@ -469,5 +482,6 @@ function f_calc_close(elem){
 }
 
 document.getElementById('calc').onload=init_calc('calc');
+
 </script>
 <!-- sidebar left end
