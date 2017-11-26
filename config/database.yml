@@ -12,7 +12,7 @@ development:
 
 test:
   <<: *default
-  database: codepaying_test
+  database: codepaying_dev
 
 production:
   <<: *default

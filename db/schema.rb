@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025072849) do
+ActiveRecord::Schema.define(version: 20161229052719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 20161025072849) do
     t.datetime "updated_at",              null: false
     t.integer  "referenceable_id"
     t.string   "referenceable_type"
+    t.integer  "organization_id"
   end
 
   add_index "attachments", ["referenceable_id"], name: "index_attachments_on_referenceable_id", using: :btree
@@ -129,15 +130,16 @@ ActiveRecord::Schema.define(version: 20161025072849) do
   create_table "bank_accounts", force: :cascade do |t|
     t.integer  "creator_id"
     t.integer  "organization_id"
-    t.integer  "account_number"
     t.string   "bank_name"
-    t.string   "payable",         default: "Yes"
-    t.string   "default",         default: "Yes"
-    t.string   "receivable"
-    t.string   "status",          default: "Varified"
-    t.string   "active",          default: "Active"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.string   "account_number"
+    t.string   "domestic_routing"
+    t.string   "domestic_account"
+    t.string   "swift_code"
+    t.text     "bank_address1"
+    t.text     "bank_address2"
+    t.string   "city"
   end
 
   add_index "bank_accounts", ["creator_id", "organization_id"], name: "index_bank_accounts_on_creator_id_and_organization_id", using: :btree
@@ -182,6 +184,9 @@ ActiveRecord::Schema.define(version: 20161025072849) do
     t.datetime "approval_date"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.string   "payment_method"
+    t.decimal  "amount"
+    t.datetime "delivery_date"
   end
 
   create_table "bill_items", force: :cascade do |t|
@@ -245,6 +250,33 @@ ActiveRecord::Schema.define(version: 20161025072849) do
   add_index "contacts", ["email"], name: "index_contacts_on_email", unique: true, using: :btree
   add_index "contacts", ["last_name"], name: "index_contacts_on_last_name", using: :btree
   add_index "contacts", ["organization_id"], name: "index_contacts_on_organization_id", using: :btree
+
+  create_table "credit_cards", force: :cascade do |t|
+    t.integer  "creator_id"
+    t.integer  "organization_id"
+    t.string   "card_number"
+    t.datetime "expiration_date"
+    t.string   "cvv_code"
+    t.string   "card_type"
+    t.string   "billing_zip_code"
+    t.string   "name"
+    t.text     "address"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  create_table "credits", force: :cascade do |t|
+    t.integer  "creator_id"
+    t.integer  "organization_id"
+    t.integer  "vendor_id"
+    t.integer  "bill_id"
+    t.decimal  "credit_amount"
+    t.datetime "credit_date"
+    t.text     "message"
+    t.boolean  "status",          default: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
 
   create_table "customers", force: :cascade do |t|
     t.string   "name"
@@ -390,6 +422,13 @@ ActiveRecord::Schema.define(version: 20161025072849) do
     t.string  "name"
   end
 
+  create_table "news", force: :cascade do |t|
+    t.text     "subject"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "notes", force: :cascade do |t|
     t.integer  "creator_id"
     t.integer  "organization_id"
@@ -434,6 +473,30 @@ ActiveRecord::Schema.define(version: 20161025072849) do
     t.integer  "user_id"
     t.integer  "organization_id"
     t.string   "user_type"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "repeating_payment_items", force: :cascade do |t|
+    t.integer  "repeating_payment_id"
+    t.string   "account"
+    t.decimal  "amount"
+    t.text     "description"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "repeating_payments", force: :cascade do |t|
+    t.integer  "creator_id"
+    t.integer  "organization_id"
+    t.integer  "vendor_id"
+    t.text     "description"
+    t.datetime "next_due_date"
+    t.integer  "days_in_advance"
+    t.integer  "frequency"
+    t.string   "frequency_type"
+    t.datetime "end_date"
+    t.decimal  "total_amount"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
